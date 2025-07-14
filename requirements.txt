@@ -1,0 +1,5 @@
+# 適宜追記
+requests
+beautifulsoup4
+notion-client
+python-dotenv

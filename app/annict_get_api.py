@@ -1,0 +1,1 @@
+# Annict APIでアニメ情報をjsonで取得する
