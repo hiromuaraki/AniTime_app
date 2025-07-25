@@ -1,7 +1,7 @@
 import model.config as config
 import common.utils as utils
 from app.annict_get_api import get_title_url_map
-from app.scraper import get_scrape_data
+from app.scraper import scrape_anime_info
 
 # メイン処理
 def main() -> None:
@@ -18,7 +18,10 @@ def main() -> None:
   title_url_map = get_title_url_map(target_url)
   
   # Webスクレイピングを実行 対応表のURLより最速配信「日時・曜日・配信サイト名」を取得
-  response = get_scrape_data(title_url_map)
+  response = scrape_anime_info(title_url_map)
+  
+  
+  
   # スクレイピングデータを加工
 
   # NotionAPIを実行しアクセス

@@ -1,5 +1,7 @@
 # 適宜追記
 requests
 beautifulsoup4
+selenium
 notion-client
 python-dotenv
+typing

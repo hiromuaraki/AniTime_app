@@ -1,4 +1,3 @@
-# 共通関数をまとめる
 from datetime import datetime
 
 # 年月日を取得

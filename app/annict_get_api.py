@@ -1,4 +1,4 @@
-from model.config import requests
+import requests
 from model.config import typing
 
 
@@ -33,6 +33,7 @@ def get_title_url_map(target_url: str, page=1) -> dict:
     response = get_annict_api(target_url)
     
     total_count = 0
+    # ページネーションの制御
     # 次のページが存在する間APIを実行しページ情報を取得し続ける
     while response['total_count'] != total_count:
         
