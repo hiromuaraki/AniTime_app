@@ -10,7 +10,7 @@ import re
 
 # 全体的にロジックの確認と修正が必要、設計を確認し実装
 
-def setup_driver() -> None:
+def setup_driver():
     """ブラウザを操作する為のWebDriverの初期設定"""
     options = Options()
     options.add_argument("--headless")  # ブラウザを表示しない(後で消す)
@@ -30,11 +30,10 @@ def parse_broadcast_info(html) -> list:
     # 放送局と日付抽出の正規表現例
     pattern = re.compile(r'(TOKYO MX|BS11|ABEMA|dアニメ).*?([0-9]{1,2}月[0-9]{1,2}日[^\d]*?[0-9]{1,2}[:：][0-9]{2})')
     return pattern.findall(text)
-    return []
     
 
 
-def fetch_page(driver, url, links_texts=('放送', 'ON AIR', 'on air', 'broadcast')) -> typing.Any:
+def fetch_page(driver, url, links_texts=('放送', 'ONAIR', 'on air', 'broadcast')) -> typing.Any:
     """
     - base URL を開き、link_textsに合致するリンクをクリックして放送情報ページへ遷移
     - 見つからなければ base URL のまま HTML を返す
@@ -68,10 +67,11 @@ def scrape_anime_info(title_url_map: dict) -> list:
     driver = setup_driver()
     
     try:
-        print(f"アクセス中：{""}")
+        print(f"アクセス中：{driver}")
         # 対応表の件数分公式サイトへアクセスし放送情報を全取得する
-        for _, url in title_url_map:
-            html = fetch_page(driver, url)
+        for _, url in title_url_map.items():
+            # html = fetch_page(driver, url)
+            html = fetch_page(driver, 'https://rurinohouseki.com/')
 
 
 

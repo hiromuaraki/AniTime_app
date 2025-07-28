@@ -1,4 +1,5 @@
 import requests
+import model.config as config
 from model.config import typing
 
 
@@ -16,7 +17,37 @@ def get_annict_api(url: str, page=1) -> typing.Any:
     
 
 
-def get_title_url_map(target_url: str, page=1) -> dict:
+
+def get_staffs(works_info: dict) -> dict:
+    """
+    Annict APIを実行し 作品に紐づいた制作会社を取得し作品情報に追加する関数
+
+    Args:
+
+
+    Returns:
+
+    """
+
+    # 作品IDごとに紐づいた制作会社をapiで取得
+    for title, work in works_info.items():
+        work_id, _ = work[0]
+        params = f'access_token={config.ANNICT_TOKEN}&filter_work_id={work_id}'
+        target_url = config.ANNICT_STAFFS_URL + params
+        response = get_annict_api(target_url)
+
+        for staff in response['staffs']:
+            if 'organization' not in staff:
+                continue
+            if staff['role_text'] == 'アニメーション制作':
+                works_info[title].append(staff['organization']['name'])
+                break
+
+    return works_info
+
+
+
+def get_title_url_map(work_url: str,  page=1) -> tuple:
     """
     Annict APIを実行し{タイトル : URL}の対応表を返す関数
 
@@ -26,11 +57,12 @@ def get_title_url_map(target_url: str, page=1) -> dict:
 
     Returns:
         dict[str, str]: タイトルとURLの対応表
+        dic[str, [str]]: タイトルごとの作品情報
 
     """
-    works_url = {}
+    works_url, works_info = {}, {}
     # 1回目のAnnictAPIを実行
-    response = get_annict_api(target_url)
+    response = get_annict_api(work_url)
     
     total_count = 0
     # ページネーションの制御
@@ -38,11 +70,17 @@ def get_title_url_map(target_url: str, page=1) -> dict:
     while response['total_count'] != total_count:
         
         for work in response['works']:
-            title, url = work['title'], work['official_site_url']
+            work_id, title, url = work['id'], work['title'], work['official_site_url']
             works_url[title] = url
+            
+            works_info[title] = []
+            works_info[title].append((work_id, url))
             total_count += 1
+        
         # ページ数を更新し次のページを取得
         page += 1
-        response = get_annict_api(target_url, page)
+        response = get_annict_api(work_url, page)
 
-    return works_url
+    # 作品に紐づいた制作会社を取得
+    response = get_staffs(works_info)
+    return works_url, works_info

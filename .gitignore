@@ -1,1 +1,14 @@
 .env
+typing_extensions.py
+chromedriver.exe
+chromedriver
+LICENSE.chromedriver
+/selenium
+/selenium-4.27.1.dist-info
+/websocket
+/dotenv
+/notion_client
+/bs4
+/httpx
+/httpcore
+/h11
