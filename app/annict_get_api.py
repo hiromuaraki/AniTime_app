@@ -18,14 +18,14 @@ def get_annict_api(url: str, page=1) -> typing.Any:
 
 
 
-def get_staffs(works_info: dict) -> dict:
+def get_staffs(works_info: dict):
     """
     Annict APIを実行し 作品に紐づいた制作会社を取得し作品情報に追加する関数
 
     Args:
 
 
-    Returns:なし
+    Returns:
 
     """
 
@@ -42,7 +42,6 @@ def get_staffs(works_info: dict) -> dict:
             if staff['role_text'] == 'アニメーション制作':
                 works_info[title].append(staff['organization']['name'])
                 break
-
 
 
 def get_title_url_map(work_url: str,  page=1) -> tuple:
@@ -68,17 +67,19 @@ def get_title_url_map(work_url: str,  page=1) -> tuple:
     while response['total_count'] != total_count:
         
         for work in response['works']:
+            # TV,Web,otherのみ許可
+            total_count += 1
+            if work['media'] not in ('tv', 'web', 'other'): continue
+
             work_id, title, url = work['id'], work['title'], work['official_site_url']
             works_url[title] = url
             
             works_info[title] = []
             works_info[title].append((work_id, url))
-            total_count += 1
         
         # ページ数を更新し次のページを取得
         page += 1
         response = get_annict_api(work_url, page)
 
     # 作品に紐づいた制作会社を取得
-    get_staffs(works_info)
     return works_url, works_info

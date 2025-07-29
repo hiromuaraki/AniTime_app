@@ -28,6 +28,7 @@ def parse_broadcast_info(html) -> list:
     - 戻り値: [(station, raw_time_str), ...]
     """
     
+    # HTMLがうまく取得できておらず36行目で処理落ち
     print(html[:100])
     print(html[:200])
     print(html[:300])
@@ -36,8 +37,8 @@ def parse_broadcast_info(html) -> list:
 
     text = soup.get_text(separator=' ')
     target_words = [
-        'Prime','dアニメ','ABEMA','Nerflix','U-NEXT','FOD','Hulu',
-        'スーパーアニメイズムTURBO枠', 'ノイタミナ枠', 'Imanimation枠','アガルアニメ枠']
+        'Prime','dアニメ','ABEMA','Netflix','U-NEXT','FOD','Hulu',
+        'スーパーアニメイズムTURBO枠', 'ノイタミナ枠', 'Imanimation枠','アガルアニメ枠', 'ANiMAZiNG!!!枠']
     target_pattern = '|'.join(map(re.escape, target_words))
     # 放送局と日時の抽出
     pattern = re.compile(rf'{target_pattern}.*?([0-9]{1,2}月[0-9]{1,2}日[^\d]*?[0-9]{1,2}[:：][0-9]{2})')
@@ -64,7 +65,7 @@ def fetch_page(driver, url, links_texts=('放送', 'ON AIR', 'on air', 'broadcas
     return driver.page_source
 
 
-def scrape_anime_info(title_url_map: dict, on_air='onair') -> list:
+def scrape_anime_info(title_url_map: dict, on_air='onair') -> dict:
     """
     アニメの配信情報を公式サイトよりスクレイピングで取得
 
@@ -73,15 +74,15 @@ def scrape_anime_info(title_url_map: dict, on_air='onair') -> list:
         on_air：放送情報ページへ直接アクセスするurl(基本的にon airを指定)
 
     Returns:
-        broadcast_info:アニメの配信情報を格納したリスト
+        broadcast_info:アニメの配信情報を格納した辞書型リスト
         {title: [start_date, platform]....}
     # """
     
     # driverの初期設定
     # driver = setup_driver()
     
+    broadcast_info = {}
     try:
-        broadcast_info = {}
         print(f"アクセス中：")
         # 対応表の件数分公式サイトへアクセスし放送情報を全取得する
         for title, base_url in title_url_map.items():
