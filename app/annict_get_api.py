@@ -25,7 +25,7 @@ def get_staffs(works_info: dict) -> dict:
     Args:
 
 
-    Returns:
+    Returns:なし
 
     """
 
@@ -42,8 +42,6 @@ def get_staffs(works_info: dict) -> dict:
             if staff['role_text'] == 'アニメーション制作':
                 works_info[title].append(staff['organization']['name'])
                 break
-
-    return works_info
 
 
 
@@ -82,5 +80,5 @@ def get_title_url_map(work_url: str,  page=1) -> tuple:
         response = get_annict_api(work_url, page)
 
     # 作品に紐づいた制作会社を取得
-    response = get_staffs(works_info)
+    get_staffs(works_info)
     return works_url, works_info

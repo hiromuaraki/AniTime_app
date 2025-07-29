@@ -12,13 +12,13 @@ def main() -> None:
   # アクセスURLの準備--works--
   season = utils.get_season(month)
   params = f'access_token={config.ANNICT_TOKEN}&filter_season={year}-{season}'
-  work__url = config.ANNICT_WORK_URL + params
+  work_url = config.ANNICT_WORK_URL + params
 
   
   # AnnictAPIを実行しアニメの{タイトル：公式URL}対応表および作品情報をを取得
-  title_url_map, works_info = get_title_url_map(work__url)
+  title_url_map, works_info = get_title_url_map(work_url)
   
-  # Webスクレイピングを実行 対応表のURLより最速配信「日時・曜日・配信サイト名」を取得
+  # Webスクレイピングを実行 対応表のURLより最速配信「日時・プラットフォーム名」を取得
   response = scrape_anime_info(title_url_map)
   
   
