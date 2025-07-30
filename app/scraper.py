@@ -4,7 +4,7 @@
 # from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 from urllib.error import HTTPError, URLError
-from datetime import datetime
+from datetime import datetime, timedelta
 import model.config as config
 import requests, re, time, typing
 
@@ -25,20 +25,19 @@ def parse_datetime_jp(text: str) -> datetime:
     """
     例: '8月5日 24:30' → datetime に変換
     """
-    try:
-        now = datetime.now()
-        year = now.year
-        m = re.search(r"(\d{1,2})月(\d{1,2})日[^\d]*?(\d{1,2})[:：](\d{2})", text)
-        if m:
-            month, day, hour, minute = map(int, m.groups())
-            if hour >= 24:
-                hour -= 24
-                base = datetime(year, month, day, hour, minute)
-                return base + datetime.timedelta(days=1)
-            return datetime(year, month, day, hour, minute)
-    except:
-        return None
-    return None
+    
+    now = datetime.now()
+    year = now.year
+    m = re.search(r"(\d{1,2})月(\d{1,2})日[^\d]*?(\d{1,2})[:：](\d{2})", text)
+    if m:
+        month, day, hour, minute = map(int, m.groups())
+        if hour >= 24:
+            hour -= 24
+            base = datetime(year, month, day, hour, minute)
+            return base + timedelta(days=1)
+        return datetime(year, month, day, hour, minute)
+    
+
 
 # ロジックの修正が必要
 def extract_onair_times(text: str, platforms: tuple) -> list:
@@ -85,13 +84,11 @@ def parse_broadcast_info(html: BeautifulSoup, title: str) -> list:
         for platform, time_str in matches:
             print(f"{title} → {platform} → {time_str}")
     
+        return matches
     except HTTPError as e:
         print(f"HTTP Error: {e.reason}")
     except URLError as e:
         print(f"URL Error: {e.reason}")
-
-    finally:
-           return matches
     
     
     
