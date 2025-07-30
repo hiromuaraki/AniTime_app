@@ -1,6 +1,5 @@
-import requests
+import requests, typing
 import model.config as config
-from model.config import typing
 
 
 def get_annict_api(url: str, page=1) -> typing.Any:
@@ -20,7 +19,7 @@ def get_annict_api(url: str, page=1) -> typing.Any:
 
 def get_staffs(works_info: dict):
     """
-    Annict APIを実行し 作品に紐づいた制作会社を取得し作品情報に追加する関数
+    Annict APIを実行し 作品に紐づいた制作会社を作品情報に追加する関数
 
     Args:
 
@@ -29,16 +28,17 @@ def get_staffs(works_info: dict):
 
     """
 
-    # 作品IDごとに紐づいた制作会社をapiで取得
+    # 作品IDごとに紐づいた制作会社をapiで取得し作品情報に追加
     for title, work in works_info.items():
         work_id, _ = work[0]
+        
         params = f'access_token={config.ANNICT_TOKEN}&filter_work_id={work_id}'
         target_url = config.ANNICT_STAFFS_URL + params
         response = get_annict_api(target_url)
 
         for staff in response['staffs']:
-            if 'organization' not in staff:
-                continue
+            if 'organization' not in staff: continue
+            
             if staff['role_text'] == 'アニメーション制作':
                 works_info[title].append(staff['organization']['name'])
                 break
@@ -69,7 +69,7 @@ def get_title_url_map(work_url: str,  page=1) -> tuple:
         for work in response['works']:
             # TV,Web,otherのみ許可
             total_count += 1
-            if work['media'] not in ('tv', 'web', 'other'): continue
+            if work['media'] not in ('tv', 'web'): continue
 
             work_id, title, url = work['id'], work['title'], work['official_site_url']
             works_url[title] = url
@@ -81,5 +81,4 @@ def get_title_url_map(work_url: str,  page=1) -> tuple:
         page += 1
         response = get_annict_api(work_url, page)
 
-    # 作品に紐づいた制作会社を取得
     return works_url, works_info

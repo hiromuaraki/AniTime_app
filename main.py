@@ -18,6 +18,7 @@ def main() -> None:
   # AnnictAPIを実行しアニメの{タイトル：公式URL}対応表および作品情報をを取得
   title_url_map, works_info = get_title_url_map(work_url)
   get_staffs(works_info)
+  
   # Webスクレイピングを実行 対応表のURLより最速配信「日時・プラットフォーム名」を取得
   response = scrape_anime_info(title_url_map)
   
@@ -28,7 +29,6 @@ def main() -> None:
   # NotionAPIを実行しアクセス
 
   # Notionのテーブルへスクレイピングデータを書き込む
-  pass
 
 
 # メイン処理の実行(テスト)

@@ -1,6 +1,6 @@
 from notion_client import Client # Notionを操作する準備
 from dotenv import load_dotenv # 環境変数の読み込み
-import os, typing
+import os
 
 # .envファイルを読み込む
 load_dotenv()
@@ -22,7 +22,17 @@ NOTION_URL = 'https://api.notion.com'
 # USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36'
 USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36'
 # F12 > console > navigator.userAgent
-
+PLATFORMS = (
+    'Prime Video', 'Amazon Prime Video','dアニメストア','ABEMA', 'ABEMAプレミアム', 'Netflix','U-NEXT','FOD',
+    'Hulu','DMM TV', 'アニメタイムズ', 'Lemino', 'ディズニープラス', 'Disney+','Disney+（ディズニープラス）',
+    'アニメイズム枠','スーパーアニメイズムTURBO枠', 'ノイタミナ枠', 'Imanimation枠','アガルアニメ枠', 'ANiMAZiNG!!!枠'
+)
+'''
+配信開始フラグ
+0:未配信
+1:配信済み
+'''
+IS_START = 0
 # CHROMEDRIVER_PATH = 'C:/Users/frontier-Python/Desktop/AniTime_app/chromedriver.exe'
 CHROMEDRIVER_PATH = '/Users/user/Desktop/AniTime_app/chromedriver'
 

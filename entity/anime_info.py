@@ -9,15 +9,14 @@ Notionのtableに書き込むデータのヘッダ情報
 
 @dataclass
 class AnimeInfo:
-    id: int
+    work_id: int
+    is_start: Optional[int] = None
     start_date: Optional[date]
     time: Optional[time]
-    dddd: Optional[str] = None
+    day_of_week: Optional[str] = None
     title: str
-    subsc_name: Optional[list] = None
+    platform: Optional[list] = None
     production: Optional[str] = None
-    year: Optional[str] = None
-    month: Optional[str] = None
-    season: Optional[str] = None # 例: "春", "夏", "秋", "冬"
+    season: Optional[str] = None # 例: "冬", "春", "夏", "秋"
     official_url: Optional[str] = None
     memo: Optional[str] = None
