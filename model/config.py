@@ -19,9 +19,7 @@ ANNICT_STAFFS_URL = 'https://api.annict.com/v1/staffs?'
 NOTION_URL = 'https://api.notion.com'
 
 # --- 定数の設定 ---
-# USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36'
-USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36'
-# F12 > console > navigator.userAgent
+USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36'
 PLATFORMS = (
     'Prime Video', 'Amazon Prime Video','dアニメストア','ABEMA', 'ABEMAプレミアム', 'Netflix','U-NEXT','FOD',
     'Hulu','DMM TV', 'アニメタイムズ', 'Lemino', 'ディズニープラス', 'Disney+','Disney+（ディズニープラス）',
@@ -33,8 +31,6 @@ PLATFORMS = (
 1:配信済み
 '''
 IS_START = 0
-# CHROMEDRIVER_PATH = 'C:/Users/frontier-Python/Desktop/AniTime_app/chromedriver.exe'
-CHROMEDRIVER_PATH = '/Users/user/Desktop/AniTime_app/chromedriver'
 
 
 # --- アプリ内ルール ---

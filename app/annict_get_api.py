@@ -35,7 +35,9 @@ def get_staffs(works_info: dict):
         params = f'access_token={config.ANNICT_TOKEN}&filter_work_id={work_id}'
         target_url = config.ANNICT_STAFFS_URL + params
         response = get_annict_api(target_url)
-
+        
+        if response['staffs'] is None: continue
+        
         for staff in response['staffs']:
             if 'organization' not in staff: continue
             
