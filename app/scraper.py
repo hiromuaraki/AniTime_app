@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-from bs4 import XMLParsedAsHTMLWarning
+# from bs4 import XMLParsedAsHTMLWarning
 from urllib.error import HTTPError, URLError
 from datetime import datetime, timedelta
 import model.config as config
@@ -7,7 +7,7 @@ import warnings
 import requests, re, time, random
 
 
-def parse_datetime_jp(text: str) -> datetime:
+def parse_datetime_jp(text: str):
     """
     
 
@@ -27,8 +27,8 @@ def parse_datetime_jp(text: str) -> datetime:
                 dt += timedelta(days=1)
             return dt
     except:
-        return None
-    return None
+        pass
+    
     
 
 def extract_onair_times(text: str, platforms: tuple) -> list:
@@ -72,7 +72,7 @@ def find_earliest_per_platform(matches: list) -> list:
 
 
 
-def parse_broadcast_info(html: BeautifulSoup, title: str) -> list:
+def parse_broadcast_info(html, title: str) -> list:
     """
     - HTML から放送局＋日時テキストを抽出し、リストで返却
     - 戻り値: [(station, raw_time_str), ...]
@@ -82,7 +82,7 @@ def parse_broadcast_info(html: BeautifulSoup, title: str) -> list:
     Returns:
     """
     try:
-        warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
+        # warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
         soup = BeautifulSoup(html.content, 'html.parser', from_encoding='utf-8')
         text = soup.get_text(separator=' ') 
         
@@ -100,6 +100,7 @@ def parse_broadcast_info(html: BeautifulSoup, title: str) -> list:
         print(f"HTTP Error: {e.reason}")
     except URLError as e:
         print(f"URL Error: {e.reason}")
+    return []
     
 
 
@@ -121,20 +122,27 @@ def scrape_anime_info(title_url_map: dict, on_air='onair') -> dict:
     
     print(f"アクセス中：")
     broadcast_info = {}
-    
+    not_exists_title, ng_url = '', ''
     try:
         for title, base_url in title_url_map.items():
             if base_url == '': continue
             if base_url[-1] != '/': on_air = '/' + on_air
 
-            html = requests.get(base_url + on_air, timeout=10)
+            res = requests.head(base_url + on_air, timeout=5)
+            # URLの存在チェックを事前に行う
+            if res.status_code == 200:
+                html = requests.get(base_url + on_air, timeout=5)
             # 放送情報からBeautifulSoupで配信日時・プラットフォーム名を抽出する
-            broadcast_info[title] = []
-            broadcast_info[title].append(parse_broadcast_info(html, title))
+                broadcast_info[title] = []
+                broadcast_info[title].append(parse_broadcast_info(html, title))
+            else:
+                not_exists_title = title
+                ng_url = base_url
             time.sleep(random.uniform(1,1.5))
 
         return broadcast_info
-    except Exception as e:
+    except requests.RequestException as e:
         print('スクレイピングエラー発生：リトライ前に少し待機', {e})
+        print(f'タイトル：{not_exists_title} URL:{ng_url}')
         time.sleep(5)
     time.sleep(random.uniform(1,2))
