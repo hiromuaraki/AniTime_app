@@ -18,6 +18,7 @@ def load_url_map() -> dict:
     
     with open(file_path, newline='', encoding='utf-8') as f:
         reader = csv.reader(f)
+        next(reader)
         for row in reader:
             _, title, url, _ = row
             url_map[title] = url
@@ -47,8 +48,10 @@ def save_works(works: dict):
     if not config.os.path.exists(save_dir):
         config.os.mkdir(save_dir)
     
+    header = ['work_id', 'title', 'url', 'prduction']
     with open(file_path, 'w', newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
+        writer.writerow(header)
         for title, work in works.items():
             if len(work[0]) == 3:                
                 work_id, url, production = work[0]
