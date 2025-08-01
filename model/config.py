@@ -20,11 +20,13 @@ NOTION_URL = 'https://api.notion.com'
 
 # --- 定数の設定 ---
 USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36'
+
+'''プラットフォームホワイトリスト一覧（適宜追加）'''
 PLATFORMS = (
     'Prime Video', 'Amazon Prime Video','dアニメストア','ABEMA', 'ABEMAプレミアム', 'Netflix','U-NEXT','FOD',
-    'Hulu','DMM TV', 'アニメタイムズ', 'Lemino', 'ディズニープラス', 'Disney+','Disney+（ディズニープラス）',
-    'アニメイズム枠','スーパーアニメイズムTURBO枠', 'ノイタミナ枠', 'Imanimation枠','アガルアニメ枠', 'ANiMAZiNG!!!枠'
-)
+    'Hulu','DMM TV', 'アニメタイムズ', 'Lemino', 'ディズニープラス', 'Disney+','Disney+（ディズニープラス）')
+
+# --- アプリ内ルール ---
 '''
 配信開始フラグ
 0:未配信
@@ -32,5 +34,3 @@ PLATFORMS = (
 '''
 IS_START = 0
 
-
-# --- アプリ内ルール ---

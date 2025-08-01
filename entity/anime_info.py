@@ -17,6 +17,5 @@ class AnimeInfo:
     title: str
     platform: Optional[list] = None
     production: Optional[str] = None
-    season: Optional[str] = None # 例: "冬", "春", "夏", "秋"
     official_url: Optional[str] = None
     memo: Optional[str] = None
