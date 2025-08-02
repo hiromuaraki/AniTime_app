@@ -8,7 +8,7 @@ from app.scraper import scrape_anime_info
 save_dir = './works_info'
 CSV_FILE = 'works_info.csv'
 file_path = f'./works_info/{CSV_FILE}'
-
+filename = "./data/anime_release_schedule.csv"
 
 def load_url_map() -> dict:
     """CSVからタイトル-URLマップを読み込む"""
@@ -18,7 +18,7 @@ def load_url_map() -> dict:
     
     with open(file_path, newline='', encoding='utf-8') as f:
         reader = csv.reader(f)
-        next(reader)
+        next(reader) # ヘッダを飛ばす
         for row in reader:
             _, title, url, _ = row
             url_map[title] = url
@@ -48,7 +48,7 @@ def save_works(works: dict):
     if not config.os.path.exists(save_dir):
         config.os.mkdir(save_dir)
     
-    header = ['work_id', 'title', 'url', 'prduction']
+    header = ['work_id', 'title', 'url', 'production']
     with open(file_path, 'w', newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
         writer.writerow(header)
@@ -86,7 +86,8 @@ def main() -> None:
   # url_map = get_url_map(force_refresh=True)
   # Webスクレイピングを実行 対応表のURLより最速配信「日時・プラットフォーム名」を取得
   earliest_list = scrape_anime_info(url_map)
-  
+  print(earliest_list)
+  utils.csv_read(filename, earliest_list)
   # スクレイピングデータを加工
 
   # NotionAPIを実行しアクセス

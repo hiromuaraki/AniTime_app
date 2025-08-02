@@ -23,8 +23,13 @@ USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTM
 
 '''プラットフォームホワイトリスト一覧（適宜追加）'''
 PLATFORMS = (
-    'Prime Video', 'Amazon Prime Video','dアニメストア','ABEMA', 'ABEMAプレミアム', 'Netflix','U-NEXT','FOD',
-    'Hulu','DMM TV', 'アニメタイムズ', 'Lemino', 'ディズニープラス', 'Disney+','Disney+（ディズニープラス）')
+    'Prime Video', 'dアニメストア', 'ABEMA', 'Netflix','U-NEXT','FOD','AnimeFesta','Hulu','DMM TV', 
+    'アニメタイムズ', 'Lemino', 'Disney+（ディズニープラス）')
+
+
+ANIME_WAKU = (
+  'IMAAnimation', 'スーパーアニメイズムTURBO', 'FRIDAY ANIME NIGHT', 'ノイタミナ', 'アガルアニメ'
+)
 
 # --- アプリ内ルール ---
 '''

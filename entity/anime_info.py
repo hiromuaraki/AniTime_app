@@ -11,10 +11,10 @@ Notionのtableに書き込むデータのヘッダ情報
 class AnimeInfo:
     work_id: int
     is_start: Optional[int] = None
-    start_date: Optional[date]
-    time: Optional[time]
+    start_date: Optional[date] = None
+    time: Optional[time] = None
     day_of_week: Optional[str] = None
-    title: str
+    title: Optional[str] = None
     platform: Optional[list] = None
     production: Optional[str] = None
     official_url: Optional[str] = None

@@ -1,7 +1,8 @@
 # 適宜追記
 requests
 beautifulsoup4
-selenium
+# selenium
+csv
 notion-client
 python-dotenv
 typing

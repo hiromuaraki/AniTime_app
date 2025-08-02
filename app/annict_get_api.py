@@ -28,12 +28,14 @@ def get_staffs(works: dict):
 
     """
 
+    target_url = f'{config.ANNICT_STAFFS_URL}access_token={config.ANNICT_TOKEN}'
+
     # 作品IDごとに紐づいた制作会社をapiで取得し作品情報に追加
     for title, work in works.items():
         work_id, _ = work[0]
         
-        params = f'access_token={config.ANNICT_TOKEN}&filter_work_id={work_id}'
-        target_url = config.ANNICT_STAFFS_URL + params
+        params = f'&filter_work_id={work_id}'
+        target_url += params
         response = get_annict_api(target_url)
         
         if response['staffs'] is None: continue

@@ -1,55 +1,67 @@
 from bs4 import BeautifulSoup
-# from bs4 import XMLParsedAsHTMLWarning
-import warnings
 from urllib.error import HTTPError, URLError
 from datetime import datetime, timedelta
 import model.config as config
 import requests, re, time, random
 
 
-def parse_datetime_jp(text: str) -> datetime:
+def parse_datetime_jp(text: str):
     """
-    
+    日本語の日時表現から datetime を抽出する。
+    対応形式:
+    - 2025年7月12日12:00
+    - 7月12日12:00（年なし）
+    """
+    patterns = [
+        r"(\d{4})年\s*(\d{1,2})月\s*(\d{1,2})日.*?(\d{1,2})[:：](\d{2})",
+        r"(\d{1,2})月\s*(\d{1,2})日.*?(\d{1,2})[:：](\d{2})",
+    ]
+
+    for pattern in patterns:
+        m = re.search(pattern, text)
+        if m:
+            now = datetime.now()
+            if len(m.groups()) == 5:
+                year, month, day, hour, minute = map(int, m.groups())
+            else:
+                month, day, hour, minute = map(int, m.groups())
+                year = now.year + (1 if (now.month > month and month < 3) else 0)
+
+            # 深夜帯調整
+            if hour >= 24:
+                hour -= 24
+                return datetime(year, month, day, hour, minute)
+            return datetime(year, month, day, hour, minute)
+
+    print(f"❌ 抽出失敗: {text[:50]}")
+
+
+
+
+def extract_onair_times(text: str) -> list:
+    """
+    テキストからプラットフォーム名と日時を抽出する関数
 
     Args:
+        text: サイトHTMLから取得した全テキスト
+        platforms: プラットフォーム名のタプル
 
     Returns:
-
-    """
-    m = re.search(r"(\d{4})年(\d{1,2})月(\d{1,2})日.*?(\d{1,2})[:：](\d{2})", text)
-    if m:
-        year, month, day, hour, minute = map(int, m.groups())
-        
-        if hour >= 24:
-            hour -= 24
-            return datetime(year=year, month=month, day=day, hour=hour, minute=minute)+ timedelta(days=1)
-        return datetime.now().replace(year=year, month=month, day=day, hour=hour, minute=minute)
-    return None
-    
-    
-
-def extract_onair_times(text: str, platforms: tuple) -> list:
-    """
-    プラットフォーム名と日時を抽出し対応付ける関数
-    
-    Args:
-        text: onairのページ情報
-        platforms: プラットフォーム名一覧
-    Returns:
-        result:対応付けされたリスト (プラットフォーム名, 配信日時）
+        [(platform, datetime)] のリスト
     """
     results = []
-    # テキストを改行で分割
-    lines = text.splitlines()
-
-    # 1行ごとに走査しプラットフォーム名とマッチした場合のみ行から日時を抽出
-    for line in lines:
-        for platform in platforms:
+    lines = [line.strip() for line in text.splitlines() if line.strip()]
+    num_lines = len(lines)
+    for i, line in enumerate(lines):
+        for platform in config.PLATFORMS:
             if platform in line:
-                dt = parse_datetime_jp(line)
+                # 周囲5行を見る（より広く）
+                context = ' '.join(lines[max(0, i - 5): min(len(lines), i + 5)])
+                dt = parse_datetime_jp(context)
                 if dt:
                     results.append((platform, dt))
     return results
+
 
 
 
@@ -73,32 +85,27 @@ def find_earliest_per_platform(matches: list) -> list:
 
 def parse_broadcast_info(html, title: str) -> list:
     """
-    - HTML からプラットフォーム名＋日時テキストを抽出し、
-    - 最速の配信情報と対応したリストを返す
+    HTMLからプラットフォームと日時を抽出し、最速配信情報にまとめる
 
     Args:
-        html:放送ページ情報
-        tile:アニメのタイトル（抽出した配信情報と対応付けさせる）
+        html: requests.get で取得したHTMLレスポンス
+        title: アニメのタイトル
+        platforms: プラットフォーム一覧タプル
 
     Returns:
-        earliest_list: {タイトル:[日時、プラットフォーム名1,プラットフォーム名2...]}
+        [(platform, datetime)] のリスト
     """
-    try:
-        # warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
-        soup = BeautifulSoup(html.content, 'html.parser', from_encoding='utf-8')
-        # 放送ページ情報をテキストで全行取得
-        text = soup.get_text(separator=' ') 
-        
-        # プラットフォーム名と日時の抽出
-        matches = extract_onair_times(text, config.PLATFORMS)
-        
-        # 最速のプラットフォーム名と日時の抽出
-        earliest_list = find_earliest_per_platform(matches)
 
-        for platform, time_str in earliest_list:
-            print(f"{title} → {platform} → {time_str}")
-    
+    try:
+        soup = BeautifulSoup(html.content, 'html.parser', from_encoding='utf-8')
+        text = soup.get_text(separator="\n")
+        matches = extract_onair_times(text)
+        earliest_list = find_earliest_per_platform(matches)
+        
+        for platform, dt in earliest_list:
+            print(f"{title} → {platform} → {dt}")
         return earliest_list
+    
     except HTTPError as e:
         print(f"HTTP Error: {e.reason}")
     except URLError as e:
@@ -120,35 +127,23 @@ def scrape_anime_info(title_url_map: dict, on_air='onair') -> dict:
         {title: [start_date, platform]....}
     """
     
-    # driverの初期設定
-    # driver = setup_driver()
-    
     print(f"アクセス中：")
     broadcast_info = {}
-    not_exists_title, ng_url = '', ''
-    try:
-        for title, base_url in title_url_map.items():
-            if base_url == '': continue
-            if base_url[-1] != '/': on_air = '/' + on_air
-
-            # URLの存在チェックを事前に行う
-            headers = {'User-Agent': config.USER_AGENT}
-            # res = requests.head(base_url + on_air, headers=headers, timeout=5, allow_redirects=True)
-            url = base_url + on_air
-            html = requests.get(url, headers=headers, timeout=5, allow_redirects=True)
-            print(base_url + on_air)
-            print(f'タイトル={title} 最終URL:{html.url} ステータス:{html.status_code} htmlのページ{html.text.title}')
-            # 放送情報からBeautifulSoupで配信日時・プラットフォーム名を抽出する
-            broadcast_info[title] = []
-            broadcast_info[title].append(parse_broadcast_info(html, title))
+    headers = {'User-Agent': config.USER_AGENT}
+    
+    for title, base_url in title_url_map.items():
+        if base_url == '': continue
+        url = base_url.rstrip('/') + '/' + on_air
         
-            not_exists_title = title
-            ng_url = base_url
-            time.sleep(random.uniform(1,1.5))
+        try:
+            html = requests.get(url, headers=headers, timeout=5, allow_redirects=True)
+            print(f'タイトル={title} 最終URL:{html.url} ステータス:{html.status_code}')
 
-        return broadcast_info
-    except requests.RequestException as e:
-        print('スクレイピングエラー発生：リトライ前に少し待機', {e})
-        print(f'タイトル：{not_exists_title} URL:{ng_url}')
-        time.sleep(5)
-    time.sleep(random.uniform(1,2))
+            # 放送情報からBeautifulSoupで配信日時・プラットフォーム名を抽出する
+            broadcast_info[title] = parse_broadcast_info(html, title)
+            time.sleep(random.uniform(1, 1.5))
+        except requests.RequestException as e:
+            print('スクレイピングエラー発生：リトライ前に少し待機', {e})
+            time.sleep(2)
+
+    return broadcast_info
