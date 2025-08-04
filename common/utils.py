@@ -21,7 +21,7 @@ def csv_read(fname: str, data: dict):
     with open(fname, 'w', newline='', encoding='utf-8-sig') as f:
         writer = csv.writer(f)
         writer.writerow(["アニメタイトル", "配信サービス", "配信開始日時"])
-    
+        
         for title, services in data.items():
             for service, dt in services:
                 writer.writerow([title, service, dt.strftime("%Y-%m-%d %H:%M:%S")])

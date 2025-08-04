@@ -86,7 +86,7 @@ def main() -> None:
   # url_map = get_url_map(force_refresh=True)
   # Webスクレイピングを実行 対応表のURLより最速配信「日時・プラットフォーム名」を取得
   earliest_list = scrape_anime_info(url_map)
-  print(earliest_list)
+#   print(earliest_list)
   utils.csv_read(filename, earliest_list)
   # スクレイピングデータを加工
 

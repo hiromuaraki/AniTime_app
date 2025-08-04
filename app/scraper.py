@@ -2,7 +2,8 @@ from bs4 import BeautifulSoup
 from urllib.error import HTTPError, URLError
 from datetime import datetime, timedelta
 import model.config as config
-import requests, re, time, random
+import requests, re, time, random, csv
+import undetected_chromedriver as uc
 
 
 def parse_datetime_jp(text: str):
@@ -29,16 +30,15 @@ def parse_datetime_jp(text: str):
 
             # 深夜帯調整
             if hour >= 24:
-                hour -= 24
-                return datetime(year, month, day, hour, minute)
+                return datetime(year, month, day, hour%24, minute) + timedelta(days=1)
             return datetime(year, month, day, hour, minute)
 
-    print(f"❌ 抽出失敗: {text[:50]}")
+    print(f"抽出範囲: {text[:50]}")
 
 
 
 
-def extract_onair_times(text: str) -> list:
+def extract_onair_times(text: str, radius=3) -> list:
     """
     テキストからプラットフォーム名と日時を抽出する関数
 
@@ -50,13 +50,17 @@ def extract_onair_times(text: str) -> list:
         [(platform, datetime)] のリスト
     """
     results = []
+    # 文字列の前後行を組み合わせた行を１行ずつリストでを取得
     lines = [line.strip() for line in text.splitlines() if line.strip()]
     num_lines = len(lines)
+    # 文字列の前後にマッチするプラットフォー名の存在チェック
     for i, line in enumerate(lines):
         for platform in config.PLATFORMS:
             if platform in line:
                 # 周囲5行を見る（より広く）
-                context = ' '.join(lines[max(0, i - 5): min(len(lines), i + 5)])
+                context = ' '.join(lines[max(0, i - radius): min(num_lines, i + radius + 1)])
+                print(f'{context = }')
+                print()
                 dt = parse_datetime_jp(context)
                 if dt:
                     results.append((platform, dt))
@@ -97,7 +101,10 @@ def parse_broadcast_info(html, title: str) -> list:
     """
 
     try:
-        soup = BeautifulSoup(html.content, 'html.parser', from_encoding='utf-8')
+        # HTMLを解析する準備
+        soup = BeautifulSoup(html, 'html.parser', from_encoding='utf-8')
+        
+        # 改行区切りでテキスト全行取得
         text = soup.get_text(separator="\n")
         matches = extract_onair_times(text)
         earliest_list = find_earliest_per_platform(matches)
@@ -127,23 +134,62 @@ def scrape_anime_info(title_url_map: dict, on_air='onair') -> dict:
         {title: [start_date, platform]....}
     """
     
-    print(f"アクセス中：")
-    broadcast_info = {}
-    headers = {'User-Agent': config.USER_AGENT}
+    broadcast_info, ng_list = {}, {}
+    html = ''
+    # 403の対策（bot判定を避けるためリファラーを設定
+    headers = {
+      'User-Agent': config.USER_AGENT,
+      'Referer': 'https://www.google.com/',
+      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9',
+      'Accept-Language': 'ja,en;q=0.9',
+      'Connection': 'keep-alive'}
     
+    print(f"アクセス中：")
     for title, base_url in title_url_map.items():
         if base_url == '': continue
-        url = base_url.rstrip('/') + '/' + on_air
         
         try:
-            html = requests.get(url, headers=headers, timeout=5, allow_redirects=True)
-            print(f'タイトル={title} 最終URL:{html.url} ステータス:{html.status_code}')
-
+            url = base_url.rstrip('/') + '/' + on_air
+            res = requests.get(url, headers=headers, timeout=5, allow_redirects=True)
+            
+            # 成功以外はNGリストへ追加し記録
+            if res.status_code == 200:
+                html = res.content
+            elif res.status_code == 404:
+                print(f'[WARN] 404 Not Found: {url} → base_urlで再試行')
+                res = requests.get(base_url, headers=headers, timeout=5, allow_redirects=True)
+                ng_list[title] = (res.url, res.status_code)
+                html = res.content
+            elif res.status_code == 403:
+                print(f'[WARN] 403 Forbidden: {url} → undetected_chromedriver機動')
+                driver = uc.Chrome()
+                driver.get(base_url)
+                html = driver.page_source
+            else:
+                html = None
+                ng_list[title] = (res.url, res.status_code)
+            
             # 放送情報からBeautifulSoupで配信日時・プラットフォーム名を抽出する
-            broadcast_info[title] = parse_broadcast_info(html, title)
+            if html is not None:
+                broadcast_info[title] = parse_broadcast_info(html, title)
+            
+            print(f'タイトル={title} 最終URL:{res.url} ステータス:{res.status_code}')
+                     
             time.sleep(random.uniform(1, 1.5))
+
         except requests.RequestException as e:
             print('スクレイピングエラー発生：リトライ前に少し待機', {e})
             time.sleep(2)
+    
+    # 抽出失敗タイトルをcsvへ書き出しNGリスト作成
+    if len(ng_list):
+        with open('./data/ng_list.csv', 'w', encoding='utf-8') as f:
+            write = csv.writer(f)
+            write.writerow(['番号','タイトル','URL','ステータスコード'])
+            i = 1
+            for title, ng in ng_list.items():
+                url, status_code = ng
+                write.writerow([i, title, url, status_code])
+                i += 1
 
     return broadcast_info
