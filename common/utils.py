@@ -1,8 +1,9 @@
 from datetime import datetime
 import csv
 
-# 年月日を取得
+
 def sysdate() -> tuple:
+    """現在の年月日を取得"""
     date = datetime.now()
     return date.year, date.month, date.day
 
@@ -17,7 +18,8 @@ def get_season(month: int) -> str:
     else:
         return 'autumn'
 
-def csv_read(fname: str, data: dict):
+def csv_write(fname: str, data: dict) -> None:
+    """最速の配信日時情報をCSVへ保存する"""
     with open(fname, 'w', newline='', encoding='utf-8-sig') as f:
         writer = csv.writer(f)
         writer.writerow(["アニメタイトル", "配信サービス", "配信開始日時"])

@@ -58,20 +58,31 @@ def save_works(works: dict):
                 writer.writerow([work_id, title, url, production])
 
 
+def url_join(url: str, params: str) -> str:
+    """ターゲットURLを作成する関数"""
+    return url + f'access_token={config.ANNICT_TOKEN}' + params.strip()
+
+
 
 def fetch_url_map_from_api() -> dict:
     """APIから取得"""
     # 現在の年月日を取得
     year, month, _ = utils.sysdate()
-
+    
     # アクセスURLの準備--works--
     season = utils.get_season(month)
-    params = f'access_token={config.ANNICT_TOKEN}&filter_season={year}-{season}'
-    work_url = config.ANNICT_WORK_URL + params
+    params = f'&filter_season={year}-{season}'
+    target_url = url_join(config.ANNICT_WORK_URL, params)
 
-    # AnnictAPIを実行しアニメの{タイトル：公式URL}対応表および作品情報をを取得
-    works = get_works(work_url)
-    get_staffs(works)
+    # AnnictAPIを実行しアニメの作品情報、関連制作会社をを取得
+    works = get_works(target_url)
+    
+    # アクセスURLの準備--staffs--
+    params = '&filter_work_id={}'
+    target_url = url_join(config.ANNICT_STAFFS_URL, params)
+    get_staffs(target_url, works)
+    
+    # get_staffs(works)
     return  works
 
 
@@ -84,11 +95,13 @@ def main() -> None:
   
   # APIを強制的に再取得したい時だけ
   # url_map = get_url_map(force_refresh=True)
+  
   # Webスクレイピングを実行 対応表のURLより最速配信「日時・プラットフォーム名」を取得
-  earliest_list = scrape_anime_info(url_map)
-#   print(earliest_list)
-  utils.csv_read(filename, earliest_list)
-  # スクレイピングデータを加工
+  earliest_list = scrape_anime_info(url_map)   
+  
+  # 配信日時をCSVに記録
+  utils.csv_write(filename, earliest_list)
+  
 
   # NotionAPIを実行しアクセス
 
