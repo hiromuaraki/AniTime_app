@@ -1,65 +1,224 @@
 from bs4 import BeautifulSoup
 from urllib.error import HTTPError, URLError
 from datetime import datetime, timedelta
+from logging.handlers import RotatingFileHandler
 import model.config as config
 import requests, re, time, random, csv
 import undetected_chromedriver as uc
+import logging
 
 
-def parse_datetime_jp(text: str):
+
+# ロギング設定（Python 3.8以前対応）
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
+
+# 既存のハンドラをクリア
+logger.handlers = []
+
+# FileHandlerでUTF-8エンコーディングを指定
+file_handler = RotatingFileHandler(
+    './data/extraction.log',
+    maxBytes=10*1024*1024,  # 10MBごとにローテーション
+    backupCount=5,
+    encoding='utf-8'  # UTF-8エンコーディングを明示
+)
+file_handler.setLevel(logging.DEBUG)
+file_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
+logger.addHandler(file_handler)
+
+# コンソールにも出力（任意）
+console_handler = logging.StreamHandler()
+console_handler.setLevel(logging.INFO)
+console_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
+logger.addHandler(console_handler)
+
+
+def safe_datetime_with_25h(year, month, day, hour, minute):
+    if hour >= 24:
+        hour -= 24
+        base = datetime(year, month, day) + timedelta(days=1)
+        return datetime(base.year, base.month, base.day, hour, minute)
+    return datetime(year, month, day, hour, minute)
+
+
+
+# 拡張された正規表現パターン
+patterns_with_handlers = [
+    # ① 完全日付（年あり）
+    {
+        "pattern": re.compile(
+            r'(?P<year>\d{4})年\s*(?P<month>\d{1,2})月\s*(?P<day>\d{1,2})日.*?(?P<hour>\d{1,2})[:：](?P<minute>\d{2})'
+        ),
+        "handler": lambda m: safe_datetime_with_25h(
+            int(m.group("year")),
+            int(m.group("month")),
+            int(m.group("day")),
+            int(m.group("hour")),
+            int(m.group("minute"))
+        )
+    },
+    # ② 年なし日付（曜日つき）
+    {
+        "pattern": re.compile(
+            r'(?P<month>\d{1,2})月(?P<day>\d{1,2})日(?:\((?:月|火|水|木|金|土|日)\))?\s*(?P<hour>\d{1,2})[:：](?P<minute>\d{2})'
+        ),
+        "handler": lambda m, year: safe_datetime_with_25h(
+            year,
+            int(m.group("month")),
+            int(m.group("day")),
+            int(m.group("hour")),
+            int(m.group("minute"))
+        )
+    },
+    # ③ 午前/午後形式
+    {
+        "pattern": re.compile(
+            r'(?P<month>\d{1,2})月(?P<day>\d{1,2})日\s*(?:午前|午後)(?P<hour>\d{1,2})[:：](?P<minute>\d{2})'
+        ),
+        "handler": lambda m, year: safe_datetime_with_25h(
+            year,
+            int(m.group("month")),
+            int(m.group("day")),
+            int(m.group("hour")) + (12 if "午後" in m.group(0) else 0),
+            int(m.group("minute"))
+        )
+    },
+    # ④ 「時刻＋配信」→ 翌日
+    {
+        "pattern": re.compile(r'(?P<hour>\d{1,2})[:：](?P<minute>\d{2})\s*配信'),
+        "handler": lambda m, year, base_date: safe_datetime_with_25h(
+            year, base_date.month, base_date.day,
+            int(m.group("hour")),
+            int(m.group("minute"))
+        ) + timedelta(days=1)
+    },
+    # ⑤ 毎週〇曜 深夜〇時
+    {
+        "pattern": re.compile(
+            r'毎週(?:月|火|水|木|金|土|日)曜(?:深夜)?\s*(?P<hour>\d{1,2})[:：](?P<minute>\d{2})'
+        ),
+        "handler": lambda m, year, base_date: safe_datetime_with_25h(
+            year, base_date.month, base_date.day,
+            int(m.group("hour")),
+            int(m.group("minute") or 0)
+        ) + timedelta(days=1)
+    },
+    # ⑥ 「〇月〇日配信開始」→ 時間なしは0:00
+    {
+        "pattern": re.compile(r'(?P<month>\d{1,2})月(?P<day>\d{1,2})日\s*配信開始'),
+        "handler": lambda m, year: safe_datetime_with_25h(
+            year, int(m.group("month")), int(m.group("day")), 0, 0
+        )
+    },
+    # ⑦ スラッシュ区切り「8/5(火) 25:00」
+    {
+        "pattern": re.compile(
+            r'(?P<month>\d{1,2})/(?P<day>\d{1,2})\s*(?:\((?:月|火|水|木|金|土|日)\))?\s*(?P<hour>\d{1,2})[:：](?P<minute>\d{2})'
+        ),
+        "handler": lambda m, year: safe_datetime_with_25h(
+            year,
+            int(m.group("month")),
+            int(m.group("day")),
+            int(m.group("hour")),
+            int(m.group("minute"))
+        )
+    },
+    # ⑧ 「〇月〇日」だけ→ 時間なしは0:00
+    {
+        "pattern": re.compile(r'(?P<month>\d{1,2})月(?P<day>\d{1,2})日'),
+        "handler": lambda m, year: safe_datetime_with_25h(
+            year, int(m.group("month")), int(m.group("day")), 0, 0
+        )
+    },
+    # ⑨ 時間範囲（例: 23:00〜24:00）
+    {
+        "pattern": re.compile(
+            r'(?P<month>\d{1,2})月(?P<day>\d{1,2})日\s*(?P<hour>\d{1,2})[:：](?P<minute>\d{2})\s*〜\s*\d{1,2}[:：]\d{2}'
+        ),
+        "handler": lambda m, year: safe_datetime_with_25h(
+            year,
+            int(m.group("month")),
+            int(m.group("day")),
+            int(m.group("hour")),
+            int(m.group("minute"))
+        )
+    }
+]
+
+
+def score_context(context: str) -> int:
     """
-    日本語の日時表現から datetime を抽出する。
-    対応形式:
-    - ① 年月日時分：2025年7月4日(金)23時00分
-    - ② 月日時分：7月8日(火)21時00分
-    - ③ 曜日時分： 毎週金曜日23時00分 / 毎週月曜深夜1時30分（補足）
+    文脈に応じてスコアを加算
     """
-    
-    # パターンにマッチした（年月日時分）あるいは（月日時分）の配信日時を抽出
-    for pattern in config.patterns:
-        m = re.search(pattern, text)
-        if not m:
-            continue
-        
-        groups = m.groups()
-        if None in groups:
-            continue
-        # 日時抽出ロジック要修正
-        # 5件、4件もパターンが一致し文字列が入るケース有
+    return sum(score for keyword, score in config.CONTEXT_KEYWORDS.items() if keyword in context)
+
+
+# この処理見直す
+def extract_year_from_html(soup: BeautifulSoup) -> int:
+    """HTMLから年を抽出（メタデータや本文から）"""
+    # メタデータから公開日をチェック
+    meta_date = soup.find("meta", {"name": "date"}) or soup.find("meta", {"property": "og:updated_time"})
+    if meta_date and meta_date.get("content"):
         try:
-            if len(m.groups()) == 5:
-                print(m.groups())
-                year, month, day, hour, minute = map(int, m.groups())
-            elif len(m.groups()) == 4:
-                month, day, hour, minute = map(int, m.groups())
-                now = datetime.now()
-                year = now.year + (1 if (now.month > month and month < 3) else 0)
-            else:
+            return int(meta_date["content"].split("-")[0])
+        except (ValueError, IndexError):
+            pass
+    
+    # 本文から年を検索
+    year_pattern = re.compile(r'\b(20\d{2})\b')
+    for text in soup.stripped_strings:
+        match = year_pattern.search(text)
+        if match:
+            return int(match.group(1))
+    
+    # デフォルトは現在の年
+    return datetime.now().year
+
+
+# この処理見直す
+def extract_base_date_from_html(soup: BeautifulSoup) -> datetime:
+    """HTMLから基準日（放送開始日など）を抽出"""
+    date_pattern = re.compile(r'(?P<month>\d{1,2})月(?P<day>\d{1,2})日')
+    for text in soup.stripped_strings:
+        match = date_pattern.search(text)
+        if match:
+            year = extract_year_from_html(soup)
+            return safe_datetime_with_25h(
+                year, int(match.group("month")), int(match.group("day")), 0, 0
+            )
+    return datetime.now()
+
+
+# この処理見直す
+def extract_best_datetime_with_context(context: str, year: int, base_date: datetime):
+    """コンテキストから最適な日時を抽出"""
+    candidates = []
+
+    for entry in patterns_with_handlers:
+        for match in entry["pattern"].finditer(context):
+            try:
+                dt = entry["handler"](match, year, base_date) if entry["handler"].__code__.co_argcount > 1 else entry["handler"](match)
+                score = 1 + score_context(context)
+                candidates.append((dt, score))
+                logging.debug(f"Matched pattern: {entry['pattern'].pattern}, DateTime: {dt}, Score: {score}, Context: {context[:100]}")
+            except ValueError:
+                logging.error(f"ValueError in pattern {entry['pattern'].pattern}: {e}, Context: {context[:100]}")
                 continue
-            
-            # 深夜帯調整
-            if hour >= 24:
-                dt = datetime(year, month, day, hour%24, minute) + timedelta(days=1)
-            else:
-                dt = datetime(year, month, day, hour, minute) 
-            return dt
-        
-        except TypeError as e:
-            print(f'型変換エラー：{e}')
-            continue
-        except ValueError as e:
-            print(f'不正な値が含まれています：{e}')
-            continue
-        
 
-    print(f"抽出範囲: {text[:50]}")
+    if not candidates:
+        logging.warning(f"No datetime candidates found in context: {context[:100]}")
+        return None
+
+    # スコアが最大の日時を返す
+    candidates.sort(key=lambda x: x[1], reverse=True)
+    return candidates[0][0]
 
 
-
-
-def extract_onair_times(text: str, radius=5) -> list:
+# この処理見直す
+def extract_onair_times(soup: BeautifulSoup, year: int, base_date: datetime, radius=5) -> list:
     """
-    テキストからプラットフォーム名と日時を抽出する関数
+    テキストからプラットフォーム名と日時を抽出する
 
     Args:
         text: サイトHTMLから取得した全テキスト
@@ -69,27 +228,44 @@ def extract_onair_times(text: str, radius=5) -> list:
         [(platform, datetime)] のリスト
     """
     results = []
-    ng_results = [] # デバッグ用
-    # 文字列の前後行を組み合わせた行を１行ずつリストでを取得
-    lines = [line.strip() for line in text.splitlines() if line.strip()]
+    ng_results = []
+    lines = [line.strip() for line in soup.get_text(separator="\n").splitlines() if line.strip()]
     num_lines = len(lines)
+
+    # 放送情報セクションを特定
+    broadcast_sections = soup.select('.schedule, .broadcast, .onair, table, ul, div[class*="schedule"], div[class*="broadcast"]')
     
-    # 文字列の前後にマッチするプラットフォー名の存在チェック
+    if broadcast_sections:
+        for section in broadcast_sections:
+            section_text = section.get_text(separator=" ")
+            for platform in config.PLATFORMS:
+                if platform.lower() in section_text.lower():  # 大文字小文字を無視
+                    dt = extract_best_datetime_with_context(section_text, year, base_date)
+                    if dt:
+                        results.append((platform, dt))
+                    else:
+                        ng_results.append((platform, section_text[:200]))
+                        logging.warning(f"No datetime for platform {platform} in section: {section_text[:100]}")  
+    
+    # フォールバック: 全文から抽出
     for i, line in enumerate(lines):
         for platform in config.PLATFORMS:
-            if platform in line:
-                # ***前後5行を見る(ここで抽出範囲を絞る)***
+            if platform in line :
                 context = ' '.join(lines[max(0, i - radius): min(num_lines, i + radius + 1)])
-                print(f'extract_onair_times前後3行の抽出テキスト：{context = }')
-                print()
-                dt = parse_datetime_jp(context)
+                dt = extract_best_datetime_with_context(context, year, base_date)
                 if dt:
                     results.append((platform, dt))
                 else:
-                    ng_results.append(context)
-    print('NG_コンテキスト', ng_results)
+                    ng_results.append((platform, context[:200]))
+                    logging.warning(f"No datetime for platform {platform} in context: {context[:100]}")
+    
+    # 失敗ケースをログに保存
+    if ng_results:
+        with open('./data/ng_datetime.log', 'a', encoding='utf-8') as f:
+            for platform, ctx in ng_results:
+                f.write(f"[NG] {platform}:\n{ctx}\n---\n")
+    
     return results
-
 
 
 
@@ -128,20 +304,31 @@ def parse_broadcast_info(html, title: str) -> list:
         # HTMLを解析する準備
         soup = BeautifulSoup(html, 'html.parser', from_encoding='utf-8')
         
-        # 改行区切りでテキスト全行取得
-        text = soup.get_text(separator="\n")
-        matches = extract_onair_times(text)
+        # 年と基準日を抽出（ここの処理を見直す）
+        year = extract_year_from_html(soup)
+        base_date = extract_base_date_from_html(soup)
+        logging.info(f"Extracted year: {year}, base_date: {base_date} for title: {title}")
+
+        # 放送情報を抽出
+        matches = extract_onair_times(soup, year, base_date)
         earliest_list = find_earliest_per_platform(matches)
         
         for platform, dt in earliest_list:
             print(f"{title} → {platform} → {dt}")
+            logging.info(f"Extracted: {title} → {platform} → {dt}")
             print()
+        
+        if not earliest_list:
+            logging.warning(f"No broadcast info extracted for {title}")
+        
         return earliest_list
     
     except HTTPError as e:
         print(f"HTTP Error: {e.reason}")
     except URLError as e:
         print(f"URL Error: {e.reason}")
+    except Exception as e:
+        print(f"Parsing Error: {e}")
     return []
     
 
@@ -182,17 +369,18 @@ def scrape_anime_info(title_url_map: dict, on_air='onair/') -> dict:
             if res.status_code == 200:
                 html = res.content
                 cnt_200 += 1
-                print(f'検索＝{cnt_200}回目, {title} : {url}')
+                print(f'リクエスト200 検索＝{cnt_200}回目, {title} : {url}')
                 print(f'最終URL:{res.url}')
                 print()
             elif res.status_code == 404:
                 cnt_404 += 1
-                print(f'検索＝{cnt_404}回目, {title} : {url}')
+                print(f'リクエスト404 検索＝{cnt_404}回目, {title} : {url}')
                 print(f'[WARN] 404 Not Found: {url} → base_urlで再試行')
                 print()
                 res = requests.get(base_url, headers=headers, timeout=5, allow_redirects=True)
                 html = res.content
             elif res.status_code == 403:
+                # この処理リクエストでいいかも
                 print(f'[WARN] 403 Forbidden: {url} → undetected_chromedriver機動')
                 driver = uc.Chrome()
                 driver.get(base_url)
@@ -200,7 +388,7 @@ def scrape_anime_info(title_url_map: dict, on_air='onair/') -> dict:
             else:
                 html = None
             
-            # 成功以外はNGリストへ追加し記録
+            # 成功以外はNGリストへ追加し記録(現状403の時しか作られないロジック)
             if res.status_code != 200:
                 ng_list[title] = (res.url, res.status_code)
 
