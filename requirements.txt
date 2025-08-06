@@ -1,8 +1,10 @@
 # 適宜追記
 requests
 beautifulsoup4
-# selenium
-csv
 notion-client
+csv
 python-dotenv
+logging
+# selenium
+undetected_chromedriver
 typing

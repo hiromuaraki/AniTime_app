@@ -12,7 +12,7 @@ class AnimeInfo:
     work_id: int
     is_start: Optional[int] = None
     start_date: Optional[date] = None
-    time: Optional[time] = None
+    time_: Optional[time] = None
     day_of_week: Optional[str] = None
     title: Optional[str] = None
     platform: Optional[list] = None

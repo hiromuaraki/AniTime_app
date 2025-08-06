@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from logging.handlers import RotatingFileHandler
 import model.config as config
 import requests, re, time, random, csv
-import undetected_chromedriver as uc
+# import undetected_chromedriver as uc
 import logging
 
 
@@ -35,6 +35,7 @@ logger.addHandler(console_handler)
 
 
 def safe_datetime_with_25h(year, month, day, hour, minute):
+    """日を跨いでいる場合+1日し翌日にする"""
     if hour >= 24:
         hour -= 24
         base = datetime(year, month, day) + timedelta(days=1)
@@ -190,20 +191,38 @@ def extract_base_date_from_html(soup: BeautifulSoup) -> datetime:
     return datetime.now()
 
 
-# この処理見直す
 def extract_best_datetime_with_context(context: str, year: int, base_date: datetime):
     """コンテキストから最適な日時を抽出"""
     candidates = []
 
     for entry in patterns_with_handlers:
-        for match in entry["pattern"].finditer(context):
+        for match in entry["pattern"].finditer(context):       
             try:
-                dt = entry["handler"](match, year, base_date) if entry["handler"].__code__.co_argcount > 1 else entry["handler"](match)
+                # handlerへ渡す引数の数を一致させる為の制御
+                argcount = entry["handler"].__code__.co_argcount
+                if argcount == 1:
+                    dt = entry["handler"](match)
+                elif argcount == 2:
+                    dt = entry["handler"](match, year)
+                elif argcount == 3:
+                    dt = entry["handler"](match, year, base_date)
+                else:
+                    raise ValueError("想定外の引数数")
+                
                 score = 1 + score_context(context)
                 candidates.append((dt, score))
                 logging.debug(f"Matched pattern: {entry['pattern'].pattern}, DateTime: {dt}, Score: {score}, Context: {context[:100]}")
-            except ValueError:
+            except Exception as e:
+                    logging.error(f"Exception in pattern {entry['pattern'].pattern}: {e}, Context: {context[:100]}")
+                    print(f"[ERROR] handler実行中に例外発生: {e}")
+                    print(f"[DEBUG] handler: {entry['handler']}, pattern: {entry['pattern'].pattern}")
+                    print(f"[DEBUG] match: {match}")
+                    continue
+            except ValueError as e:
                 logging.error(f"ValueError in pattern {entry['pattern'].pattern}: {e}, Context: {context[:100]}")
+                continue
+            except TypeError as e:
+                logging.error(f"TypeError in pattern {entry['pattern'].pattern}: {e}, Context: {context[:100]}")
                 continue
 
     if not candidates:
@@ -215,7 +234,6 @@ def extract_best_datetime_with_context(context: str, year: int, base_date: datet
     return candidates[0][0]
 
 
-# この処理見直す
 def extract_onair_times(soup: BeautifulSoup, year: int, base_date: datetime, radius=5) -> list:
     """
     テキストからプラットフォーム名と日時を抽出する
@@ -229,28 +247,15 @@ def extract_onair_times(soup: BeautifulSoup, year: int, base_date: datetime, rad
     """
     results = []
     ng_results = []
+    # テキストを文字列連結し1文にし行ごとに走査する為にテキストを改行区切りでリストにする
     lines = [line.strip() for line in soup.get_text(separator="\n").splitlines() if line.strip()]
     num_lines = len(lines)
 
-    # 放送情報セクションを特定
-    broadcast_sections = soup.select('.schedule, .broadcast, .onair, table, ul, div[class*="schedule"], div[class*="broadcast"]')
-    
-    if broadcast_sections:
-        for section in broadcast_sections:
-            section_text = section.get_text(separator=" ")
-            for platform in config.PLATFORMS:
-                if platform.lower() in section_text.lower():  # 大文字小文字を無視
-                    dt = extract_best_datetime_with_context(section_text, year, base_date)
-                    if dt:
-                        results.append((platform, dt))
-                    else:
-                        ng_results.append((platform, section_text[:200]))
-                        logging.warning(f"No datetime for platform {platform} in section: {section_text[:100]}")  
-    
     # フォールバック: 全文から抽出
     for i, line in enumerate(lines):
         for platform in config.PLATFORMS:
-            if platform in line :
+            if platform in line:
+                # 空白区切りでテキストを1文にし正規表現に一致した日時を抽出
                 context = ' '.join(lines[max(0, i - radius): min(num_lines, i + radius + 1)])
                 dt = extract_best_datetime_with_context(context, year, base_date)
                 if dt:
@@ -381,10 +386,12 @@ def scrape_anime_info(title_url_map: dict, on_air='onair/') -> dict:
                 html = res.content
             elif res.status_code == 403:
                 # この処理リクエストでいいかも
-                print(f'[WARN] 403 Forbidden: {url} → undetected_chromedriver機動')
-                driver = uc.Chrome()
-                driver.get(base_url)
-                html = driver.page_source
+                print(f'[WARN] 403 Forbidden: {url} → base_urlで再試行')
+                res = requests.get(base_url, headers=headers, timeout=5, allow_redirects=True)
+                html = res.content
+                # driver = uc.Chrome()
+                # driver.get(base_url)
+                # html = driver.page_source
             else:
                 html = None
             
