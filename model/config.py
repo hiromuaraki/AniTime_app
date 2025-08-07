@@ -37,16 +37,6 @@ PLATFORMS = (
     "Disney+（ディズニープラス）",
 )
 
-
-ANIME_WAKU = (
-    "IMAAnimation",
-    "スーパーアニメイズムTURBO",
-    "FRIDAY ANIME NIGHT",
-    "ノイタミナ",
-    "アガルアニメ",
-    "+Ultra",
-)
-
 # --- アプリ内ルール ---
 """
 配信開始フラグ
