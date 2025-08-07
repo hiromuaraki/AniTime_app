@@ -98,7 +98,7 @@ def main() -> None:
     earliest_list = scrape_anime_info(url_map)
 
     # 配信日時をCSVに記録
-    utils.csv_write(filename, earliest_list)
+    utils.write_csv(filename, earliest_list)
 
     # NotionAPIを実行しアクセス
     # Notionのテーブルへスクレイピングデータを書き込む

@@ -18,7 +18,7 @@ def get_season(month: int) -> str:
     else:
         return 'autumn'
 
-def csv_write(fname: str, data: dict) -> None:
+def write_csv(fname: str, data: dict) -> None:
     """最速の配信日時情報をCSVへ保存する"""
     with open(fname, 'w', newline='', encoding='utf-8-sig') as f:
         writer = csv.writer(f)
