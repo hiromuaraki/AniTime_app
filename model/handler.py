@@ -103,12 +103,83 @@ def handler_md_midnight(m: re.Match, year: int) -> datetime:
         year, int(m.group("month")), int(m.group("day")), 0, 0
     )
 
-# この処理見直す（一番マッチ件数が多い）
-def handler_md_only(m: re.Match, year: int) -> datetime:
-    """11.「〇月〇日」だけ→ 時間なしは0:00"""
-    return safe_datetime_with_25h(
-        year, int(m.group("month")), int(m.group("day")), 0, 0
+
+# def handler_md_only(m: re.Match, context_lines: list, year: int) -> datetime:
+#     """
+#     11.「〇月〇日」だけ→ 時間なしは0:00
+#     周辺テキスト（前後5行程度）をもとに 補完的に時刻情報を探す
+#     """
+#     month = int(m.group(1))
+#     day = int(m.group(2))
+    
+#     # デフォルト値（今のまま）
+#     hour, minute = 0, 0
+
+#     # 文脈から時刻のパターンを探す
+#     time_pattern = re.compile(r"([01]?\d|2[0-3]):([0-5]\d)")
+#     for line in context_lines:
+#         if (m := time_pattern.search(line)):
+#             hour, minute = int(m.group(1)), int(m.group(2))
+#             break  # 最初に見つかったものを採用（必要に応じて信頼度考慮）
+    
+#     return datetime(year, month, day, hour, minute)
+
+
+
+def handler_md_only(m: re.Match, context_lines: list, year: int) -> datetime:
+    """
+    11.「〇月〇日」だけ→ 時間なしは0:00
+    周辺テキスト（前後5行程度）をもとに 補完的に時刻情報を探す
+    対応パターン:
+      - HH:MM, HH：MM, HH:MM～, HH:MMより
+      - HH時MM分, HH時
+      - 午前/午後付き
+      - AM/PM付き
+    """
+    month = int(m.group(1))
+    day = int(m.group(2))
+
+    # デフォルト値
+    hour, minute = 0, 0
+
+    # 統合正規表現
+    time_pattern = re.compile(
+        r"""
+        (?P<ampm_ja>午前|午後)?\s*                    # 任意の午前/午後
+        (?P<ampm_en>AM|PM)?\s*                        # 任意のAM/PM
+        (?P<hour>[01]?\d|2[0-3])                      # 時（0-23）
+        (?:
+            [:：](?P<minute>[0-5]\d)                   # :MM または ：MM
+            |
+            時(?:(?P<minute2>[0-5]\d)分)?              # 時MM分 または 時
+        )?
+        \s*(?:[～〜](?:より|から)?)?                   # 任意の記号や語尾
+        """,
+        re.VERBOSE | re.IGNORECASE
     )
+
+    for line in context_lines:
+        if (tm := time_pattern.search(line)):
+            h = int(tm.group("hour"))
+            mnt = tm.group("minute") or tm.group("minute2") or "0"
+            mnt = int(mnt)
+
+            # 午前/午後 or AM/PM 補正
+            ampm_ja = tm.group("ampm_ja")
+            ampm_en = tm.group("ampm_en")
+            if ampm_ja == "午後" or (ampm_en and ampm_en.upper() == "PM"):
+                if h != 12:
+                    h += 12
+            elif ampm_ja == "午前" or (ampm_en and ampm_en.upper() == "AM"):
+                if h == 12:
+                    h = 0
+
+            hour, minute = h, mnt
+            break  # 最初に見つかったものを採用
+
+    return datetime(year, month, day, hour, minute)
+
+
 
 
 # 拡張された正規表現パターン

@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 from urllib.error import HTTPError, URLError
 from datetime import datetime
-from model.handler import patterns_with_handlers, safe_datetime_with_25h
+from model.handler import patterns_with_handlers, safe_datetime_with_25h, handler_md_only
 from model.logging_config import setup_logger
 import model.config as config
 import requests, re, time, random, csv
@@ -10,7 +10,7 @@ import requests, re, time, random, csv
 # ロガーの準備
 logging = setup_logger()
 
-
+# この処理見直す
 def score_context_near_match(context: str, match_start: int, window: int = 50) -> int:
     """指定した位置（match_start）の前後window文字分の文脈からスコアを計算"""
     # 新規追加
@@ -18,8 +18,8 @@ def score_context_near_match(context: str, match_start: int, window: int = 50) -
     end = min(len(context), match_start + window)
     sliced_context = context[start : end]
     
-    score = sum(config.CONTEXT_KEYWORDS.get(k, 0) for k in config.CONTEXT_KEYWORDS if k in sliced_context)
-    score += sum(config.FRAME_KEYWORDS.get(k, 0) for k in config.FRAME_KEYWORDS if k in sliced_context)
+    score = sum({config.CONTEXT_KEYWORDS.get(k, 0) for k in config.CONTEXT_KEYWORDS if k in sliced_context})
+    score += sum({config.FRAME_KEYWORDS.get(k, 0) for k in config.FRAME_KEYWORDS if k in sliced_context})
     return score
 
 
@@ -83,7 +83,7 @@ def call_handler(handler, match, year, base_date):
 
 def extract_best_datetime_with_context(context: str, year: int, base_date: datetime):
     """
-    コンテキストから最適な日時を抽出しスコアが最大の日時を返す
+    コンテキストから最適な日時を抽出しスコアが最大の日時を返す.
     例）スコア：最速配信 or 独占 or 地上波同時などの特定のキーワードに設定している優先度
 
     Args:
@@ -97,24 +97,27 @@ def extract_best_datetime_with_context(context: str, year: int, base_date: datet
     """
     candidates = []
 
-    for entry in patterns_with_handlers:
-        for match in entry["pattern"].finditer(context):
+    for pattern in patterns_with_handlers:
+        for match in pattern["pattern"].finditer(context):
             try:
-                dt = call_handler(entry["handler"], match, year, base_date)
+                if pattern["id"] == 11:
+                    # デフォルトで時分が00:00に設定されないように制御
+                    dt = handler_md_only(match, context, year)
+                else:
+                    dt = call_handler(pattern["handler"], match, year, base_date)
                 # 優先度が設定されていなければ優先度0を設定
-                # 変更前（キーワードスコアの精度が荒い）
-                # score = 1 + score_context(context) + entry.get("confidence", 0)
-                score = 1 + score_context_near_match(context, match.start()) + entry.get("confidence", 0)
-                if entry.get("confidence", 0) == 0:
+                # この処理がおかしい？
+                score = 1 + score_context_near_match(context, match.start()) + pattern.get("confidence", 0)
+                if pattern.get("confidence", 0) == 0:
                     score -= 2 # 優先度が低いものがマッチした場合はペナルティでスコアを引く
                 candidates.append((dt, score))
                 logging.debug(
-                    f"Matched pattern: Pattern_No: {entry['pattern_no']}, {entry['pattern'].pattern}, DateTime: {dt}, Score: {score}, Context: {context[:100]}"
+                    f"Matched pattern: ID: {pattern['id']}, {pattern['pattern'].pattern}, DateTime: {dt}, Score: {score}, Context: {context[:100]}"
                 )
             except Exception as e:
-                logging.warning(f"[extract error] {e} /ID: {entry['id']} / pattern={entry['pattern'].pattern} / text={match.group(0)}")
+                logging.warning(f"[extract error] {e} /ID: {pattern['id']} / pattern={pattern['pattern'].pattern} / text={match.group(0)}")
                 print(f"[ERROR] handler実行中に例外発生: {e}")
-                print(f"[DEBUG] handler: {entry['handler']}, pattern: {entry['pattern'].pattern}")
+                print(f"[DEBUG] handler: {pattern['handler']}, pattern: {pattern['pattern'].pattern}")
                 print(f"[DEBUG] match: {match}")
                 continue
 
@@ -131,7 +134,7 @@ def extract_best_datetime_with_context(context: str, year: int, base_date: datet
 
 def extract_onair_times(soup: BeautifulSoup, year: int, base_date: datetime, radius=5) -> list:
     """
-    テキストからプラットフォームと日時を抽出する
+    テキストからプラットフォームと日時を抽出する.
 
     Args:
         soup: サイトHTMLから取得した放送情報
