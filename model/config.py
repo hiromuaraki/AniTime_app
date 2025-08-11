@@ -47,20 +47,31 @@ IS_START = 0
 
 # スコア補正に使う語彙
 CONTEXT_KEYWORDS = {
-    "地上波同時": 2,
-    "同時配信": 2,
-    "最速": 3,
-    "1週間先行": 3,
+    "地上波同時": 3,
+    "同時配信": 3,
+    "最速": 4,
+    "1週間先行": 4,
     "独占": 3,
-    "見逃し": -2,
+    "見逃し": -3,
 }
 
 # アニメ放送枠
 FRAME_KEYWORDS = {
-    "ノイタミナ": 3,
+    "ノイタミナ": 4,
     "スーパーアニメイズムTURBO": 3,
-    "FRIDAY ANIME NIGHT": 2,
+    "FRIDAY ANIME NIGHT": 3,
     "アガルアニメ": 2,
     "+Ultra": 2,
-    "IMAAnimation": 2,
+    "IMAAnimation": 3,
 }
+
+
+# metaタグの範囲拡大
+META_DATE_KEYS = [
+    {"name": "date"},
+    {"property": "og:updated_time"},
+    {"property": "og:published_time"},
+    {"property": "article:published_time"},
+    {"itemprop": "datePublished"},
+]
+

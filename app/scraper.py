@@ -10,42 +10,79 @@ import requests, re, time, random, csv
 # ロガーの準備
 logging = setup_logger()
 
-# この処理見直す
+
 def score_context_near_match(context: str, match_start: int, window: int = 50) -> int:
     """指定した位置（match_start）の前後window文字分の文脈からスコアを計算"""
-    # 新規追加
     start = max(0, match_start - window)
     end = min(len(context), match_start + window)
-    sliced_context = context[start : end]
-    
-    score = sum({config.CONTEXT_KEYWORDS.get(k, 0) for k in config.CONTEXT_KEYWORDS if k in sliced_context})
-    score += sum({config.FRAME_KEYWORDS.get(k, 0) for k in config.FRAME_KEYWORDS if k in sliced_context})
+    sliced_context = context[start:end]
+
+    score = 0
+    for k, v in config.CONTEXT_KEYWORDS.items():
+        score += sliced_context.count(k) * v  # 出現回数×重み
+
+    for k, v in config.FRAME_KEYWORDS.items():
+        score += sliced_context.count(k) * v
+
     return score
 
 
-# この処理見直す
+
+# --- 年抽出 ---
 def extract_year_from_html(soup: BeautifulSoup) -> int:
-    """HTMLから年を抽出（メタデータや本文から）"""
-    # メタデータから公開日をチェック
-    meta_date = soup.find("meta", {"name": "date"}) or soup.find("meta", {"property": "og:updated_time"})
-    if meta_date and meta_date.get("content"):
-        try:
-            return int(meta_date["content"].split("-")[0])
-        except (ValueError, IndexError):
-            pass
+    """
+    HTMLから年を抜き出す優先ロジック:
+     1) metaタグ (複数候補)
+     2) 本文中の 年+月(＋日) 形式（例: 2025年7月5日 / 2025-07）
+     3) 本文中の年単独（最初に見つかるものではなく「より新しい年」を優先）
+     4) なければ現在年
+    """
 
-    # 本文から年を検索
-    year_pattern = re.compile(r"\b(20\d{2})\b")
+    # meta優先 (contentにISOや YYYY-MM-DD などが入っていることが多い)
+    for key in config.META_DATE_KEYS:
+        tag = soup.find("meta", attrs=key)
+        if tag:
+            content = (tag.get("content") or "").strip()
+            if not content:
+                continue
+            # 先頭に年がある（YYYY...）ならそれを採用
+            m = re.search(r"(20\d{2})", content)
+            if m:
+                try:
+                    return int(m.group(1))
+                except ValueError:
+                    pass
+
+    # 本文から "YYYY年M月" や "YYYY/M" や "YYYY-M" などを探す（放送日らしい箇所を優先）
+    ymd_pattern = re.compile(r"(20\d{2})\s*[年\-/\.]\s*(0?[1-9]|1[0-2])")
+    candidate_years = []
+    
     for text in soup.stripped_strings:
-        match = year_pattern.search(text)
-        if match:
-            return int(match.group(1))
+        t = text.strip()
+        if len(t) > 120:
+            continue
+        if m := ymd_pattern.search(t):
+            candidate_years.append(int(m.group(1)))
 
-    # デフォルトは現在の年
+    if candidate_years:
+        return max(candidate_years)
+
+    # 年単独（ただし長文は除く）
+    year_pattern = re.compile(r"\b(20\d{2})\b")
+    years = []
+    for text in soup.stripped_strings:
+        t = text.strip()
+        if len(t) > 120:
+            continue
+        if m := year_pattern.search(t):
+            years.append(int(m.group(1)))
+    if years:
+        return max(years)
+
+    # 最後に現在年
     return datetime.now().year
 
 
-# この処理見直す
 def extract_base_date_from_html(soup: BeautifulSoup) -> datetime:
     """HTMLから基準日（放送開始日など）を抽出"""
     # date_pattern = re.compile(r"(?P<month>\d{1,2})月(?P<day>\d{1,2})日")
@@ -81,6 +118,8 @@ def call_handler(handler, match, year, base_date):
 
 
 
+
+
 def extract_best_datetime_with_context(context: str, year: int, base_date: datetime):
     """
     コンテキストから最適な日時を抽出しスコアが最大の日時を返す.
@@ -95,30 +134,33 @@ def extract_best_datetime_with_context(context: str, year: int, base_date: datet
         candidates: スコアが高い日時 
     
     """
+    
+    # contextから年月日だけ抽出してbase_dateを上書きする
+    md_match = re.search(r"(?P<month>\d{1,2})月(?P<day>\d{1,2})日", context)
+    if md_match:
+        month = int(md_match.group("month"))
+        day = int(md_match.group("day"))
+        base_date = datetime(year, month, day)
+    
     candidates = []
 
     for pattern in patterns_with_handlers:
         for match in pattern["pattern"].finditer(context):
             try:
-                if pattern["id"] == 11:
-                    # デフォルトで時分が00:00に設定されないように制御
-                    dt = handler_md_only(match, context, year)
+                if pattern["id"] == 17:
+                    dt = handler_md_only(match, context.splitlines(), year)
                 else:
                     dt = call_handler(pattern["handler"], match, year, base_date)
                 # 優先度が設定されていなければ優先度0を設定
-                # この処理がおかしい？
                 score = 1 + score_context_near_match(context, match.start()) + pattern.get("confidence", 0)
-                if pattern.get("confidence", 0) == 0:
-                    score -= 2 # 優先度が低いものがマッチした場合はペナルティでスコアを引く
                 candidates.append((dt, score))
                 logging.debug(
                     f"Matched pattern: ID: {pattern['id']}, {pattern['pattern'].pattern}, DateTime: {dt}, Score: {score}, Context: {context[:100]}"
                 )
             except Exception as e:
-                logging.warning(f"[extract error] {e} /ID: {pattern['id']} / pattern={pattern['pattern'].pattern} / text={match.group(0)}")
+                logging.warning(f"[extract error] {e} /ID: {pattern['id']} / pattern={pattern['pattern'].pattern} / handler={pattern['handler']} text={match.group(0)}")
                 print(f"[ERROR] handler実行中に例外発生: {e}")
                 print(f"[DEBUG] handler: {pattern['handler']}, pattern: {pattern['pattern'].pattern}")
-                print(f"[DEBUG] match: {match}")
                 continue
 
     if not candidates:
@@ -128,8 +170,12 @@ def extract_best_datetime_with_context(context: str, year: int, base_date: datet
     # スコアが最大の日時を返す
     # candidates.sort(key=lambda x: x[1], reverse=True)
     # スコア最大 → 同スコアなら datetime 降順（遅い方）
-    candidates.sort(key=lambda x: (x[1], x[0]), reverse=True)
+    candidates.sort(key=lambda x: (x[1], -x[0].timestamp()), reverse=True)
+    # デバッグ用
+    for dt, score in candidates:
+        print(f"datetime={dt}, score={score}")
     return candidates[0][0]
+
 
 
 def extract_onair_times(soup: BeautifulSoup, year: int, base_date: datetime, radius=5) -> list:
@@ -282,14 +328,13 @@ def scrape_anime_info(title_url_map: dict, on_air="onair/") -> dict:
                 html = res.content
             elif res.status_code == 404:
                 # リクエスト成功以外は必ずベースURLを渡す
-                res_base = requests.get(base_url, headers=headers, timeout=5, allow_redirects=True)
-                
                 for other_on_air in other_on_airs:
                     res = requests.get(base_url + other_on_air, headers=headers, timeout=5, allow_redirects=True)
                     if res.status_code == 200:
                         html = res.content
                         break
                 if res.status_code != 200:
+                    res_base = requests.get(base_url, headers=headers, timeout=5, allow_redirects=True)
                     html = res_base.content
             elif res.status_code == 403:
                 print(f"[WARN] 403 Forbidden: {url} → base_urlで再試行")
