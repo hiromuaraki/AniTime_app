@@ -23,9 +23,9 @@ USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTM
 
 """プラットフォームホワイトリスト一覧（適宜追加）"""
 PLATFORMS = (
-    "Prime Video",
-    "dアニメストア",
     "ABEMA",
+    "dアニメストア",
+    "Prime Video",
     "Netflix",
     "U-NEXT",
     "FOD",
@@ -49,8 +49,10 @@ IS_START = 0
 CONTEXT_KEYWORDS = {
     "地上波同時": 3,
     "同時配信": 3,
+    "見放題最速配信！": 4,
     "最速": 4,
     "1週間先行": 4,
+    "地上波3日間先行": 4,
     "独占": 3,
     "見逃し": -3,
 }
@@ -62,7 +64,7 @@ FRAME_KEYWORDS = {
     "FRIDAY ANIME NIGHT": 3,
     "アガルアニメ": 2,
     "+Ultra": 2,
-    "IMAAnimation": 3,
+    "IMAnimation": 3,
 }
 
 

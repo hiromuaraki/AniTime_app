@@ -103,22 +103,6 @@ def handler_md_midnight(m: re.Match, year: int) -> datetime:
 
 
 
-# def handler_md_only(m: re.Match, year: int) -> datetime:
-#     """
-#     ID17用ハンドラ: 「〇月〇日」だけ → 時刻は0時0分（深夜24時）固定で補完
-#     """
-#     try:
-#         month = int(m.group("month"))
-#         day = int(m.group("day"))
-#     except Exception:
-#         month = int(m.group(1))
-#         day = int(m.group(2))
-
-#     return datetime(year, month, day, 0, 0)
-
-
-
-
 # ===== 新規追加 =====
 def find_time_near(context_lines: list, idx: int):
     """
@@ -159,7 +143,7 @@ def handler_md_only(m: re.Match, context_lines: list, year: int) -> datetime:
     else:
         hour, minute = 0, 0  # 時刻情報がない場合は0:00
 
-    return datetime(year, month, day, hour, minute)
+    return safe_datetime_with_25h(year, month, day, hour, minute)
 
 
 
@@ -233,10 +217,6 @@ def handler_slash_md_hour_only(match, base_year):
 
 
 
-
-
-
-
 def handler_ymdhm_optional(m: re.Match, year: int, base_date: datetime) -> datetime:
     """年月日＋時刻（深夜・25時対応、時刻省略OK）"""
     gd = m.groupdict()
@@ -250,7 +230,7 @@ def handler_ymdhm_optional(m: re.Match, year: int, base_date: datetime) -> datet
     if gd.get("late_night") == "深夜" and hour < 6:
         hour += 24
 
-    return datetime(y, month, day, hour, minute)
+    return safe_datetime_with_25h(y, month, day, hour, minute)
 
 
 # 拡張された正規表現パターン（適宜追加）
@@ -271,7 +251,7 @@ patterns_with_handlers = [
             r"(?P<year>\d{4})年\s*(?P<month>\d{1,2})月\s*(?P<day>\d{1,2})日.*?(?P<hour>\d{1,2})[:：](?P<minute>\d{2})"
         ),
         "handler": handler_ymd_hm,
-        "confidence": 5,
+        "confidence": 8,
     },
     # 3. 年なし日付（曜日つき）時分は漢字表記対応
     {
@@ -282,11 +262,13 @@ patterns_with_handlers = [
         "handler": handler_md_hm,
         "confidence": 4,
     },
-    # 4. 年なし日付（曜日つき）コロン区切り時刻対応（例: 7月6日 24:15）
+    # 4. 年なし コロン区切り（例: 7月6日 24:15～）
     {
         "id": 4,
         "pattern": re.compile(
-            r"(?P<month>\d{1,2})月(?P<day>\d{1,2})日(?:（.?）)?\s*(?P<hour>\d{1,2})[:：](?P<minute>\d{2})"
+            r"(?P<month>\d{1,2})月(?P<day>\d{1,2})日"
+            r"(?:（?.?）)?\s*(?P<hour>\d{1,2})[:：](?P<minute>\d{2})"
+            r"(?:\s*[～〜].*)?"
         ),
         "handler": handler_md_hm,
         "confidence": 4,
@@ -326,7 +308,7 @@ patterns_with_handlers = [
             r"毎週(?:月|火|水|木|金|土|日)曜(?:深夜)?\s*(?P<hour>\d{1,2})時(?P<minute>\d{2})分"
         ),
         "handler": handler_weekly_late_night,
-        "confidence": 4,
+        "confidence": 5,
     },
     # 18. 月日（曜日）深夜 コロン区切り
     {
@@ -478,7 +460,7 @@ patterns_with_handlers = [
             r"(?:(深夜)?(?P<hour>\d{1,2})(?:時|:)(?P<minute>\d{2}))"
         ),
         "handler": handler_ymdhm_optional,
-        "confidence": 3,  # 年月日＋時刻は高信頼度
+        "confidence": 2,  # 年月日＋時刻は高信頼度
     },
     # 100.
     {
@@ -499,6 +481,6 @@ patterns_with_handlers = [
         "id": 17,
         "pattern": re.compile(r"(?P<month>\d{1,2})月(?P<day>\d{1,2})日"),
         "handler": handler_md_only,
-        "confidence": 1,
+        "confidence": 2,
     },
 ]

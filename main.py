@@ -70,7 +70,8 @@ def fetch_url_map_from_api() -> dict:
     year, month, _ = utils.sysdate()
 
     # アクセスURLの準備--works--
-    season = utils.get_season(month)
+    # クール1か月前に切り替えるため+1で調整
+    season = utils.get_season(month+1)
     params = f"&filter_season={year}-{season}"
     target_url = url_join(config.ANNICT_WORK_URL, params)
 

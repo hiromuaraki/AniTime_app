@@ -118,8 +118,6 @@ def call_handler(handler, match, year, base_date):
 
 
 
-
-
 def extract_best_datetime_with_context(context: str, year: int, base_date: datetime):
     """
     コンテキストから最適な日時を抽出しスコアが最大の日時を返す.
@@ -151,7 +149,7 @@ def extract_best_datetime_with_context(context: str, year: int, base_date: datet
                     dt = handler_md_only(match, context.splitlines(), year)
                 else:
                     dt = call_handler(pattern["handler"], match, year, base_date)
-                # 優先度が設定されていなければ優先度0を設定
+                # 優先度が設定されていなければ0を設定
                 score = 1 + score_context_near_match(context, match.start()) + pattern.get("confidence", 0)
                 candidates.append((dt, score))
                 logging.debug(
