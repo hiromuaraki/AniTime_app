@@ -101,8 +101,6 @@ def handler_md_midnight(m: re.Match, year: int) -> datetime:
     )
 
 
-
-
 # ===== 新規追加 =====
 def find_time_near(context_lines: list, idx: int):
     """
@@ -111,7 +109,7 @@ def find_time_near(context_lines: list, idx: int):
     idx: 日付が見つかった行のインデックス
     """
     time_pattern = re.compile(r"(?:(深夜)?(\d{1,2})(?:時|:)(\d{2}))")
-    
+
     # 探索範囲（前後2行ずつ）
     for offset in range(-2, 3):
         pos = idx + offset
@@ -124,7 +122,6 @@ def find_time_near(context_lines: list, idx: int):
             if late_night == "深夜" and hh < 6:
                 hh += 24
             return hh, mm
-
 
 
 def handler_md_only(m: re.Match, context_lines: list, year: int) -> datetime:
@@ -144,8 +141,6 @@ def handler_md_only(m: re.Match, context_lines: list, year: int) -> datetime:
         hour, minute = 0, 0  # 時刻情報がない場合は0:00
 
     return safe_datetime_with_25h(year, month, day, hour, minute)
-
-
 
 
 def handler_md_late_night(match, base_year):
@@ -216,21 +211,20 @@ def handler_slash_md_hour_only(match, base_year):
     return datetime(date.year, date.month, date.day, hour, minute)
 
 
+# def handler_ymdhm_optional(m: re.Match, year: int, base_date: datetime) -> datetime:
+#     """年月日＋時刻（深夜・25時対応、時刻省略OK）"""
+#     gd = m.groupdict()
+#     y = int(gd.get("year") or year)
+#     month = int(gd["month"])
+#     day = int(gd["day"])
+#     hour = int(gd["hour"])
+#     minute = int(gd["minute"])
 
-def handler_ymdhm_optional(m: re.Match, year: int, base_date: datetime) -> datetime:
-    """年月日＋時刻（深夜・25時対応、時刻省略OK）"""
-    gd = m.groupdict()
-    y = int(gd.get("year") or year)
-    month = int(gd["month"])
-    day = int(gd["day"])
-    hour = int(gd["hour"])
-    minute = int(gd["minute"])
+#     # "深夜" 対応: 深夜+時間が0~5なら翌日扱い
+#     if gd.get("late_night") == "深夜" and hour < 6:
+#         hour += 24
 
-    # "深夜" 対応: 深夜+時間が0~5なら翌日扱い
-    if gd.get("late_night") == "深夜" and hour < 6:
-        hour += 24
-
-    return safe_datetime_with_25h(y, month, day, hour, minute)
+#     return safe_datetime_with_25h(y, month, day, hour, minute)
 
 
 # 拡張された正規表現パターン（適宜追加）
@@ -251,7 +245,7 @@ patterns_with_handlers = [
             r"(?P<year>\d{4})年\s*(?P<month>\d{1,2})月\s*(?P<day>\d{1,2})日.*?(?P<hour>\d{1,2})[:：](?P<minute>\d{2})"
         ),
         "handler": handler_ymd_hm,
-        "confidence": 8,
+        "confidence": 6,
     },
     # 3. 年なし日付（曜日つき）時分は漢字表記対応
     {
@@ -299,7 +293,7 @@ patterns_with_handlers = [
             r"毎週(?:月|火|水|木|金|土|日)曜(?:深夜)?\s*(?P<hour>\d{1,2})[:：](?P<minute>\d{2})"
         ),
         "handler": handler_weekly_late_night,
-        "confidence": 3,
+        "confidence": 2,
     },
     # 13. 毎週〇曜 深夜〇時（漢字時分版、例: 毎週金曜25時23分）
     {
@@ -416,6 +410,13 @@ patterns_with_handlers = [
         "handler": handler_time_next_day,
         "confidence": 1,
     },
+    # 17. 「〇月〇日」だけ→ 時間なしは0:00
+    {
+        "id": 17,
+        "pattern": re.compile(r"(?P<month>\d{1,2})月(?P<day>\d{1,2})日"),
+        "handler": handler_md_only,
+        "confidence": 3,
+    },
     # 15. 時刻のみ「時分漢字」配信（例: 25時23分 配信）→ 翌日扱い
     {
         "id": 15,
@@ -449,38 +450,32 @@ patterns_with_handlers = [
         "confidence": 1,
     },
     # 99.
-    {
-        "id": 99,
-        "pattern": re.compile(
-            r"(?:(?P<year>\d{4})年)?\s*"
-            r"(?P<month>\d{1,2})月(?P<day>\d{1,2})日"
-            r"(?:（[^）]*）)?\s*"
-            r"(?:より|から)?\s*"
-            r"(?:毎週[^\s　]*\s*)?"
-            r"(?:(深夜)?(?P<hour>\d{1,2})(?:時|:)(?P<minute>\d{2}))"
-        ),
-        "handler": handler_ymdhm_optional,
-        "confidence": 2,  # 年月日＋時刻は高信頼度
-    },
+    # {
+    #     "id": 99,
+    #     "pattern": re.compile(
+    #         r"(?:(?P<year>\d{4})年)?\s*"
+    #         r"(?P<month>\d{1,2})月(?P<day>\d{1,2})日"
+    #         r"(?:（[^）]*）)?\s*"
+    #         r"(?:より|から)?\s*"
+    #         r"(?:毎週[^\s　]*\s*)?"
+    #         r"(?:(深夜)?(?P<hour>\d{1,2})(?:時|:)(?P<minute>\d{2}))"
+    #     ),
+    #     "handler": handler_ymdhm_optional,
+    #     "confidence": 2,  # 年月日＋時刻は高信頼度
+    # },
     # 100.
-    {
-        "id": 100,
-        "pattern": re.compile(
-            r"(?:(?P<year>\d{4})年)?"
-            r"(?P<month>\d{1,2})月(?P<day>\d{1,2})日"
-            r"(?:（[^）]*）)?\s*"
-            r"(?:より|から)?\s*"
-            r"(?:毎週[^\s　]*\s*)?"
-            r"(?:(?P<late_night>深夜)?(?P<hour>\d{1,2})(?:時|:)(?P<minute>\d{2}))"
-        ),
-        "handler": handler_ymdhm_optional,
-        "confidence": 3,  # 月日＋時刻はやや高信頼度
-    },
-    # 17. 「〇月〇日」だけ→ 時間なしは0:00
-    {
-        "id": 17,
-        "pattern": re.compile(r"(?P<month>\d{1,2})月(?P<day>\d{1,2})日"),
-        "handler": handler_md_only,
-        "confidence": 2,
-    },
+    # {
+    #     "id": 100,
+    #     "pattern": re.compile(
+    #         r"(?:(?P<year>\d{4})年)?"
+    #         r"(?P<month>\d{1,2})月(?P<day>\d{1,2})日"
+    #         r"(?:（[^）]*）)?\s*"
+    #         r"(?:より|から)?\s*"
+    #         r"(?:毎週[^\s　]*\s*)?"
+    #         r"(?:(?P<late_night>深夜)?(?P<hour>\d{1,2})(?:時|:)(?P<minute>\d{2}))"
+    #     ),
+    #     "handler": handler_ymdhm_optional,
+    #     "confidence": 3,  # 月日＋時刻はやや高信頼度
+    # },
+    
 ]

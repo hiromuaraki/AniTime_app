@@ -21,8 +21,8 @@ def score_context_near_match(context: str, match_start: int, window: int = 50) -
     for k, v in config.CONTEXT_KEYWORDS.items():
         score += sliced_context.count(k) * v  # 出現回数×重み
 
-    for k, v in config.FRAME_KEYWORDS.items():
-        score += sliced_context.count(k) * v
+    # for k, v in config.FRAME_KEYWORDS.items():
+    #     score += sliced_context.count(k) * v
 
     return score
 
@@ -166,9 +166,9 @@ def extract_best_datetime_with_context(context: str, year: int, base_date: datet
         return None
 
     # スコアが最大の日時を返す
-    # candidates.sort(key=lambda x: x[1], reverse=True)
     # スコア最大 → 同スコアなら datetime 降順（遅い方）
     candidates.sort(key=lambda x: (x[1], -x[0].timestamp()), reverse=True)
+    # candidates.sort(key=lambda x: x[1], reverse=True)
     # デバッグ用
     for dt, score in candidates:
         print(f"datetime={dt}, score={score}")
