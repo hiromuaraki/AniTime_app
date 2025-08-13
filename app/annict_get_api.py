@@ -43,12 +43,13 @@ def get_staffs(target_url: str, works: dict):
             
             for staff in response['staffs']:
                 total_count += 1
-                
-                if 'organization' in staff and staff['role_text'] == 'アニメーション制作':
-                    production = staff['organization']['name']
-                    works[title][0].append(production)
-                    is_production = True
-                    break
+                # role_otherの場合も取得できるように条件に追加
+                if 'organization' in staff:
+                    if staff['role_text'] == 'アニメーション制作' or staff['role_other'] == '制作':
+                        production = staff['organization']['name']
+                        works[title][0].append(production)
+                        is_production = True
+                        break
             
             # 制作会社が１ページ目にない場合に対応する為のロジック
             # 基本的に{タイトル：プロダクション}のペアで対応させる
