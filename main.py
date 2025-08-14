@@ -3,7 +3,12 @@ import model.config as config
 import common.utils as utils
 from app.annict_get_api import get_works, get_staffs
 from app.scraper import scrape_anime_info
-from app.notion_register import find_database_in_page, create_anime_info, create_database
+from app.notion_register import (
+  find_database_in_page,
+  create_anime_info,
+  create_database,
+  open_in_browser
+)
 
 
 save_dir = "./works_info"
@@ -106,10 +111,11 @@ def main() -> None:
     db_id = find_database_in_page(config.DATABASE_ID, config.DATABASE_TITLE)
     
     # 存在しない場合のみテーブルを作成
-    if not db_id:
+    if db_id is None:
         db_id = create_database(config.DATABASE_ID, config.DATABASE_TITLE)
     else:
-        pass
+        db_id_clean = db_id.replace("-", "")
+        open_in_browser(db_id_clean)
     
     # Notion画面を開く
     

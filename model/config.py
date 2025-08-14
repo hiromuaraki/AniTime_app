@@ -9,9 +9,9 @@ load_dotenv()
 ANNICT_TOKEN = os.getenv("ANNICT_TOKEN")
 
 # --- Notion設定 ---
-NOTION_TOKEN = Client(auth=os.getenv("NOTION_TOKEN"))
+# NOTION_TOKEN = Client(auth=os.getenv("NOTION_TOKEN"))
+NOTION_TOKEN = os.getenv("NOTION_TOKEN")
 DATABASE_ID = os.getenv("DATABASE_ID")
-# NOTION_TOKEN = os.getenv("NOTION_TOKEN")
 
 # --- ベースURL設定 --
 ANNICT_WORK_URL = "https://api.annict.com/v1/works?"

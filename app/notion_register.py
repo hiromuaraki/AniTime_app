@@ -1,3 +1,4 @@
+import model.config as config
 import entity.anime_info as anime_info
 import requests, json, webbrowser
 
@@ -15,7 +16,7 @@ def open_in_browser(db_id: str) -> None:
 
 
 
-def find_database_in_page(parent_page_id: str, database_name: str) -> str:
+def find_database_in_page(parent_page_id, database_title: str):
     """
     親ページ内にdatabaseが存在するか
     存在する場合はデータベースIDを返す.
@@ -25,29 +26,100 @@ def find_database_in_page(parent_page_id: str, database_name: str) -> str:
         database_name:
 
     Returns:
-        db_id(データベースID)
+        id(データベースID)
+        None(存在しない場合）
     """
-    return ""
+    url = f"https://api.notion.com/v1/blocks/{parent_page_id}/children"
+    response = requests.get(url, config.headers)
+    # 400,500番台なら例外をキャッチし処理を終了
+    response.raise_for_status()
+    data = response.json()
+    
+    for child in data.get("results", []):
+        if child["type"] == "child_database":
+            if child["child_database"]["title"] == database_title:
+                print(f"[INFO] 既存データベースを発見: {database_title}")
+                return child["id"]
+    return None
 
 
 
-def create_database(parent_page_id: int, database_name: str) -> str:
-    """存在しない場合のみデータベースを作成."""
-    return ""
-
-
-def create_anime_info(earliest_list: dict) -> anime_info:
+def create_database(parent_page_id, database_title: str) -> str:
     """
-    Notio.テーブルへ登録するヘッダ情報を作成.
+    データベースを新規作成.
+    
+    Args:
+        parent_page_id: データベースID（Notionの親のページのID）
+        database_title: データベー名（一意）
+    
+    Returns:
+        db_id: データベースID
+    """
+    
+    url = f"{config.NOTION_URL}/v1/databases"
+    
+    # ヘッダ情報を作成
+    payload = {
+        "parent": {"type": "page_id", "page_id": parent_page_id},
+        "title": [
+            {
+                "type": "text",
+                "text": {"content": database_title}
+            }
+        ],
+        "properties": {
+            "作品ID": {"title": {}},
+            "配信開始日": {"title": {}},
+            "配信時間": {"date": {}},
+            "曜日": {"date": {}},
+            "Title": {"date": {}},
+            "プラットフォーム": {
+                "select": {
+                    "options": [
+                        {"name": "ABEMA", "color": "pink"},
+                        {"name": "dアニメストア", "color": "orange"},
+                        {"name": "Prime Video", "color": "blue"},
+                        {"name": "Netflix", "color": "red"},
+                        {"name": "U-NEXT", "color": "gray"},
+                        {"name": "FOD", "color": "default"},
+                        {"name": "AnimeFesta", "color": "yellow"},
+                        {"name": "Hulu", "color": "green"},
+                        {"name": "DMM TV", "color": "pink"},
+                        {"name": "アニメタイムズ", "color": "orange"},
+                        {"name": "Lemino", "color": "brown"},
+                        {"name": "Disney+（ディズニープラス）", "color": "default"}
+                    ]
+                }
+            },
+            "制作会社": {"date": {}},
+            "公式URL": {"date": {}},
+            "memo": {"date": {}},
+        }
+    }
+    # テーブルを新規作成
+    response = requests.post(url, headers=config.headers, data=json.dumps(payload))
+    response.raise_for_status()
+    db_id = response.json()["id"].replace("-", "")
+    print(f"[INFO] 新規データベース作成完了: {database_title}")
+    open_in_browser(db_id)
+    
+    return db_id
+    
+
+
+def create_anime_info(earliest_list: dict) -> dict:
+    """
+    Notion.テーブルへ登録するヘッダ情報を作成.
 
     Args:
 
     Returns:
     
     """
+    return {}
 
 
-def regist(earliest_list: dict, db_id: int) -> bool:
+def insert(earliest_list: dict, db_id: str) -> bool:
     """
     放送情報の件数分連続してテーブルへ登録.
     
@@ -55,6 +127,7 @@ def regist(earliest_list: dict, db_id: int) -> bool:
         earliest_list: 
 
     Returns:
-    
+        True :成功
+        False: 失敗
     """
     return True
