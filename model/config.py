@@ -10,8 +10,8 @@ ANNICT_TOKEN = os.getenv("ANNICT_TOKEN")
 
 # --- Notion設定 ---
 NOTION_TOKEN = Client(auth=os.getenv("NOTION_TOKEN"))
-NOTION_TOKEN = os.getenv("NOTION_TOKEN")
 DATABASE_ID = os.getenv("DATABASE_ID")
+# NOTION_TOKEN = os.getenv("NOTION_TOKEN")
 
 # --- ベースURL設定 --
 ANNICT_WORK_URL = "https://api.annict.com/v1/works?"
@@ -20,6 +20,16 @@ NOTION_URL = "https://api.notion.com"
 
 # --- 定数の設定 ---
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+DATABASE_TITLE = "anime_schedule_db"
+
+
+# ---Notionのヘッダ情報の設定---
+headers = {
+    "Authorization": f"Bearer {NOTION_TOKEN}",
+    "Content-Type": "application/json",
+    "Notion-Version": "2022-06-28",
+}
+
 
 """プラットフォームホワイトリスト一覧（適宜追加）"""
 PLATFORMS = (
@@ -76,4 +86,3 @@ META_DATE_KEYS = [
     {"property": "article:published_time"},
     {"itemprop": "datePublished"},
 ]
-

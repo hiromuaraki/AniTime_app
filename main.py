@@ -3,12 +3,13 @@ import model.config as config
 import common.utils as utils
 from app.annict_get_api import get_works, get_staffs
 from app.scraper import scrape_anime_info
+from app.notion_register import find_database_in_page, create_anime_info, create_database
 
 
 save_dir = "./works_info"
 CSV_FILE = "works_info.csv"
 file_path = f"./works_info/{CSV_FILE}"
-filename = "./data/anime_release_schedule.csv"
+fname = "./data/anime_release_schedule.csv"
 
 
 def load_url_map() -> dict:
@@ -99,10 +100,29 @@ def main() -> None:
     earliest_list = scrape_anime_info(url_map)
 
     # 配信日時をCSVに記録
-    utils.write_csv(filename, earliest_list)
+    utils.write_csv(fname, earliest_list)
 
-    # NotionAPIを実行しアクセス
-    # Notionのテーブルへスクレイピングデータを書き込む
+    # DATABASEの存在をチェック
+    db_id = find_database_in_page(config.DATABASE_ID, config.DATABASE_TITLE)
+    
+    # 存在しない場合のみテーブルを作成
+    if not db_id:
+        db_id = create_database(config.DATABASE_ID, config.DATABASE_TITLE)
+    else:
+        pass
+    
+    # Notion画面を開く
+    
+    # レコード件数を取得し0件でない場合のみ後続の処理を実行
+    # テーブルへ登録するヘッダ情報を作成
+
+
+    # Notion.テーブルへスクレイピングデータ登録
+        # ここのロジックを考える
+        # 重複したタイトルはスキップ、最速日時の調整 
+
+
+
 
 
 # メイン処理の実行(テスト)
