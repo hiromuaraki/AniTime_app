@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from typing import Optional
 
 '''
-Notionのtableに書き込むデータのヘッダ情報
+Notionのtableに書き込むデータのプロパティ情報
 データ構造：辞書型
 '''
 

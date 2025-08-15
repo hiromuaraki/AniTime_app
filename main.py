@@ -4,10 +4,9 @@ import common.utils as utils
 from app.annict_get_api import get_works, get_staffs
 from app.scraper import scrape_anime_info
 from app.notion_register import (
-  find_database_in_page,
+  exists_database_in_page,
   create_anime_info,
-  create_database,
-  open_in_browser
+  create_database
 )
 
 
@@ -16,6 +15,9 @@ CSV_FILE = "works_info.csv"
 file_path = f"./works_info/{CSV_FILE}"
 fname = "./data/anime_release_schedule.csv"
 
+# 現在の年月日を取得
+year, month, _ = utils.sysdate()
+season = utils.get_season(month+1)
 
 def load_url_map() -> dict:
     """CSVからタイトル-URLマップを読み込む"""
@@ -72,12 +74,9 @@ def url_join(url: str, params: str) -> str:
 
 def fetch_url_map_from_api() -> dict:
     """APIから取得"""
-    # 現在の年月日を取得
-    year, month, _ = utils.sysdate()
 
     # アクセスURLの準備--works--
     # クール1か月前に切り替えるため+1で調整
-    season = utils.get_season(month+1)
     params = f"&filter_season={year}-{season}"
     target_url = url_join(config.ANNICT_WORK_URL, params)
 
@@ -88,8 +87,7 @@ def fetch_url_map_from_api() -> dict:
     params = "&filter_work_id={}"
     target_url = url_join(config.ANNICT_STAFFS_URL, params)
     get_staffs(target_url, works)
-
-    # get_staffs(works)
+    
     return works
 
 
@@ -107,17 +105,14 @@ def main() -> None:
     # 配信日時をCSVに記録
     utils.write_csv(fname, earliest_list)
 
-    # DATABASEの存在をチェック
-    db_id = find_database_in_page(config.DATABASE_ID, config.DATABASE_TITLE)
+    # DATABASEの存在チェック
+    database_title = f'{year}{config.convert_season[season]}{config.DATABASE_TITLE}'
+    is_db = exists_database_in_page(config.PARENT_PAGE_ID, database_title)
     
     # 存在しない場合のみテーブルを作成
-    if db_id is None:
-        db_id = create_database(config.DATABASE_ID, config.DATABASE_TITLE)
-    else:
-        db_id_clean = db_id.replace("-", "")
-        open_in_browser(db_id_clean)
+    if not is_db:
+        db_id = create_database(config.PARENT_PAGE_ID, config.DATABASE_TITLE)
     
-    # Notion画面を開く
     
     # レコード件数を取得し0件でない場合のみ後続の処理を実行
     # テーブルへ登録するヘッダ情報を作成

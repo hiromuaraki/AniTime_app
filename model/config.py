@@ -22,14 +22,23 @@ NOTION_URL = "https://api.notion.com"
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
 DATABASE_TITLE = "anime_schedule_db"
 
+PARENT_PAGE_ID = "2509fee9008f803695cacb513e8736a9"
 
 # ---Notionのヘッダ情報の設定---
 headers = {
     "Authorization": f"Bearer {NOTION_TOKEN}",
     "Content-Type": "application/json",
-    "Notion-Version": "2022-06-28",
+    "Notion-Version": "2022-06-28"
 }
 
+
+# ---季節の変換用辞書---
+convert_season = {
+    "winter": "冬",
+    "spring": "春",
+    "summer": "夏",
+    "autumn": "秋"
+}
 
 """プラットフォームホワイトリスト一覧（適宜追加）"""
 PLATFORMS = (
