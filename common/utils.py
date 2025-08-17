@@ -1,11 +1,11 @@
 from datetime import datetime
-import csv
+import csv, os
 
 
-def sysdate() -> tuple:
+def get_sysdate() -> tuple:
     """現在の年月日を取得"""
     date = datetime.now()
-    return date.year, date.month, date.day
+    return (date.year, date.month, date.day)
 
 def get_season(month: int) -> str:
     """
@@ -28,14 +28,37 @@ def get_season(month: int) -> str:
     else:
         return 'winter'
 
+
+def exists_file_path(file_path: str) -> bool:
+    return os.path.exists(file_path)
+    
+
+def read_csv(file_path: str, mode=1) -> dict:
+    """ローカルのCSVフィアるを読み込む."""
+    result = {}
+    with open(file_path, newline="", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        next(reader)  # ヘッダを飛ばす
+        
+        for row in reader:
+            # works_info.csv
+            if mode == 1:
+                _, title, url, production = row
+                result[title] = (production, url)
+            # anime_release_schedule.csv
+            else:
+                title, platform, dt, production, url = row
+                result[title] = (dt, platform, production, url)
+
+        return result
+
 def write_csv(fname: str, data: dict) -> None:
     """最速の配信日時情報をCSVへ保存する"""
     with open(fname, 'w', newline='', encoding='utf-8-sig') as f:
         writer = csv.writer(f)
-        writer.writerow(["アニメタイトル", "配信サービス", "配信開始日時"])
+        writer.writerow(["アニメタイトル", "プラットフォーム", "配信開始日時", "制作会社", "URL"])
         
-        for title, services in data.items():
-            for service, dt in services:
-                writer.writerow([title, service, dt.strftime("%Y-%m-%d %H:%M:%S")])
-
-
+        for title, service in data.items():
+            for platform, data in service:
+                dt, production, url = data
+                writer.writerow([title, platform, dt.strftime("%Y-%m-%d %H:%M:%S"), production, url])

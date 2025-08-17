@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 from urllib.error import HTTPError, URLError
 from datetime import datetime
-from model.handler import patterns_with_handlers, safe_datetime_with_25h, handler_md_only
+from model.handler import patterns_with_handlers, safe_datetime_with_25h
 from model.logging_config import setup_logger
 import model.config as config
 import requests, re, time, random, csv
@@ -220,7 +220,7 @@ def extract_onair_times(soup: BeautifulSoup, year: int, base_date: datetime, rad
     return results
 
 
-def find_earliest_per_platform(matches: list) -> list:
+def find_earliest_per_platform(matches: list, works) -> list:
     """
     プラットフォームに対応した最速配信情報を返す
 
@@ -233,13 +233,14 @@ def find_earliest_per_platform(matches: list) -> list:
     """
     
     platform_map = {}
+    production, url = works
     for platform, dt in matches:
-        if platform not in platform_map or dt < platform_map[platform]:
-            platform_map[platform] = dt
-    return sorted(platform_map.items(), key=lambda x: x[1])
+        if platform not in platform_map or dt < platform_map[platform][0]:
+            platform_map[platform] = [dt, production, url]
+    return sorted(platform_map.items(), key=lambda x: x[0])
 
 
-def parse_broadcast_info(html, title: str) -> list:
+def parse_broadcast_info(html, title:str, *works: list) -> list:
     """
     HTMLからプラットフォームと日時を抽出し、最速配信情報にまとめる
 
@@ -262,7 +263,7 @@ def parse_broadcast_info(html, title: str) -> list:
 
         # 放送情報を抽出
         matches = extract_onair_times(soup, year, base_date)
-        earliest_list = find_earliest_per_platform(matches)
+        earliest_list = find_earliest_per_platform(matches, works)
 
         for platform, dt in earliest_list:
             print(f"{title} → {platform} → {dt}")
@@ -315,9 +316,10 @@ def scrape_anime_info(title_url_map: dict, on_air="onair/") -> dict:
     }
 
     print(f"アクセス中：")
-    for title, base_url in title_url_map.items():
-        if base_url == "":
-            continue
+    for title, works in title_url_map.items():
+        production, base_url = works
+        
+        if base_url == "": continue
 
         try:
             url = base_url.rstrip("/") + "/" + on_air
@@ -325,6 +327,7 @@ def scrape_anime_info(title_url_map: dict, on_air="onair/") -> dict:
 
             if res.status_code == 200:
                 html = res.content
+            
             elif res.status_code == 404:
                 # リクエスト成功以外は必ずベースURLを渡す
                 for other_on_air in other_on_airs:
@@ -335,10 +338,12 @@ def scrape_anime_info(title_url_map: dict, on_air="onair/") -> dict:
                 if res.status_code != 200:
                     res_base = requests.get(base_url, headers=headers, timeout=5, allow_redirects=True)
                     html = res_base.content
+            
             elif res.status_code == 403:
                 print(f"[WARN] 403 Forbidden: {url} → base_urlで再試行")
                 res = requests.get(base_url, headers=headers, timeout=5, allow_redirects=True)
                 html = res.content
+            
             else:
                 html = None
 
@@ -348,8 +353,8 @@ def scrape_anime_info(title_url_map: dict, on_air="onair/") -> dict:
 
             # 放送情報からBeautifulSoupで配信日時・プラットフォーム名を抽出する
             if html is not None:
-                broadcast_info[title] = parse_broadcast_info(html, title)
-
+                broadcast_info[title] = parse_broadcast_info(html, title, production, base_url)
+                
             time.sleep(random.uniform(1, 1.5))
 
         except requests.RequestException as e:

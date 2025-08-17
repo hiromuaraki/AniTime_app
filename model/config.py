@@ -1,4 +1,3 @@
-from notion_client import Client  # Notionを操作する準備
 from dotenv import load_dotenv  # 環境変数の読み込み
 import os
 
@@ -40,6 +39,16 @@ convert_season = {
     "autumn": "秋"
 }
 
+day_of_week = {
+  0: "月",
+  1: "火",
+  2: "水",
+  3: "木",
+  4: "金",
+  5: "土",
+  6: "日"
+}
+
 """プラットフォームホワイトリスト一覧（適宜追加）"""
 PLATFORMS = (
     "ABEMA",
@@ -57,12 +66,6 @@ PLATFORMS = (
 )
 
 # --- アプリ内ルール ---
-"""
-配信開始フラグ
-0:未配信
-1:配信済み
-"""
-IS_START = 0
 
 # スコア補正に使う語彙
 CONTEXT_KEYWORDS = {

@@ -64,7 +64,7 @@ def get_staffs(target_url: str, works: dict):
 
 def get_works(target_url: str, page=1) -> dict:
     """
-    Annict APIを実行し{タイトル : URL}の対応表を返す関数
+    Annict APIを実行し{タイトル : 作品ID、url}の作品情報を返す関数
 
     Args:
         target_url（str）:作品情報を取得する為のAPIのURL
