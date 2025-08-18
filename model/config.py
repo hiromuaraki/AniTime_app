@@ -8,9 +8,8 @@ load_dotenv()
 ANNICT_TOKEN = os.getenv("ANNICT_TOKEN")
 
 # --- Notion設定 ---
-# NOTION_TOKEN = Client(auth=os.getenv("NOTION_TOKEN"))
 NOTION_TOKEN = os.getenv("NOTION_TOKEN")
-DATABASE_ID = os.getenv("DATABASE_ID")
+# DATABASE_ID = os.getenv("DATABASE_ID")
 
 # --- ベースURL設定 --
 ANNICT_WORK_URL = "https://api.annict.com/v1/works?"
@@ -19,7 +18,7 @@ NOTION_URL = "https://api.notion.com"
 
 # --- 定数の設定 ---
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
-DATABASE_TITLE = "anime_schedule_db"
+DATABASE_NAME = "anime_schedule_db"
 
 PARENT_PAGE_ID = "2509fee9008f803695cacb513e8736a9"
 

@@ -16,9 +16,14 @@ SCHEDULE_CSV_FILE = "anime_release_schedule.csv"
 works_file_path = f"./works_info/{WORKS_CSV_FILE}"
 schedule_file_path = f"./data/{SCHEDULE_CSV_FILE}"
 
+# 最速配信情報リスト
+earliest_list = None
+
 # 現在の年月日を取得
 year, month, _ = utils.get_sysdate()
-season = utils.get_season(month+1)
+# season = utils.get_season(month+1)
+# 検証用
+season = utils.get_season(month+2)
 
 def load_url_map() -> dict:
     """CSVからタイトル-URLマップを読み込む"""
@@ -89,40 +94,27 @@ def fetch_works_api() -> dict:
 # メイン処理
 def main() -> None:
     """スクリプトのメイン処理"""
-    url_map = get_url_map(force_refresh=False)
-
-    # APIを強制的に再取得したい時だけ
-    # url_map = get_url_map(force_refresh=True)
-
-    # Webスクレイピングを実行 対応表のURLより最速配信「日時・プラットフォーム名」を取得
-    earliest_list = None
+    
+    # スクレイピングCSVの管理は要検討
     if not utils.exists_file_path(schedule_file_path):
+        url_map = get_url_map(force_refresh=False)
+        # Webスクレイピングを実行 対応表のURLより最速配信「日時・プラットフォーム」を取得
         earliest_list = scrape_anime_info(url_map)
-        # 配信日時をCSVに記録
+        # 最速配信情報をCSVに記録
         utils.write_csv(schedule_file_path, earliest_list)
     else:
         earliest_list = utils.read_csv(schedule_file_path, mode=2)
     
     # DBの存在チェック
-    database_name = f'{year}{config.convert_season[season]}{config.DATABASE_TITLE}'
-    is_db = exists_database_in_page(config.PARENT_PAGE_ID, database_name)
+    database_name = f'{year}{config.convert_season[season]}{config.DATABASE_NAME}'
+    db_id = exists_database_in_page(config.PARENT_PAGE_ID, database_name)
     
     # 存在しない場合のみテーブルを作成
-    if not is_db:
-        if create_database(config.PARENT_PAGE_ID, config.DATABASE_TITLE):
-            pass
-    # 行を連続してを追加
-    if insert(earliest_list): print(f"Notionのテーブルへ登録成功✅ データベース名：{database_name}")
-    else: print("登録失敗❎")
-
-    
-    # レコード件数を取得し0件でない場合のみ後続の処理を実行
-    # テーブルへ登録するヘッダ情報を作成
-
-
-    # Notion.テーブルへスクレイピングデータ登録
-        # ここのロジックを考える
-        # 重複したタイトルはスキップ、最速日時の調整 
+    if db_id is None:
+        # 新規DB作成時に古いDBをアーカイブ化して運用（論理削除）
+        db_id = create_database(config.PARENT_PAGE_ID, config.DATABASE_NAME)
+        # 行を連続してを追加
+        insert(earliest_list, db_id)
 
 
 
