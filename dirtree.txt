@@ -1,0 +1,36 @@
+.
+├── AniTime_app
+│   ├── app
+│   │   ├── annict_get_api.py
+│   │   ├── notion_register.py
+│   │   ├── scraper.py
+│   │   └── __init__.py
+│   ├── common
+│   │   ├── utils.py
+│   │   └── __init__.py
+│   ├── data
+│   │   ├── ng_datetime.log
+│   │   ├── ng_list.csv
+│   │   ├── anime_schedule
+│   │   │   ├── 2025_summer_scrap.csv
+│   │   │   └── 2025_autumn_scrap.csv
+│   │   └── works
+│   │       ├── 2025_summer.csv
+│   │       └── 2025_autumn.csv
+│   ├── logs
+│   │   ├── app.log
+│   │   ├── app.log.1
+│   │   └── notion.log
+│   ├── model
+│   │   ├── config.py
+│   │   ├── handler.py
+│   │   └── logging_config.py
+│   └── tests
+│       └── __init__.py
+├── .env
+├── .gitignore
+├── dirtree.txt
+├── main.py
+├── README.md
+├── requirements.txt
+└── season_switch.sh

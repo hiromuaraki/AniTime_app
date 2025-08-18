@@ -9,13 +9,6 @@ from app.notion_register import (
   insert
 )
 
-
-save_dir = "./works_info"
-WORKS_CSV_FILE = "works_info.csv"
-SCHEDULE_CSV_FILE = "anime_release_schedule.csv"
-works_file_path = f"./works_info/{WORKS_CSV_FILE}"
-schedule_file_path = f"./data/{SCHEDULE_CSV_FILE}"
-
 # 最速配信情報リスト
 earliest_list = None
 
@@ -24,6 +17,12 @@ year, month, _ = utils.get_sysdate()
 # season = utils.get_season(month+1)
 # 検証用
 season = utils.get_season(month+2)
+
+# save_dir = "./works_info"
+WORKS_CSV_FILE = f"{year}_{season}.csv"
+SCHEDULE_CSV_FILE = f"{year}_{season}_scrap.csv"
+works_file_path = f"./data/works/{WORKS_CSV_FILE}"
+schedule_file_path = f"./data/anime_schedule/{SCHEDULE_CSV_FILE}"
 
 def load_url_map() -> dict:
     """CSVからタイトル-URLマップを読み込む"""
@@ -54,9 +53,7 @@ def get_url_map(force_refresh: bool = False) -> dict:
 
 def save_works(works: dict):
     """アニメ情報ををCSVに保存"""
-    if not utils.exists_file_path(save_dir):
-        config.os.mkdir(save_dir)
-
+    
     header = ["work_id", "title", "url", "production"]
     with open(works_file_path, "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)

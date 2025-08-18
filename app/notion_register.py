@@ -38,7 +38,7 @@ def exists_database_in_page(parent_page_id: str, database_name: str):
 
 def archive_database() -> None:
     """一つ前のDBをアーカイブ化"""
-    url = url = f"https://api.notion.com/v1/blocks/{config.PARENT_PAGE_ID}/children"
+    url = f"https://api.notion.com/v1/blocks/{config.PARENT_PAGE_ID}/children"
     
     res = requests.get(url, headers=config.headers)
     res.raise_for_status()
@@ -161,7 +161,6 @@ def create_database(parent_page_id: str, database_name: str) -> str:
     Args:
         parent_page_id: データベースID（Notionの親ページID）
         database_name: データベース名（一意）
-        success: データベース成功失敗フラグ
     
     Returns:
         db_id: データベースID
@@ -196,13 +195,14 @@ def create_database(parent_page_id: str, database_name: str) -> str:
 
 
 
-def insert(earliest_list: dict, db_id) -> None:
+def insert(earliest_list: dict, db_id: str) -> None:
     """
     放送情報の件数分連続して行をテーブルへ登録.
     
     Args:
         earliest_list: 最速配信情報リスト {title: []}
-
+        db_id: 新規作成さらたデータベースID
+    
     Returns:
         None
     """

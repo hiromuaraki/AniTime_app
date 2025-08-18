@@ -41,11 +41,11 @@ def read_csv(file_path: str, mode=1) -> dict:
         next(reader)  # ヘッダを飛ばす
         
         for row in reader:
-            # works_info.csv
+            # worksのcsv
             if mode == 1:
                 _, title, url, production = row
                 result[title] = (production, url)
-            # anime_release_schedule.csv
+            # anime_scheduleのcsv
             else:
                 title, platform, dt, production, url = row
                 result[title] = (dt, platform, production, url)
