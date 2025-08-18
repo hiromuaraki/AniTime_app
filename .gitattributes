@@ -1,0 +1,11 @@
+# Pythonコードを優先的に認識させる
+*.py linguist-language=Python
+
+# ドキュメントや設定は言語統計に含めない
+*.md linguist-documentation
+*.txt linguist-documentation
+
+# 設定ファイルは生成物扱いにして除外
+*.env linguist-generated
+*.ini linguist-generated
+*.cfg linguist-generated
