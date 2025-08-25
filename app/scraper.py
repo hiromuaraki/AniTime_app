@@ -190,9 +190,9 @@ def extract_best_datetime_with_context(context: str, year: int, base_date: datet
                     for k, v in config.CONTEXT_KEYWORDS.items():
                         if k in context_slice:
                             score += v
-                    for k, v in config.FRAME_KEYWORDS.items():
-                        if k in context_slice:
-                            score += v
+                    # for k, v in config.FRAME_KEYWORDS.items():
+                    #     if k in context_slice:
+                    #         score += v
                     for k, v in config.PLATFORMS.items():
                         if k in context_slice:
                             score += v
@@ -207,14 +207,30 @@ def extract_best_datetime_with_context(context: str, year: int, base_date: datet
         logging.warning(f"No datetime candidates found in context: {context[:100]}")
         return None
 
-    # スコア降順 → base_dateに近い順でソート
-    candidates.sort(key=lambda x: (x[1], -abs((x[0] - base_date).total_seconds())), reverse=True)
+    logging.info(f"【リスト並べ替え前】：{candidates}")
+    # スコア降順 → 
+    # candidates.sort(key=lambda x: (x[1], -abs((x[0] - base_date).total_seconds())), reverse=True)
+
+
+    # ソートルール：
+    # 1. 年月日 → 昇順
+    # 2. 時分 → 降順
+    # 3. スコア → 降順
+    candidates.sort(
+        key=lambda item: (
+            item[0].date(),   # 日付 昇順
+            -item[0].hour,    # 時間 降順
+            -item[0].minute,  # 分   降順
+            -item[1]          # スコア 降順
+        )
+    )
 
     # デバッグ出力
     for dt, score in candidates:
         print(f"datetime={dt}, score={score}")
 
     return candidates[0][0]
+
 
 
 

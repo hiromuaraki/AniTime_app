@@ -151,7 +151,7 @@ patterns_with_handlers = [
             r"毎週(?P<youbi>月|火|水|木|金|土|日)曜\s*(?:深夜)?\s*(?P<hour>\d{1,2})(?:[:：]|時)(?P<minute>\d{0,2})分?"
         ),
         "handler": handler_weekly,
-        "confidence": 3,
+        "confidence": 4,
     },
 
     # 5) 時刻のみ（: or 時分、分省略OK）+ オプション AM/PM/深夜/正午
@@ -161,7 +161,7 @@ patterns_with_handlers = [
             rf"{AMPM_OPT}\s*(?P<hour>\d{{1,2}})(?:[:：]|時)(?P<minute>\d{{0,2}})分?"
         ),
         "handler": handler_hm_only,
-        "confidence": 2,
+        "confidence": 1,
     },
 
     # 6) 月日のみ（ベースは 00:00）
