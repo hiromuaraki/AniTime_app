@@ -9,46 +9,37 @@ from app.notion_register import (
   insert
 )
 
-# 最速配信情報リスト
-earliest_list = None
 
 # 現在の年月日を取得
-year, month, _ = utils.get_sysdate()
+year, month = utils.get_sysdate()[0:2]
 # season = utils.get_season(month+1)
-# 検証用
-season = utils.get_season(month+2)
+season = utils.get_season(month+2) # 検証用
 
-# save_dir = "./works_info"
 WORKS_CSV_FILE = f"{year}_{season}.csv"
 SCHEDULE_CSV_FILE = f"{year}_{season}_scrap.csv"
 works_file_path = f"./data/works/{WORKS_CSV_FILE}"
 schedule_file_path = f"./data/anime_schedule/{SCHEDULE_CSV_FILE}"
 
-def load_url_map() -> dict:
-    """CSVからタイトル-URLマップを読み込む"""
-    url_map = {}
-    if not utils.exists_file_path(works_file_path):
-        return url_map
-    return utils.read_csv(works_file_path)
 
 
 def get_url_map(force_refresh: bool = False) -> dict:
-    """必要に応じてAPIから取得 or CSVから読み込み"""
+    """
+    必要に応じてAPIから取得 or CSVから読み込み
+    
+    Args:
+        force_refresh: CSV読み込みフラグ（True:API実行 False: ローカルCSV）
+
+    Returns:
+        {title: [url, production]}（対応表）
+    """
     if force_refresh or not utils.exists_file_path(works_file_path):
         print("🔄 APIからURLマップを取得中...")
         works = fetch_works_api()
         save_works(works)
-
-        url_map = {}
-        
-        for title, work in works.items():
-            if len(work[0]) == 3:
-                _, url, production = work[0]
-                url_map[title] = (production, url)
-        return url_map
     else:
         print("✅ ローカルCSVからURLマップを読み込みました")
-        return load_url_map()
+    return utils.read_csv(works_file_path)
+        
 
 
 def save_works(works: dict):
@@ -73,16 +64,16 @@ def fetch_works_api() -> dict:
     """APIから取得"""
 
     # アクセスURLの準備--works--
-    # クール1か月前に切り替えるため+1で調整
     params = f"&filter_season={year}-{season}"
     target_url = url_join(config.ANNICT_WORK_URL, params)
 
-    # AnnictAPIを実行しアニメの作品情報、関連制作会社をを取得
+    # AnnictAPIを実行アニメの作品情報取得
     works = get_works(target_url)
 
     # アクセスURLの準備--staffs--
     params = "&filter_work_id={}"
     target_url = url_join(config.ANNICT_STAFFS_URL, params)
+    # 制作会社をを取得
     get_staffs(target_url, works)
     
     return works
@@ -91,26 +82,25 @@ def fetch_works_api() -> dict:
 # メイン処理
 def main() -> None:
     """スクリプトのメイン処理"""
+    earliest_list = {}
     
-    # スクレイピングCSVの管理は要検討
+    # スクレイピングCSVの有無（現時点では手動削除）
     if not utils.exists_file_path(schedule_file_path):
         url_map = get_url_map(force_refresh=False)
-        # Webスクレイピングを実行 対応表のURLより最速配信「日時・プラットフォーム」を取得
+        # Webスクレイピングを実行「配信日時・プラットフォーム」を取得
         earliest_list = scrape_anime_info(url_map)
         # 最速配信情報をCSVに記録
         utils.write_csv(schedule_file_path, earliest_list)
-    else:
         earliest_list = utils.read_csv(schedule_file_path, mode=2)
     
     # DBの存在チェック
     database_name = f'{year}{config.convert_season[season]}{config.DATABASE_NAME}'
     db_id = exists_database_in_page(config.PARENT_PAGE_ID, database_name)
     
-    # 存在しない場合のみテーブルを作成
+    # 存在しない場合のみテーブル作成＋行追加
     if db_id is None:
         # 新規DB作成時に古いDBをアーカイブ化して運用（論理削除）
-        db_id = create_database(config.PARENT_PAGE_ID, config.DATABASE_NAME)
-        # 行を連続してを追加
+        db_id = create_database(config.PARENT_PAGE_ID, config.DATABASE_NAME, [year, month])
         insert(earliest_list, db_id)
 
 

@@ -1,11 +1,15 @@
-from common.utils import get_sysdate, get_season
+from common.utils import (
+  get_sysdate,
+  get_season,
+  convert_str_ymd
+)
 from datetime import datetime
 import model.config as config
 from model.logging_config import setup_logger
 import requests
 
 # ロガーの準備
-logging = setup_logger(name="default_logger", log_file="./logs/notion.log")
+logging = setup_logger(name="notion",log_file="./logs/notion.log")
 
 def exists_database_in_page(parent_page_id: str, database_name: str):
     """
@@ -36,7 +40,7 @@ def exists_database_in_page(parent_page_id: str, database_name: str):
 
 
 
-def archive_database() -> None:
+def archive_database():
     """一つ前のDBをアーカイブ化"""
     url = f"https://api.notion.com/v1/blocks/{config.PARENT_PAGE_ID}/children"
     
@@ -47,12 +51,10 @@ def archive_database() -> None:
     old_db = data["results"][-2]
     old_db_id = old_db["id"]
     db_name = old_db["child_database"]["title"]
-
     # 直近の古いDBをアーカイブ化
     patch_url = f"https://api.notion.com/v1/blocks/{old_db_id}"
     res = requests.patch(patch_url, headers=config.headers, json={"archived": True})
     res.raise_for_status()
-    
     logging.info(f"Archived DB：{db_name} database_id: {old_db_id}")
 
 
@@ -115,16 +117,16 @@ def create_properties() -> dict:
 
 
 
-def create_row(id, date, platform, title, production, url) -> dict:
+def create_row(id, date, platforms, title, production, url) -> dict:
     """
     行データを作成.
 
     Args:
         id: 連番ID
         date: [YYYY-MM-DD, HH:MM, 曜日]
-        platform: プラットフォーム名
+        platform: プラットフォーム
         title: アニメタイトル
-        production: 制作会社名
+        production: 制作会社
         url: 公式URL
 
     Returns:
@@ -141,9 +143,8 @@ def create_row(id, date, platform, title, production, url) -> dict:
         "曜日": {"select": {"name": date[2].strip()}},
         "Title": {"rich_text": [{"text": {"content": title}}]},
         "プラットフォーム": {   
-            "multi_select": [{"name": platform.strip()}]
+            "multi_select": [{"name": platform.strip()} for platform in platforms]
         },
-        # "プラットフォーム": {"multi_select": {"name": platform.strip()}},
         "制作会社": {"rich_text": [{"text": {"content": production}}]},
         "公式URL": {"url": url}
         # "memo": {"rich_text": [{"text": {"content": ""}}]}  # 空プロパティは行作成時は設定しない
@@ -154,7 +155,7 @@ def create_row(id, date, platform, title, production, url) -> dict:
 
 
 
-def create_database(parent_page_id: str, database_name: str) -> str:
+def create_database(parent_page_id: str, database_name: str, ym: list) -> str:
     """
     データベース新規作成.
     
@@ -165,10 +166,9 @@ def create_database(parent_page_id: str, database_name: str) -> str:
     Returns:
         db_id: データベースID
     """
-    year, month, _ = get_sysdate()
+    year, month = ym[0], ym[1]
     # season = get_season(month+1)
-    # 検証用
-    season = get_season(month+2)
+    season = get_season(month+2) # 検証用
     url = f"{config.NOTION_URL}/v1/databases"
     
     database_title = f"{year}{config.convert_season[season]}{database_name}"
@@ -188,8 +188,8 @@ def create_database(parent_page_id: str, database_name: str) -> str:
         db_id = res.json()["id"]
 
     # 古いDBをアーカイブへ移動
-    archive_database()
     logging.info(f"新規データベース作成完了: データベースID：{db_id} データベース名：{database_title}")
+    archive_database()
     
     return db_id
 
@@ -213,31 +213,46 @@ def insert(earliest_list: dict, db_id: str) -> None:
     
     # IDは最大値＋1から開始
     current_id = 1
-    
     # 配信情報をテーブルへ連続して登録
     for title, earliest_info in earliest_list.items():
-        date, platform, production, url = earliest_info
+        # 要素がない[]場合
+        if not earliest_info: continue
         
-        year, month, day = map(int, date[:10].split("-"))
-        time_str = date[-8:-3]
+        date = earliest_info[0][1]
+        year, month, day = convert_str_ymd(earliest_info[0][1])
+        production = earliest_info[0][2]
+        url = earliest_info[0][3]
+        
         week_idx = datetime(year, month, day).weekday()
-        dt = [date[:10], time_str, config.day_of_week[week_idx]]
+        dt = [date[:10], date[11:], config.day_of_week[week_idx]]
+        
+        # 最速配信日時のプラットフォームだけ追加する
+        platforms = []
+        min_dt = datetime(2099, 12, 31)
+        for works in earliest_info:
+            y, m, day_ = convert_str_ymd(works[1])
+            hour, minute = works[1][11:].split(":")
+            d = datetime(y, m, day_, int(hour), int(minute))
+            
+            # 時刻が最小のプラットフォームのみ追加
+            if d <= min_dt:
+                min_dt = d
+                platforms.append(works[0])
+
         
         # 行データ作成
         row_data = create_row(
             current_id,
             dt,
-            platform,
+            platforms,
             title,
             production,
             url
         )
-        
         data = {
             "parent": {"database_id": db_id},
             "properties": row_data
         }
-        
         try:
             res = requests.post(nt_url, headers=config.headers, json=data)
             res.raise_for_status()
@@ -246,6 +261,5 @@ def insert(earliest_list: dict, db_id: str) -> None:
         except requests.exceptions.RequestException as e:
             logging.error(f"登録失敗: {e}, data={data}")
             fail_count += 1
-        
         current_id += 1
     logging.info(f"登録処理完了: 成功 {success_count} 件 / 失敗 {fail_count} 件")

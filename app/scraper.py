@@ -4,34 +4,17 @@ from datetime import datetime
 from model.handler import patterns_with_handlers, safe_datetime_with_25h
 from model.logging_config import setup_logger
 import model.config as config
-import requests, re, time, random, csv
+import requests, re, time, csv
 
 
 # ロガーの準備
-logging = setup_logger()
-
-
-def score_context_near_match(context: str, match_start: int, window: int = 50) -> int:
-    """指定した位置（match_start）の前後window文字分の文脈からスコアを計算"""
-    start = max(0, match_start - window)
-    end = min(len(context), match_start + window)
-    sliced_context = context[start:end]
-
-    score = 0
-    for k, v in config.CONTEXT_KEYWORDS.items():
-        score += sliced_context.count(k) * v  # 出現回数×重み
-
-    for k, v in config.FRAME_KEYWORDS.items():
-        score += sliced_context.count(k) * v
-
-    return score
-
+logging = setup_logger(name="scraper", log_file="./logs/scraper.log")
 
 
 # --- 年抽出 ---
 def extract_year_from_html(soup: BeautifulSoup) -> int:
     """
-    HTMLから年を抜き出す優先ロジック:
+    HTMLから基準年を抜き出す優先ロジック:
      1) metaタグ (複数候補)
      2) 本文中の 年+月(＋日) 形式（例: 2025年7月5日 / 2025-07）
      3) 本文中の年単独（最初に見つかるものではなく「より新しい年」を優先）
@@ -83,7 +66,7 @@ def extract_year_from_html(soup: BeautifulSoup) -> int:
     return datetime.now().year
 
 
-def extract_base_date_from_html(soup: BeautifulSoup) -> datetime:
+def extract_base_date_from_html(year: int, soup: BeautifulSoup) -> datetime:
     """HTMLから基準日（放送開始日など）を抽出"""
     # date_pattern = re.compile(r"(?P<month>\d{1,2})月(?P<day>\d{1,2})日")
     datetime_pattern = re.compile(
@@ -93,7 +76,7 @@ def extract_base_date_from_html(soup: BeautifulSoup) -> datetime:
         match = datetime_pattern.search(text)
         if match:
             # 年月日フル
-            year = extract_year_from_html(soup)
+            year = year
             month = int(match.group("month"))
             day = int(match.group("day"))
             hour = int(match.group("hour"))
@@ -103,76 +86,134 @@ def extract_base_date_from_html(soup: BeautifulSoup) -> datetime:
     return datetime.now()
 
 
+# 修正前
+# def extract_best_datetime_with_context(context: str, year: int, base_date: datetime):
+#     """
+#     コンテキストから最適な日時を抽出しスコアが最大の日時を返す.
+#     例）スコア：最速配信 or 独占 or 地上波同時などの特定のキーワードに設定している優先度
 
-def call_handler(handler, match, year, base_date):
-    """正規表現パターンにマッチしたhandlerを呼び出す"""
-    argcount = handler.__code__.co_argcount
-    if argcount == 1:
-        return handler(match)
-    elif argcount == 2:
-        return handler(match, year)
-    elif argcount == 3:
-        return handler(match, year, base_date)
-    else:
-        raise ValueError("Unsupported handler argument count")
+#     Args:
+#         context:
+#         year:
+#         base_date:
+
+#     Returns:
+#         candidates: スコアが高い日時 
+    
+#     """
+    
+#     # contextから年月日だけ抽出してbase_dateを上書きする
+#     md_match = re.search(r"(?P<month>\d{1,2})月(?P<day>\d{1,2})日", context)
+#     if md_match:
+#         month = int(md_match.group("month"))
+#         day = int(md_match.group("day"))
+#         base_date = datetime(year, month, day)
+    
+#     candidates = []
+
+#     for pattern in patterns_with_handlers:
+#         for match in pattern["pattern"].finditer(context):
+#             try:
+#                 dt = call_handler(pattern["handler"], match, year, base_date)
+#                 # 優先度が設定されていなければ0を設定
+#                 score = 1 + pattern.get("confidence", 0)
+#                 # score = 1 + score_context_near_match(context, match.start()) + pattern.get("confidence", 0)
+                
+#                 # スコア計算改善（出現したら1回だけ加算）
+#                 sliced_context = context[max(0, match.start()-50): match.end()+50]
+#                 score += sum(v for k, v in config.CONTEXT_KEYWORDS.items() if k in sliced_context)
+#                 score += sum(v for k, v in config.FRAME_KEYWORDS.items() if k in sliced_context)
+#                 score += sum(v for k, v in config.PLATFORMS.items() if k in sliced_context)
+
+#                 candidates.append((dt, score))
+#                 logging.debug(
+#                     f"Matched pattern: ID: {pattern['id']}, {pattern['pattern'].pattern},"
+#                     f"DateTime: {dt}, Score: {score}, Context: {context[:100]}"
+#                 )
+#             except Exception as e:
+#                 logging.warning(f"[extract error] {e} /ID: {pattern['id']} / pattern={pattern['pattern'].pattern} / handler={pattern['handler']} text={match.group(0)}")
+#                 print(f"[ERROR] handler実行中に例外発生: {e}")
+#                 print(f"[DEBUG] handler: {pattern['handler']}, pattern: {pattern['pattern'].pattern}")
+#                 continue
+
+#     if not candidates:
+#         logging.warning(f"No datetime candidates found in context: {context[:100]}")
+#         return None
+
+#     # スコアが最大の日時を返す
+#     # スコア降順 → base_dateに近い順
+#     candidates.sort(
+#         key=lambda x: (x[1], -abs((x[0] - base_date).total_seconds())),
+#         reverse=True
+#     )
+#     # candidates.sort(key=lambda x: x[1], reverse=True)
+#     # デバッグ用
+#     for dt, score in candidates:
+#         print(f"datetime={dt}, score={score}")
+    
+#     return candidates[0][0]
 
 
-
+# 修正版
 def extract_best_datetime_with_context(context: str, year: int, base_date: datetime):
     """
-    コンテキストから最適な日時を抽出しスコアが最大の日時を返す.
-    例）スコア：最速配信 or 独占 or 地上波同時などの特定のキーワードに設定している優先度
-
-    Args:
-        context:
-        year:
-        base_date:
-
-    Returns:
-        candidates: スコアが高い日時 
-    
+    コンテキストから最適な日時を抽出し、スコア最大の日時を返す。
+    前後行の文脈も参照し、スコアリングを拡張可能にしている。
     """
-    
-    # contextから年月日だけ抽出してbase_dateを上書きする
-    md_match = re.search(r"(?P<month>\d{1,2})月(?P<day>\d{1,2})日", context)
-    if md_match:
-        month = int(md_match.group("month"))
-        day = int(md_match.group("day"))
-        base_date = datetime(year, month, day)
-    
+    lines = context.splitlines()
     candidates = []
 
-    for pattern in patterns_with_handlers:
-        for match in pattern["pattern"].finditer(context):
-            try:
-                # if pattern["id"] == 17:
-                # if pattern["id"] == 2:
-                #     dt = handler_md_only(match, context.splitlines(), year)
-                # else:
-                dt = call_handler(pattern["handler"], match, year, base_date)
-                # 優先度が設定されていなければ0を設定
-                score = 1 + score_context_near_match(context, match.start()) + pattern.get("confidence", 0)
-                candidates.append((dt, score))
-                logging.debug(
-                    f"Matched pattern: ID: {pattern['id']}, {pattern['pattern'].pattern}, DateTime: {dt}, Score: {score}, Context: {context[:100]}"
-                )
-            except Exception as e:
-                logging.warning(f"[extract error] {e} /ID: {pattern['id']} / pattern={pattern['pattern'].pattern} / handler={pattern['handler']} text={match.group(0)}")
-                print(f"[ERROR] handler実行中に例外発生: {e}")
-                print(f"[DEBUG] handler: {pattern['handler']}, pattern: {pattern['pattern'].pattern}")
-                continue
+    for idx, line in enumerate(lines):
+        # 前後行を含むスライス
+        start = max(0, idx - 1)
+        end = min(len(lines), idx + 2)
+        context_slice = "\n".join(lines[start:end])
+
+        # 年月日を含むか判定
+        md_match = re.search(r"(?P<month>\d{1,2})月(?P<day>\d{1,2})日", context_slice)
+        slice_base_date = base_date
+        if md_match:
+            month = int(md_match.group("month"))
+            day = int(md_match.group("day"))
+            slice_base_date = slice_base_date.replace(month=month, day=day)
+
+        # パターンマッチ
+        for pattern in patterns_with_handlers:
+            for match in pattern["pattern"].finditer(context_slice):
+                try:
+                    handler = pattern["handler"]
+                    dt = handler(match, base_date.year, slice_base_date)
+                    # 基本スコア
+                    score = 1 + pattern.get("confidence", 0)
+
+                    # キーワードスコア（出現1回のみ）
+                    for k, v in config.CONTEXT_KEYWORDS.items():
+                        if k in context_slice:
+                            score += v
+                    for k, v in config.FRAME_KEYWORDS.items():
+                        if k in context_slice:
+                            score += v
+                    for k, v in config.PLATFORMS.items():
+                        if k in context_slice:
+                            score += v
+
+                    candidates.append((dt, score))
+                    logging.debug(f"Matched pattern ID={pattern['id']}, datetime={dt}, score={score}, context={context_slice[:100]}")
+                except Exception as e:
+                    logging.warning(f"[extract error] {e} / pattern ID={pattern['id']} / match={match.group(0)}")
+                    continue
 
     if not candidates:
         logging.warning(f"No datetime candidates found in context: {context[:100]}")
         return None
 
-    # スコアが最大の日時を返す
-    # スコア最大 → 同スコアなら datetime 降順（遅い方）
-    # candidates.sort(key=lambda x: (x[1], -x[0].timestamp()), reverse=True)
-    candidates.sort(key=lambda x: x[1], reverse=True)
-    # デバッグ用
+    # スコア降順 → base_dateに近い順でソート
+    candidates.sort(key=lambda x: (x[1], -abs((x[0] - base_date).total_seconds())), reverse=True)
+
+    # デバッグ出力
     for dt, score in candidates:
         print(f"datetime={dt}, score={score}")
+
     return candidates[0][0]
 
 
@@ -184,7 +225,7 @@ def extract_onair_times(soup: BeautifulSoup, year: int, base_date: datetime, rad
     Args:
         soup: サイトHTMLから取得した放送情報
         year: 基準の年
-        base_date: 放送開始日時の基準
+        base_date: 放送開始日時の基準月日
         radius: 文章の前後5行を対象とする範囲
 
     Returns:
@@ -206,6 +247,7 @@ def extract_onair_times(soup: BeautifulSoup, year: int, base_date: datetime, rad
                 context = " ".join(lines[max(0, i - radius) : min(num_lines, i + radius + 1)])
                 dt = extract_best_datetime_with_context(context, year, base_date)
                 if dt:
+                    # プラットフォームと対応した配信日時を追加
                     results.append((platform, dt))
                 else:
                     ng_results.append((platform, context[:200]))
@@ -236,11 +278,13 @@ def find_earliest_per_platform(matches: list, works) -> list:
     production, url = works
     for platform, dt in matches:
         if platform not in platform_map or dt < platform_map[platform][0]:
-            platform_map[platform] = [dt, production, url]
-    return sorted(platform_map.items(), key=lambda x: x[0])
+            platform_map[platform] = (dt, production, url)
+    
+    # 最速日時順にソート
+    return sorted(platform_map.items(), key=lambda x: x[1][0])
 
 
-def parse_broadcast_info(html, title:str, *works: list) -> list:
+def parse_broadcast_info(html, title: str, *works: list) -> list:
     """
     HTMLからプラットフォームと日時を抽出し、最速配信情報にまとめる
 
@@ -258,7 +302,7 @@ def parse_broadcast_info(html, title:str, *works: list) -> list:
 
         # 年と基準日を抽出
         year = extract_year_from_html(soup)
-        base_date = extract_base_date_from_html(soup)
+        base_date = extract_base_date_from_html(year, soup)
         logging.info(f"Extracted year: {year}, base_date: {base_date} for title: {title}")
 
         # 放送情報を抽出
@@ -317,7 +361,7 @@ def scrape_anime_info(title_url_map: dict, on_air="onair/") -> dict:
 
     print(f"アクセス中：")
     for title, works in title_url_map.items():
-        production, base_url = works
+        base_url, production = works[0]
         
         if base_url == "": continue
 
@@ -355,7 +399,7 @@ def scrape_anime_info(title_url_map: dict, on_air="onair/") -> dict:
             if html is not None:
                 broadcast_info[title] = parse_broadcast_info(html, title, production, base_url)
                 
-            time.sleep(random.uniform(1, 1.5))
+            time.sleep(1)
 
         except requests.RequestException as e:
             print("スクレイピングエラー発生：リトライ前に少し待機", {e})

@@ -1,315 +1,64 @@
-[2025-08-18 13:06:11][INFO][notion_register] Archived DB：2025夏anime_schedule_db database_id: 2529fee9-008f-810e-8b76-c3ed1df392db
-[2025-08-18 13:33:44][INFO][notion_register] Archived DB：2025夏anime_schedule_db database_id: 2529fee9-008f-810e-8b76-c3ed1df392db
-[2025-08-18 13:33:46][INFO][notion_register] 新規データベース作成完了: データベースID：2539fee9-008f-81dd-b998-d69956f9a5f6 データベース名：2025秋anime_schedule_db
-[2025-08-18 13:41:04][INFO][notion_register] Archived DB：2025夏anime_schedule_db database_id: 2529fee9-008f-810e-8b76-c3ed1df392db
-[2025-08-18 13:41:06][INFO][notion_register] 新規データベース作成完了: データベースID：2539fee9-008f-81a9-89fa-f5433d5bdaff データベース名：2025秋anime_schedule_db
-[2025-08-18 13:41:24][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '1'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-05'}}, '配信時間': {'rich_text': [{'text': {'content': '23:30'}}]}, '曜日': {'select': {'name': '土'}}, 'Title': {'rich_text': [{'text': {'content': '青春ブタ野郎はサンタクロースの夢を見ない'}}]}, 'プラットフォーム': {'multi_select': {'name': 'dアニメストア'}}, '制作会社': {'rich_text': [{'text': {'content': 'CloverWorks'}}]}, '公式URL': {'url': 'https://ao-buta.com/santa/'}}}
-[2025-08-18 13:41:25][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '2'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-06'}}, '配信時間': {'rich_text': [{'text': {'content': '00:00'}}]}, '曜日': {'select': {'name': '日'}}, 'Title': {'rich_text': [{'text': {'content': '追放白魔導師 ミニアニメ'}}]}, 'プラットフォーム': {'multi_select': {'name': 'dアニメストア'}}, '制作会社': {'rich_text': [{'text': {'content': 'インリアリティ'}}]}, '公式URL': {'url': 'https://tsuiho-shiromadoshi.com/'}}}
-[2025-08-18 13:41:25][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '3'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-08-16'}}, '配信時間': {'rich_text': [{'text': {'content': '00:00'}}]}, '曜日': {'select': {'name': '土'}}, 'Title': {'rich_text': [{'text': {'content': 'ガチアクタ'}}]}, 'プラットフォーム': {'multi_select': {'name': 'アニメタイムズ'}}, '制作会社': {'rich_text': [{'text': {'content': 'ボンズフィルム'}}]}, '公式URL': {'url': 'https://gachiakuta-anime.com/'}}}
-[2025-08-18 13:41:26][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '4'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-03'}}, '配信時間': {'rich_text': [{'text': {'content': '22:30'}}]}, '曜日': {'select': {'name': '木'}}, 'Title': {'rich_text': [{'text': {'content': '追放者食堂へようこそ！'}}]}, 'プラットフォーム': {'multi_select': {'name': 'アニメタイムズ'}}, '制作会社': {'rich_text': [{'text': {'content': 'OLM TEAM YOSHIOKA'}}]}, '公式URL': {'url': 'https://tsuihosha-shokudo.com/'}}}
-[2025-08-18 13:41:26][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '5'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-05'}}, '配信時間': {'rich_text': [{'text': {'content': '00:00'}}]}, '曜日': {'select': {'name': '土'}}, 'Title': {'rich_text': [{'text': {'content': '人妻の唇は缶チューハイの味がして'}}]}, 'プラットフォーム': {'multi_select': {'name': 'アニメタイムズ'}}, '制作会社': {'rich_text': [{'text': {'content': 'raiose'}}]}, '公式URL': {'url': 'https://hitoduma-canchuhai.deregula.com/'}}}
-[2025-08-18 13:41:27][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '6'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-07'}}, '配信時間': {'rich_text': [{'text': {'content': '00:30'}}]}, '曜日': {'select': {'name': '月'}}, 'Title': {'rich_text': [{'text': {'content': 'CITY THE ANIMATION'}}]}, 'プラットフォーム': {'multi_select': {'name': 'Prime Video'}}, '制作会社': {'rich_text': [{'text': {'content': '京都アニメーション'}}]}, '公式URL': {'url': 'https://city-the-animation.com/'}}}
-[2025-08-18 13:41:27][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '7'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-10'}}, '配信時間': {'rich_text': [{'text': {'content': '00:00'}}]}, '曜日': {'select': {'name': '木'}}, 'Title': {'rich_text': [{'text': {'content': '瑠璃の宝石'}}]}, 'プラットフォーム': {'multi_select': {'name': 'アニメタイムズ'}}, '制作会社': {'rich_text': [{'text': {'content': 'スタジオバインド'}}]}, '公式URL': {'url': 'https://rurinohouseki.com/'}}}
-[2025-08-18 13:41:27][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '8'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-02'}}, '配信時間': {'rich_text': [{'text': {'content': '22:00'}}]}, '曜日': {'select': {'name': '水'}}, 'Title': {'rich_text': [{'text': {'content': 'クレバテス-魔獣の王と赤子と屍の勇者-'}}]}, 'プラットフォーム': {'multi_select': {'name': 'dアニメストア'}}, '制作会社': {'rich_text': [{'text': {'content': 'Lay-duce'}}]}, '公式URL': {'url': 'https://clevatess.com/'}}}
-[2025-08-18 13:41:28][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '9'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-05'}}, '配信時間': {'rich_text': [{'text': {'content': '03:00'}}]}, '曜日': {'select': {'name': '土'}}, 'Title': {'rich_text': [{'text': {'content': '彼女、お借りします 第4期'}}]}, 'プラットフォーム': {'multi_select': {'name': 'dアニメストア'}}, '制作会社': {'rich_text': [{'text': {'content': 'トムス・エンタテインメント'}}]}, '公式URL': {'url': 'https://kanokari-official.com/'}}}
-[2025-08-18 13:41:28][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '10'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-06'}}, '配信時間': {'rich_text': [{'text': {'content': '03:30'}}]}, '曜日': {'select': {'name': '日'}}, 'Title': {'rich_text': [{'text': {'content': 'よふかしのうた Season2'}}]}, 'プラットフォーム': {'multi_select': {'name': 'Prime Video'}}, '制作会社': {'rich_text': [{'text': {'content': 'ライデンフィルム'}}]}, '公式URL': {'url': 'https://yofukashi-no-uta.com'}}}
-[2025-08-18 13:41:28][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '11'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-03'}}, '配信時間': {'rich_text': [{'text': {'content': '02:45'}}]}, '曜日': {'select': {'name': '木'}}, 'Title': {'rich_text': [{'text': {'content': '強くてニューサーガ'}}]}, 'プラットフォーム': {'multi_select': {'name': 'dアニメストア'}}, '制作会社': {'rich_text': [{'text': {'content': '創通'}}]}, '公式URL': {'url': 'https://tsuyosaga-pr.com/'}}}
-[2025-08-18 13:41:29][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '12'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-08-21'}}, '配信時間': {'rich_text': [{'text': {'content': '22:00'}}]}, '曜日': {'select': {'name': '木'}}, 'Title': {'rich_text': [{'text': {'content': '夢中さ、きみに。'}}]}, 'プラットフォーム': {'multi_select': {'name': 'dアニメストア'}}, '制作会社': {'rich_text': [{'text': {'content': '動画工房'}}]}, '公式URL': {'url': 'https://karaoke-muchusa.com/muchusa/'}}}
-[2025-08-18 13:41:29][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '13'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-06'}}, '配信時間': {'rich_text': [{'text': {'content': '01:30'}}]}, '曜日': {'select': {'name': '日'}}, 'Title': {'rich_text': [{'text': {'content': '公女殿下の家庭教師'}}]}, 'プラットフォーム': {'multi_select': {'name': 'アニメタイムズ'}}, '制作会社': {'rich_text': [{'text': {'content': 'スタジオブラン'}}]}, '公式URL': {'url': 'https://koujodenka-anime.com/'}}}
-[2025-08-18 13:41:29][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '14'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-17'}}, '配信時間': {'rich_text': [{'text': {'content': '22:30'}}]}, '曜日': {'select': {'name': '木'}}, 'Title': {'rich_text': [{'text': {'content': 'うたごえはミルフィーユ'}}]}, 'プラットフォーム': {'multi_select': {'name': 'dアニメストア'}}, '制作会社': {'rich_text': [{'text': {'content': '寿門堂'}}]}, '公式URL': {'url': 'https://utamille.com/anime/'}}}
-[2025-08-18 13:41:30][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '15'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-09'}}, '配信時間': {'rich_text': [{'text': {'content': '02:30'}}]}, '曜日': {'select': {'name': '水'}}, 'Title': {'rich_text': [{'text': {'content': 'Turkey!'}}]}, 'プラットフォーム': {'multi_select': {'name': 'dアニメストア'}}, '制作会社': {'rich_text': [{'text': {'content': 'BAKKEN RECORD'}}]}, '公式URL': {'url': 'https://turkey-project.com/'}}}
-[2025-08-18 13:41:32][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '16'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-06'}}, '配信時間': {'rich_text': [{'text': {'content': '00:30'}}]}, '曜日': {'select': {'name': '日'}}, 'Title': {'rich_text': [{'text': {'content': 'その着せ替え人形は恋をする Season 2'}}]}, 'プラットフォーム': {'multi_select': {'name': 'dアニメストア'}}, '制作会社': {'rich_text': [{'text': {'content': 'CloverWorks'}}]}, '公式URL': {'url': 'https://bisquedoll-anime.com/'}}}
-[2025-08-18 13:41:32][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '17'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-04'}}, '配信時間': {'rich_text': [{'text': {'content': '23:00'}}]}, '曜日': {'select': {'name': '金'}}, 'Title': {'rich_text': [{'text': {'content': 'ブスに花束を。'}}]}, 'プラットフォーム': {'multi_select': {'name': 'dアニメストア'}}, '制作会社': {'rich_text': [{'text': {'content': 'SILVER LINK.'}}]}, '公式URL': {'url': 'https://busunihanatabawo.com/'}}}
-[2025-08-18 13:41:33][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '18'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-06-28'}}, '配信時間': {'rich_text': [{'text': {'content': '00:00'}}]}, '曜日': {'select': {'name': '土'}}, 'Title': {'rich_text': [{'text': {'content': 'タコピーの原罪'}}]}, 'プラットフォーム': {'multi_select': {'name': 'dアニメストア'}}, '制作会社': {'rich_text': [{'text': {'content': 'ENISHIYA'}}]}, '公式URL': {'url': 'https://www.tbs.co.jp/anime/takopi_project/'}}}
-[2025-08-18 13:41:33][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '19'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-08-16'}}, '配信時間': {'rich_text': [{'text': {'content': '07:30'}}]}, '曜日': {'select': {'name': '土'}}, 'Title': {'rich_text': [{'text': {'content': '学校では教えてくれない大切なこと'}}]}, 'プラットフォーム': {'multi_select': {'name': 'Prime Video'}}, '制作会社': {'rich_text': [{'text': {'content': 'Imagica Infos'}}]}, '公式URL': {'url': 'https://gakkodeha-anime.com/'}}}
-[2025-08-18 13:41:34][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '20'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-19'}}, '配信時間': {'rich_text': [{'text': {'content': '23:00'}}]}, '曜日': {'select': {'name': '土'}}, 'Title': {'rich_text': [{'text': {'content': '気絶勇者と暗殺姫'}}]}, 'プラットフォーム': {'multi_select': {'name': 'dアニメストア'}}, '制作会社': {'rich_text': [{'text': {'content': 'CONNECT'}}]}, '公式URL': {'url': 'https://kizetsuyusha-anime.com/'}}}
-[2025-08-18 13:41:35][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '21'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-19'}}, '配信時間': {'rich_text': [{'text': {'content': '02:50'}}]}, '曜日': {'select': {'name': '土'}}, 'Title': {'rich_text': [{'text': {'content': 'ぬきたし THE ANIMATION'}}]}, 'プラットフォーム': {'multi_select': {'name': 'DMM TV'}}, '制作会社': {'rich_text': [{'text': {'content': 'パッショーネ'}}]}, '公式URL': {'url': 'https://nukiani.com/'}}}
-[2025-08-18 13:41:35][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '22'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2024-08-16'}}, '配信時間': {'rich_text': [{'text': {'content': '22:30'}}]}, '曜日': {'select': {'name': '金'}}, 'Title': {'rich_text': [{'text': {'content': 'フードコートで、また明日。'}}]}, 'プラットフォーム': {'multi_select': {'name': 'ABEMA'}}, '制作会社': {'rich_text': [{'text': {'content': 'Atelier Pontdarc'}}]}, '公式URL': {'url': 'https://www.foodcourtjk-anime.com/'}}}
-[2025-08-18 13:41:36][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '23'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2024-07-07'}}, '配信時間': {'rich_text': [{'text': {'content': '00:20'}}]}, '曜日': {'select': {'name': '日'}}, 'Title': {'rich_text': [{'text': {'content': 'まったく最近の探偵ときたら'}}]}, 'プラットフォーム': {'multi_select': {'name': 'ABEMA'}}, '制作会社': {'rich_text': [{'text': {'content': 'ライデンフィルム'}}]}, '公式URL': {'url': 'https://mattan-anime.com/'}}}
-[2025-08-18 13:41:36][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '24'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-11'}}, '配信時間': {'rich_text': [{'text': {'content': '00:00'}}]}, '曜日': {'select': {'name': '金'}}, 'Title': {'rich_text': [{'text': {'content': '帝乃三姉妹は案外、チョロい。'}}]}, 'プラットフォーム': {'multi_select': {'name': 'アニメタイムズ'}}, '制作会社': {'rich_text': [{'text': {'content': 'P.A.WORKS'}}]}, '公式URL': {'url': 'https://mikadono.family/'}}}
-[2025-08-18 13:41:37][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '25'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-06'}}, '配信時間': {'rich_text': [{'text': {'content': '00:00'}}]}, '曜日': {'select': {'name': '日'}}, 'Title': {'rich_text': [{'text': {'content': '勇者パーティーを追放された白魔導師、Sランク冒険者に拾われる ～この白魔導師が規格外すぎる～'}}]}, 'プラットフォーム': {'multi_select': {'name': 'dアニメストア'}}, '制作会社': {'rich_text': [{'text': {'content': 'Felix Film'}}]}, '公式URL': {'url': 'https://tsuiho-shiromadoshi.com/'}}}
-[2025-08-18 13:41:38][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '26'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-02'}}, '配信時間': {'rich_text': [{'text': {'content': '01:00'}}]}, '曜日': {'select': {'name': '水'}}, 'Title': {'rich_text': [{'text': {'content': '地獄先生ぬ〜べ〜 (2025)'}}]}, 'プラットフォーム': {'multi_select': {'name': 'U-NEXT'}}, '制作会社': {'rich_text': [{'text': {'content': 'スタジオKAI'}}]}, '公式URL': {'url': 'https://nube-anime.com/'}}}
-[2025-08-18 13:41:38][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '27'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2023-08-17'}}, '配信時間': {'rich_text': [{'text': {'content': '00:00'}}]}, '曜日': {'select': {'name': '木'}}, 'Title': {'rich_text': [{'text': {'content': '桃源暗鬼'}}]}, 'プラットフォーム': {'multi_select': {'name': 'dアニメストア'}}, '制作会社': {'rich_text': [{'text': {'content': 'スタジオ雲雀'}}]}, '公式URL': {'url': 'https://tougenanki-anime.com/'}}}
-[2025-08-18 13:41:38][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '28'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-05'}}, '配信時間': {'rich_text': [{'text': {'content': '00:00'}}]}, '曜日': {'select': {'name': '土'}}, 'Title': {'rich_text': [{'text': {'content': 'サイレント・ウィッチ 沈黙の魔女の隠しごと'}}]}, 'プラットフォーム': {'multi_select': {'name': 'dアニメストア'}}, '制作会社': {'rich_text': [{'text': {'content': 'Studio五組'}}]}, '公式URL': {'url': 'https://silentwitch.net/'}}}
-[2025-08-18 13:41:38][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '29'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-06'}}, '配信時間': {'rich_text': [{'text': {'content': '22:00'}}]}, '曜日': {'select': {'name': '日'}}, 'Title': {'rich_text': [{'text': {'content': '白豚貴族ですが前世の記憶が生えたのでひよこな弟育てます'}}]}, 'プラットフォーム': {'multi_select': {'name': 'Prime Video'}}, '制作会社': {'rich_text': [{'text': {'content': 'スタジオコメット'}}]}, '公式URL': {'url': 'https://shirohiyo.com/'}}}
-[2025-08-18 13:41:39][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '30'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-05'}}, '配信時間': {'rich_text': [{'text': {'content': '02:00'}}]}, '曜日': {'select': {'name': '土'}}, 'Title': {'rich_text': [{'text': {'content': '雨と君と'}}]}, 'プラットフォーム': {'multi_select': {'name': 'dアニメストア'}}, '制作会社': {'rich_text': [{'text': {'content': 'レスプリ'}}]}, '公式URL': {'url': 'https://amekimi-anime.com/'}}}
-[2025-08-18 13:41:39][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '31'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-08'}}, '配信時間': {'rich_text': [{'text': {'content': '00:00'}}]}, '曜日': {'select': {'name': '火'}}, 'Title': {'rich_text': [{'text': {'content': '美男高校地球防衛部ハイカラ！'}}]}, 'プラットフォーム': {'multi_select': {'name': 'U-NEXT'}}, '制作会社': {'rich_text': [{'text': {'content': 'スタジオディーン'}}]}, '公式URL': {'url': 'https://boueibu.com/hc/'}}}
-[2025-08-18 13:41:40][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '32'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-10'}}, '配信時間': {'rich_text': [{'text': {'content': '01:00'}}]}, '曜日': {'select': {'name': '木'}}, 'Title': {'rich_text': [{'text': {'content': 'New PANTY & STOCKING with GARTERBELT'}}]}, 'プラットフォーム': {'multi_select': {'name': 'Prime Video'}}, '制作会社': {'rich_text': [{'text': {'content': 'TRIGGER'}}]}, '公式URL': {'url': 'https://newpsg.com/'}}}
-[2025-08-18 13:41:41][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '33'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-03'}}, '配信時間': {'rich_text': [{'text': {'content': '02:00'}}]}, '曜日': {'select': {'name': '木'}}, 'Title': {'rich_text': [{'text': {'content': '水属性の魔法使い'}}]}, 'プラットフォーム': {'multi_select': {'name': 'dアニメストア'}}, '制作会社': {'rich_text': [{'text': {'content': 'Wonderland'}}]}, '公式URL': {'url': 'https://mizuzokusei-anime.com/'}}}
-[2025-08-18 13:41:41][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '34'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-10'}}, '配信時間': {'rich_text': [{'text': {'content': '01:00'}}]}, '曜日': {'select': {'name': '木'}}, 'Title': {'rich_text': [{'text': {'content': '傷だらけ聖女より報復をこめて'}}]}, 'プラットフォーム': {'multi_select': {'name': 'アニメタイムズ'}}, '制作会社': {'rich_text': [{'text': {'content': 'SORAJIMA'}}]}, '公式URL': {'url': 'https://animationid.com/kizudarakeseijo/'}}}
-[2025-08-18 13:41:41][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '35'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-06'}}, '配信時間': {'rich_text': [{'text': {'content': '00:00'}}]}, '曜日': {'select': {'name': '日'}}, 'Title': {'rich_text': [{'text': {'content': 'ばっどがーる'}}]}, 'プラットフォーム': {'multi_select': {'name': 'dアニメストア'}}, '制作会社': {'rich_text': [{'text': {'content': 'ブリッジ'}}]}, '公式URL': {'url': 'https://badgirl-anime.com/'}}}
-[2025-08-18 13:41:42][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '36'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-04'}}, '配信時間': {'rich_text': [{'text': {'content': '02:30'}}]}, '曜日': {'select': {'name': '金'}}, 'Title': {'rich_text': [{'text': {'content': 'ずたぼろ令嬢は姉の元婚約者に溺愛される'}}]}, 'プラットフォーム': {'multi_select': {'name': 'dアニメストア'}}, '制作会社': {'rich_text': [{'text': {'content': 'ランドック・スタジオ'}}]}, '公式URL': {'url': 'https://zutaboro-anime.com/'}}}
-[2025-08-18 13:41:42][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '37'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-16'}}, '配信時間': {'rich_text': [{'text': {'content': '01:30'}}]}, '曜日': {'select': {'name': '水'}}, 'Title': {'rich_text': [{'text': {'content': 'ふたりソロキャンプ'}}]}, 'プラットフォーム': {'multi_select': {'name': 'dアニメストア'}}, '制作会社': {'rich_text': [{'text': {'content': 'Synergy SP'}}]}, '公式URL': {'url': 'https://2solocamp-anime.com/'}}}
-[2025-08-18 13:41:43][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '38'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-13'}}, '配信時間': {'rich_text': [{'text': {'content': '19:00'}}]}, '曜日': {'select': {'name': '日'}}, 'Title': {'rich_text': [{'text': {'content': '薫る花は凛と咲く'}}]}, 'プラットフォーム': {'multi_select': {'name': 'アニメタイムズ'}}, '制作会社': {'rich_text': [{'text': {'content': 'CloverWorks'}}]}, '公式URL': {'url': 'http://kaoruhana-anime.com/'}}}
-[2025-08-18 13:41:43][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '39'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-06'}}, '配信時間': {'rich_text': [{'text': {'content': '22:00'}}]}, '曜日': {'select': {'name': '日'}}, 'Title': {'rich_text': [{'text': {'content': '出禁のモグラ'}}]}, 'プラットフォーム': {'multi_select': {'name': 'アニメタイムズ'}}, '制作会社': {'rich_text': [{'text': {'content': 'ブレインズ・ベース'}}]}, '公式URL': {'url': 'https://dekinnomogura.com/'}}}
-[2025-08-18 13:41:43][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '40'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-07'}}, '配信時間': {'rich_text': [{'text': {'content': '00:00'}}]}, '曜日': {'select': {'name': '月'}}, 'Title': {'rich_text': [{'text': {'content': 'ゲーセン少女と異文化交流'}}]}, 'プラットフォーム': {'multi_select': {'name': 'dアニメストア'}}, '制作会社': {'rich_text': [{'text': {'content': 'ノーマッド'}}]}, '公式URL': {'url': 'https://gacen-girl-anime.com/'}}}
-[2025-08-18 13:41:45][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '41'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-06'}}, '配信時間': {'rich_text': [{'text': {'content': '05:30'}}]}, '曜日': {'select': {'name': '日'}}, 'Title': {'rich_text': [{'text': {'content': '地縛少年花子くん2 後編'}}]}, 'プラットフォーム': {'multi_select': {'name': 'dアニメストア'}}, '制作会社': {'rich_text': [{'text': {'content': 'Lerche'}}]}, '公式URL': {'url': 'https://www.hanakokun.com/2nd/'}}}
-[2025-08-18 13:41:45][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '42'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-24'}}, '配信時間': {'rich_text': [{'text': {'content': '22:00'}}]}, '曜日': {'select': {'name': '木'}}, 'Title': {'rich_text': [{'text': {'content': 'カラオケ行こ！'}}]}, 'プラットフォーム': {'multi_select': {'name': 'dアニメストア'}}, '制作会社': {'rich_text': [{'text': {'content': '動画工房'}}]}, '公式URL': {'url': 'https://karaoke-muchusa.com/'}}}
-[2025-08-18 13:41:46][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '43'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-05'}}, '配信時間': {'rich_text': [{'text': {'content': '22:30'}}]}, '曜日': {'select': {'name': '土'}}, 'Title': {'rich_text': [{'text': {'content': "9-nine- Ruler's Crown"}}]}, 'プラットフォーム': {'multi_select': {'name': 'Prime Video'}}, '制作会社': {'rich_text': [{'text': {'content': 'ピー・アール・エー'}}]}, '公式URL': {'url': 'https://nine-anime.marv.jp/'}}}
-[2025-08-18 13:41:46][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '44'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-08-17'}}, '配信時間': {'rich_text': [{'text': {'content': '00:00'}}]}, '曜日': {'select': {'name': '日'}}, 'Title': {'rich_text': [{'text': {'content': '異世界黙示録マイノグーラ ～破滅の文明で始める世界征服～'}}]}, 'プラットフォーム': {'multi_select': {'name': 'アニメタイムズ'}}, '制作会社': {'rich_text': [{'text': {'content': 'MAHO FILM'}}]}, '公式URL': {'url': 'https://mynoghra-anime.com/'}}}
-[2025-08-18 13:41:46][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '45'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-08'}}, '配信時間': {'rich_text': [{'text': {'content': '23:00'}}]}, '曜日': {'select': {'name': '火'}}, 'Title': {'rich_text': [{'text': {'content': 'カッコウの許嫁 Season2'}}]}, 'プラットフォーム': {'multi_select': {'name': 'dアニメストア'}}, '制作会社': {'rich_text': [{'text': {'content': 'オクルトノボル'}}]}, '公式URL': {'url': 'https://cuckoos-anime.com/'}}}
-[2025-08-18 13:41:47][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '46'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-05'}}, '配信時間': {'rich_text': [{'text': {'content': '11:30'}}]}, '曜日': {'select': {'name': '土'}}, 'Title': {'rich_text': [{'text': {'content': 'フェルマーの料理'}}]}, 'プラットフォーム': {'multi_select': {'name': 'アニメタイムズ'}}, '制作会社': {'rich_text': [{'text': {'content': 'ドメリカ'}}]}, '公式URL': {'url': 'https://www.fermat-anime.com/'}}}
-[2025-08-18 13:41:48][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '47'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-08'}}, '配信時間': {'rich_text': [{'text': {'content': '01:00'}}]}, '曜日': {'select': {'name': '火'}}, 'Title': {'rich_text': [{'text': {'content': 'ぐらんぶる Season 2'}}]}, 'プラットフォーム': {'multi_select': {'name': 'アニメタイムズ'}}, '制作会社': {'rich_text': [{'text': {'content': 'ゼロジー'}}]}, '公式URL': {'url': 'https://grandblue-anime.com/'}}}
-[2025-08-18 13:41:48][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '48'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-09'}}, '配信時間': {'rich_text': [{'text': {'content': '22:00'}}]}, '曜日': {'select': {'name': '水'}}, 'Title': {'rich_text': [{'text': {'content': '盾の勇者の成り上がり Season4'}}]}, 'プラットフォーム': {'multi_select': {'name': 'dアニメストア'}}, '制作会社': {'rich_text': [{'text': {'content': 'キネマシトラス'}}]}, '公式URL': {'url': 'http://shieldhero-anime.jp/'}}}
-[2025-08-18 13:41:48][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '49'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-06'}}, '配信時間': {'rich_text': [{'text': {'content': '00:55'}}]}, '曜日': {'select': {'name': '日'}}, 'Title': {'rich_text': [{'text': {'content': '光が死んだ夏'}}]}, 'プラットフォーム': {'multi_select': {'name': 'Netflix'}}, '制作会社': {'rich_text': [{'text': {'content': 'CygamesPictures'}}]}, '公式URL': {'url': 'https://hikanatsu-anime.com/'}}}
-[2025-08-18 13:41:48][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '50'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-10'}}, '配信時間': {'rich_text': [{'text': {'content': '00:00'}}]}, '曜日': {'select': {'name': '木'}}, 'Title': {'rich_text': [{'text': {'content': 'ニャイト・オブ・ザ・リビングキャット'}}]}, 'プラットフォーム': {'multi_select': {'name': 'dアニメストア'}}, '制作会社': {'rich_text': [{'text': {'content': 'OLM'}}]}, '公式URL': {'url': 'https://nyailivi.com/'}}}
-[2025-08-18 13:41:49][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '51'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-04-14'}}, '配信時間': {'rich_text': [{'text': {'content': '03:30'}}]}, '曜日': {'select': {'name': '月'}}, 'Title': {'rich_text': [{'text': {'content': 'ダンダダン 第2期'}}]}, 'プラットフォーム': {'multi_select': {'name': 'ABEMA'}}, '制作会社': {'rich_text': [{'text': {'content': 'サイエンスSARU'}}]}, '公式URL': {'url': 'https://anime-dandadan.com/'}}}
-[2025-08-18 13:41:49][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '52'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-06'}}, '配信時間': {'rich_text': [{'text': {'content': '11:00'}}]}, '曜日': {'select': {'name': '日'}}, 'Title': {'rich_text': [{'text': {'content': 'ブサメンガチファイター'}}]}, 'プラットフォーム': {'multi_select': {'name': 'dアニメストア'}}, '制作会社': {'rich_text': [{'text': {'content': 'WHITE FOX'}}]}, '公式URL': {'url': 'https://busamen-gachi-fighter.com/'}}}
-[2025-08-18 13:41:50][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '53'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-07'}}, '配信時間': {'rich_text': [{'text': {'content': '01:30'}}]}, '曜日': {'select': {'name': '月'}}, 'Title': {'rich_text': [{'text': {'content': 'わたしが恋人になれるわけないじゃん、ムリムリ!（※ムリじゃなかった!?）'}}]}, 'プラットフォーム': {'multi_select': {'name': 'アニメタイムズ'}}, '制作会社': {'rich_text': [{'text': {'content': 'studio MOTHER'}}]}, '公式URL': {'url': 'https://www.watanare-anime.com/'}}}
-[2025-08-18 13:41:51][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '54'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-05'}}, '配信時間': {'rich_text': [{'text': {'content': '01:30'}}]}, '曜日': {'select': {'name': '土'}}, 'Title': {'rich_text': [{'text': {'content': '渡くんの××が崩壊寸前'}}]}, 'プラットフォーム': {'multi_select': {'name': 'Prime Video'}}, '制作会社': {'rich_text': [{'text': {'content': 'ステイプルエンタテインメント'}}]}, '公式URL': {'url': 'https://watarikunxx-anime.com/'}}}
-[2025-08-18 13:41:52][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '55'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-10'}}, '配信時間': {'rich_text': [{'text': {'content': '00:30'}}]}, '曜日': {'select': {'name': '木'}}, 'Title': {'rich_text': [{'text': {'content': '転生したら第七王子だったので、気ままに魔術を極めます 第2期'}}]}, 'プラットフォーム': {'multi_select': {'name': 'dアニメストア'}}, '制作会社': {'rich_text': [{'text': {'content': 'つむぎ秋田アニメLab'}}]}, '公式URL': {'url': 'https://dainanaoji.com/'}}}
-[2025-08-18 13:41:52][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '56'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-07'}}, '配信時間': {'rich_text': [{'text': {'content': '01:23'}}]}, '曜日': {'select': {'name': '月'}}, 'Title': {'rich_text': [{'text': {'content': 'ホテル・インヒューマンズ'}}]}, 'プラットフォーム': {'multi_select': {'name': 'dアニメストア'}}, '制作会社': {'rich_text': [{'text': {'content': 'ブリッジ'}}]}, '公式URL': {'url': 'https://hotel-inhumans.com/'}}}
-[2025-08-18 13:41:53][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '57'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-02'}}, '配信時間': {'rich_text': [{'text': {'content': '17:30'}}]}, '曜日': {'select': {'name': '水'}}, 'Title': {'rich_text': [{'text': {'content': '自動販売機に生まれ変わった俺は迷宮を彷徨う 2nd season'}}]}, 'プラットフォーム': {'multi_select': {'name': 'dアニメストア'}}, '制作会社': {'rich_text': [{'text': {'content': 'Studio五組'}}]}, '公式URL': {'url': 'https://jihanki-anime.com/'}}}
-[2025-08-18 13:41:53][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '58'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-03'}}, '配信時間': {'rich_text': [{'text': {'content': '12:00'}}]}, '曜日': {'select': {'name': '木'}}, 'Title': {'rich_text': [{'text': {'content': '転生宗主の覇道譚 ～すべてを呑み込むサカナと這い上がる～'}}]}, 'プラットフォーム': {'multi_select': {'name': 'dアニメストア'}}, '制作会社': {'rich_text': [{'text': {'content': '大火鳥文化'}}]}, '公式URL': {'url': 'https://b8station.tv/tenseisoushu/'}}}
-[2025-08-18 13:41:53][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-81a9-89fa-f5433d5bdaff'}, 'properties': {'ID': {'title': [{'text': {'content': '59'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-07'}}, '配信時間': {'rich_text': [{'text': {'content': '01:00'}}]}, '曜日': {'select': {'name': '月'}}, 'Title': {'rich_text': [{'text': {'content': 'デキちゃうまで婚'}}]}, 'プラットフォーム': {'multi_select': {'name': 'DMM TV'}}, '制作会社': {'rich_text': [{'text': {'content': 'スタジオレオ'}}]}, '公式URL': {'url': 'https://dekichaumade-kon.af-original.com/'}}}
-[2025-08-18 13:41:53][INFO][notion_register] 登録処理完了: 成功 0 件 / 失敗 59 件
-[2025-08-18 13:45:01][INFO][notion_register] Archived DB：2025夏anime_schedule_db database_id: 2529fee9-008f-810e-8b76-c3ed1df392db
-[2025-08-18 13:45:01][INFO][notion_register] 新規データベース作成完了: データベースID：2539fee9-008f-8154-a704-f0fab2d19b67 データベース名：2025秋anime_schedule_db
-[2025-08-18 13:56:54][INFO][notion_register] Archived DB：2025夏anime_schedule_db database_id: 2529fee9-008f-810e-8b76-c3ed1df392db
-[2025-08-18 13:56:54][INFO][notion_register] 新規データベース作成完了: データベースID：2539fee9-008f-8139-b53b-eb08267b2471 データベース名：2025秋anime_schedule_db
-[2025-08-18 13:57:27][INFO][notion_register] 登録成功: 青春ブタ野郎はサンタクロースの夢を見ない (1)
-[2025-08-18 13:57:28][INFO][notion_register] 登録成功: 追放白魔導師 ミニアニメ (2)
-[2025-08-18 13:57:28][INFO][notion_register] 登録成功: ガチアクタ (3)
-[2025-08-18 13:57:29][INFO][notion_register] 登録成功: 追放者食堂へようこそ！ (4)
-[2025-08-18 13:57:31][INFO][notion_register] 登録成功: 人妻の唇は缶チューハイの味がして (5)
-[2025-08-18 13:57:31][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-8139-b53b-eb08267b2471'}, 'properties': {'ID': {'title': [{'text': {'content': '6'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-07'}}, '配信時間': {'rich_text': [{'text': {'content': '00:30'}}]}, '曜日': {'select': {'name': '月'}}, 'Title': {'rich_text': [{'text': {'content': 'CITY THE ANIMATION'}}]}, 'プラットフォーム': {'multi_select': [{'name': 'P'}, {'name': 'r'}, {'name': 'i'}, {'name': 'm'}, {'name': 'e'}, {'name': ''}, {'name': 'V'}, {'name': 'i'}, {'name': 'd'}, {'name': 'e'}, {'name': 'o'}]}, '制作会社': {'rich_text': [{'text': {'content': '京都アニメーション'}}]}, '公式URL': {'url': 'https://city-the-animation.com/'}}}
-[2025-08-18 13:57:31][INFO][notion_register] 登録成功: 瑠璃の宝石 (7)
-[2025-08-18 13:57:32][INFO][notion_register] 登録成功: クレバテス-魔獣の王と赤子と屍の勇者- (8)
-[2025-08-18 13:57:32][INFO][notion_register] 登録成功: 彼女、お借りします 第4期 (9)
-[2025-08-18 13:57:33][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-8139-b53b-eb08267b2471'}, 'properties': {'ID': {'title': [{'text': {'content': '10'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-06'}}, '配信時間': {'rich_text': [{'text': {'content': '03:30'}}]}, '曜日': {'select': {'name': '日'}}, 'Title': {'rich_text': [{'text': {'content': 'よふかしのうた Season2'}}]}, 'プラットフォーム': {'multi_select': [{'name': 'P'}, {'name': 'r'}, {'name': 'i'}, {'name': 'm'}, {'name': 'e'}, {'name': ''}, {'name': 'V'}, {'name': 'i'}, {'name': 'd'}, {'name': 'e'}, {'name': 'o'}]}, '制作会社': {'rich_text': [{'text': {'content': 'ライデンフィルム'}}]}, '公式URL': {'url': 'https://yofukashi-no-uta.com'}}}
-[2025-08-18 13:57:34][INFO][notion_register] 登録成功: 強くてニューサーガ (11)
-[2025-08-18 13:57:34][INFO][notion_register] 登録成功: 夢中さ、きみに。 (12)
-[2025-08-18 13:57:35][INFO][notion_register] 登録成功: 公女殿下の家庭教師 (13)
-[2025-08-18 13:57:36][INFO][notion_register] 登録成功: うたごえはミルフィーユ (14)
-[2025-08-18 13:57:36][INFO][notion_register] 登録成功: Turkey! (15)
-[2025-08-18 13:57:37][INFO][notion_register] 登録成功: その着せ替え人形は恋をする Season 2 (16)
-[2025-08-18 13:57:37][INFO][notion_register] 登録成功: ブスに花束を。 (17)
-[2025-08-18 13:57:41][INFO][notion_register] 登録成功: タコピーの原罪 (18)
-[2025-08-18 13:57:41][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-8139-b53b-eb08267b2471'}, 'properties': {'ID': {'title': [{'text': {'content': '19'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-08-16'}}, '配信時間': {'rich_text': [{'text': {'content': '07:30'}}]}, '曜日': {'select': {'name': '土'}}, 'Title': {'rich_text': [{'text': {'content': '学校では教えてくれない大切なこと'}}]}, 'プラットフォーム': {'multi_select': [{'name': 'P'}, {'name': 'r'}, {'name': 'i'}, {'name': 'm'}, {'name': 'e'}, {'name': ''}, {'name': 'V'}, {'name': 'i'}, {'name': 'd'}, {'name': 'e'}, {'name': 'o'}]}, '制作会社': {'rich_text': [{'text': {'content': 'Imagica Infos'}}]}, '公式URL': {'url': 'https://gakkodeha-anime.com/'}}}
-[2025-08-18 13:57:42][INFO][notion_register] 登録成功: 気絶勇者と暗殺姫 (20)
-[2025-08-18 13:57:42][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-8139-b53b-eb08267b2471'}, 'properties': {'ID': {'title': [{'text': {'content': '21'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-19'}}, '配信時間': {'rich_text': [{'text': {'content': '02:50'}}]}, '曜日': {'select': {'name': '土'}}, 'Title': {'rich_text': [{'text': {'content': 'ぬきたし THE ANIMATION'}}]}, 'プラットフォーム': {'multi_select': [{'name': 'D'}, {'name': 'M'}, {'name': 'M'}, {'name': ''}, {'name': 'T'}, {'name': 'V'}]}, '制作会社': {'rich_text': [{'text': {'content': 'パッショーネ'}}]}, '公式URL': {'url': 'https://nukiani.com/'}}}
-[2025-08-18 13:57:44][INFO][notion_register] 登録成功: フードコートで、また明日。 (22)
-[2025-08-18 13:57:45][INFO][notion_register] 登録成功: まったく最近の探偵ときたら (23)
-[2025-08-18 13:57:45][INFO][notion_register] 登録成功: 帝乃三姉妹は案外、チョロい。 (24)
-[2025-08-18 13:57:46][INFO][notion_register] 登録成功: 勇者パーティーを追放された白魔導師、Sランク冒険者に拾われる ～この白魔導師が規格外すぎる～ (25)
-[2025-08-18 13:57:47][INFO][notion_register] 登録成功: 地獄先生ぬ〜べ〜 (2025) (26)
-[2025-08-18 13:57:48][INFO][notion_register] 登録成功: 桃源暗鬼 (27)
-[2025-08-18 13:57:49][INFO][notion_register] 登録成功: サイレント・ウィッチ 沈黙の魔女の隠しごと (28)
-[2025-08-18 13:57:49][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-8139-b53b-eb08267b2471'}, 'properties': {'ID': {'title': [{'text': {'content': '29'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-06'}}, '配信時間': {'rich_text': [{'text': {'content': '22:00'}}]}, '曜日': {'select': {'name': '日'}}, 'Title': {'rich_text': [{'text': {'content': '白豚貴族ですが前世の記憶が生えたのでひよこな弟育てます'}}]}, 'プラットフォーム': {'multi_select': [{'name': 'P'}, {'name': 'r'}, {'name': 'i'}, {'name': 'm'}, {'name': 'e'}, {'name': ''}, {'name': 'V'}, {'name': 'i'}, {'name': 'd'}, {'name': 'e'}, {'name': 'o'}]}, '制作会社': {'rich_text': [{'text': {'content': 'スタジオコメット'}}]}, '公式URL': {'url': 'https://shirohiyo.com/'}}}
-[2025-08-18 13:57:52][INFO][notion_register] 登録成功: 雨と君と (30)
-[2025-08-18 13:57:53][INFO][notion_register] 登録成功: 美男高校地球防衛部ハイカラ！ (31)
-[2025-08-18 13:57:53][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-8139-b53b-eb08267b2471'}, 'properties': {'ID': {'title': [{'text': {'content': '32'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-10'}}, '配信時間': {'rich_text': [{'text': {'content': '01:00'}}]}, '曜日': {'select': {'name': '木'}}, 'Title': {'rich_text': [{'text': {'content': 'New PANTY & STOCKING with GARTERBELT'}}]}, 'プラットフォーム': {'multi_select': [{'name': 'P'}, {'name': 'r'}, {'name': 'i'}, {'name': 'm'}, {'name': 'e'}, {'name': ''}, {'name': 'V'}, {'name': 'i'}, {'name': 'd'}, {'name': 'e'}, {'name': 'o'}]}, '制作会社': {'rich_text': [{'text': {'content': 'TRIGGER'}}]}, '公式URL': {'url': 'https://newpsg.com/'}}}
-[2025-08-18 13:57:54][INFO][notion_register] 登録成功: 水属性の魔法使い (33)
-[2025-08-18 13:57:55][INFO][notion_register] 登録成功: 傷だらけ聖女より報復をこめて (34)
-[2025-08-18 13:57:55][INFO][notion_register] 登録成功: ばっどがーる (35)
-[2025-08-18 13:57:56][INFO][notion_register] 登録成功: ずたぼろ令嬢は姉の元婚約者に溺愛される (36)
-[2025-08-18 13:57:56][INFO][notion_register] 登録成功: ふたりソロキャンプ (37)
-[2025-08-18 13:57:57][INFO][notion_register] 登録成功: 薫る花は凛と咲く (38)
-[2025-08-18 13:57:57][INFO][notion_register] 登録成功: 出禁のモグラ (39)
-[2025-08-18 13:57:59][INFO][notion_register] 登録成功: ゲーセン少女と異文化交流 (40)
-[2025-08-18 13:58:02][INFO][notion_register] 登録成功: 地縛少年花子くん2 後編 (41)
-[2025-08-18 13:58:05][INFO][notion_register] 登録成功: カラオケ行こ！ (42)
-[2025-08-18 13:58:05][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-8139-b53b-eb08267b2471'}, 'properties': {'ID': {'title': [{'text': {'content': '43'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-05'}}, '配信時間': {'rich_text': [{'text': {'content': '22:30'}}]}, '曜日': {'select': {'name': '土'}}, 'Title': {'rich_text': [{'text': {'content': "9-nine- Ruler's Crown"}}]}, 'プラットフォーム': {'multi_select': [{'name': 'P'}, {'name': 'r'}, {'name': 'i'}, {'name': 'm'}, {'name': 'e'}, {'name': ''}, {'name': 'V'}, {'name': 'i'}, {'name': 'd'}, {'name': 'e'}, {'name': 'o'}]}, '制作会社': {'rich_text': [{'text': {'content': 'ピー・アール・エー'}}]}, '公式URL': {'url': 'https://nine-anime.marv.jp/'}}}
-[2025-08-18 13:58:06][INFO][notion_register] 登録成功: 異世界黙示録マイノグーラ ～破滅の文明で始める世界征服～ (44)
-[2025-08-18 13:58:07][INFO][notion_register] 登録成功: カッコウの許嫁 Season2 (45)
-[2025-08-18 13:58:08][INFO][notion_register] 登録成功: フェルマーの料理 (46)
-[2025-08-18 13:58:09][INFO][notion_register] 登録成功: ぐらんぶる Season 2 (47)
-[2025-08-18 13:58:10][INFO][notion_register] 登録成功: 盾の勇者の成り上がり Season4 (48)
-[2025-08-18 13:58:11][INFO][notion_register] 登録成功: 光が死んだ夏 (49)
-[2025-08-18 13:58:12][INFO][notion_register] 登録成功: ニャイト・オブ・ザ・リビングキャット (50)
-[2025-08-18 13:58:13][INFO][notion_register] 登録成功: ダンダダン 第2期 (51)
-[2025-08-18 13:58:13][INFO][notion_register] 登録成功: ブサメンガチファイター (52)
-[2025-08-18 13:58:16][INFO][notion_register] 登録成功: わたしが恋人になれるわけないじゃん、ムリムリ!（※ムリじゃなかった!?） (53)
-[2025-08-18 13:58:16][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-8139-b53b-eb08267b2471'}, 'properties': {'ID': {'title': [{'text': {'content': '54'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-05'}}, '配信時間': {'rich_text': [{'text': {'content': '01:30'}}]}, '曜日': {'select': {'name': '土'}}, 'Title': {'rich_text': [{'text': {'content': '渡くんの××が崩壊寸前'}}]}, 'プラットフォーム': {'multi_select': [{'name': 'P'}, {'name': 'r'}, {'name': 'i'}, {'name': 'm'}, {'name': 'e'}, {'name': ''}, {'name': 'V'}, {'name': 'i'}, {'name': 'd'}, {'name': 'e'}, {'name': 'o'}]}, '制作会社': {'rich_text': [{'text': {'content': 'ステイプルエンタテインメント'}}]}, '公式URL': {'url': 'https://watarikunxx-anime.com/'}}}
-[2025-08-18 13:58:22][INFO][notion_register] 登録成功: 転生したら第七王子だったので、気ままに魔術を極めます 第2期 (55)
-[2025-08-18 13:58:24][INFO][notion_register] 登録成功: ホテル・インヒューマンズ (56)
-[2025-08-18 13:58:25][INFO][notion_register] 登録成功: 自動販売機に生まれ変わった俺は迷宮を彷徨う 2nd season (57)
-[2025-08-18 13:58:25][INFO][notion_register] 登録成功: 転生宗主の覇道譚 ～すべてを呑み込むサカナと這い上がる～ (58)
-[2025-08-18 13:58:26][ERROR][notion_register] 登録失敗: 400 Client Error: Bad Request for url: https://api.notion.com/v1/pages, data={'parent': {'database_id': '2539fee9-008f-8139-b53b-eb08267b2471'}, 'properties': {'ID': {'title': [{'text': {'content': '59'}}]}, '開始': {'select': {'name': '×'}}, '配信日': {'date': {'start': '2025-07-07'}}, '配信時間': {'rich_text': [{'text': {'content': '01:00'}}]}, '曜日': {'select': {'name': '月'}}, 'Title': {'rich_text': [{'text': {'content': 'デキちゃうまで婚'}}]}, 'プラットフォーム': {'multi_select': [{'name': 'D'}, {'name': 'M'}, {'name': 'M'}, {'name': ''}, {'name': 'T'}, {'name': 'V'}]}, '制作会社': {'rich_text': [{'text': {'content': 'スタジオレオ'}}]}, '公式URL': {'url': 'https://dekichaumade-kon.af-original.com/'}}}
-[2025-08-18 13:58:26][INFO][notion_register] 登録処理完了: 成功 50 件 / 失敗 9 件
-[2025-08-18 16:15:31][INFO][notion_register] Archived DB：2025夏anime_schedule_db database_id: 2529fee9-008f-810e-8b76-c3ed1df392db
-[2025-08-18 16:15:31][INFO][notion_register] 新規データベース作成完了: データベースID：2539fee9-008f-81c7-9433-cc34bb446fe6 データベース名：2025秋anime_schedule_db
-[2025-08-18 16:15:32][INFO][notion_register] 登録成功: 青春ブタ野郎はサンタクロースの夢を見ない (1)
-[2025-08-18 16:15:32][INFO][notion_register] 登録成功: 追放白魔導師 ミニアニメ (2)
-[2025-08-18 16:15:34][INFO][notion_register] 登録成功: ガチアクタ (3)
-[2025-08-18 16:15:34][INFO][notion_register] 登録成功: 追放者食堂へようこそ！ (4)
-[2025-08-18 16:15:35][INFO][notion_register] 登録成功: 人妻の唇は缶チューハイの味がして (5)
-[2025-08-18 16:15:36][INFO][notion_register] 登録成功: CITY THE ANIMATION (6)
-[2025-08-18 16:15:38][INFO][notion_register] 登録成功: 瑠璃の宝石 (7)
-[2025-08-18 16:15:39][INFO][notion_register] 登録成功: クレバテス-魔獣の王と赤子と屍の勇者- (8)
-[2025-08-18 16:15:41][INFO][notion_register] 登録成功: 彼女、お借りします 第4期 (9)
-[2025-08-18 16:15:41][INFO][notion_register] 登録成功: よふかしのうた Season2 (10)
-[2025-08-18 16:15:42][INFO][notion_register] 登録成功: 強くてニューサーガ (11)
-[2025-08-18 16:15:46][INFO][notion_register] 登録成功: 夢中さ、きみに。 (12)
-[2025-08-18 16:15:46][INFO][notion_register] 登録成功: 公女殿下の家庭教師 (13)
-[2025-08-18 16:15:47][INFO][notion_register] 登録成功: うたごえはミルフィーユ (14)
-[2025-08-18 16:15:49][INFO][notion_register] 登録成功: Turkey! (15)
-[2025-08-18 16:15:49][INFO][notion_register] 登録成功: その着せ替え人形は恋をする Season 2 (16)
-[2025-08-18 16:15:50][INFO][notion_register] 登録成功: ブスに花束を。 (17)
-[2025-08-18 16:15:51][INFO][notion_register] 登録成功: タコピーの原罪 (18)
-[2025-08-18 16:15:52][INFO][notion_register] 登録成功: 学校では教えてくれない大切なこと (19)
-[2025-08-18 16:15:53][INFO][notion_register] 登録成功: 気絶勇者と暗殺姫 (20)
-[2025-08-18 16:15:53][INFO][notion_register] 登録成功: ぬきたし THE ANIMATION (21)
-[2025-08-18 16:15:54][INFO][notion_register] 登録成功: フードコートで、また明日。 (22)
-[2025-08-18 16:15:54][INFO][notion_register] 登録成功: まったく最近の探偵ときたら (23)
-[2025-08-18 16:15:55][INFO][notion_register] 登録成功: 帝乃三姉妹は案外、チョロい。 (24)
-[2025-08-18 16:15:55][INFO][notion_register] 登録成功: 勇者パーティーを追放された白魔導師、Sランク冒険者に拾われる ～この白魔導師が規格外すぎる～ (25)
-[2025-08-18 16:15:59][INFO][notion_register] 登録成功: 地獄先生ぬ〜べ〜 (2025) (26)
-[2025-08-18 16:16:00][INFO][notion_register] 登録成功: 桃源暗鬼 (27)
-[2025-08-18 16:16:00][INFO][notion_register] 登録成功: サイレント・ウィッチ 沈黙の魔女の隠しごと (28)
-[2025-08-18 16:16:01][INFO][notion_register] 登録成功: 白豚貴族ですが前世の記憶が生えたのでひよこな弟育てます (29)
-[2025-08-18 16:16:06][INFO][notion_register] 登録成功: 雨と君と (30)
-[2025-08-18 16:16:06][INFO][notion_register] 登録成功: 美男高校地球防衛部ハイカラ！ (31)
-[2025-08-18 16:16:07][INFO][notion_register] 登録成功: New PANTY & STOCKING with GARTERBELT (32)
-[2025-08-18 16:16:07][INFO][notion_register] 登録成功: 水属性の魔法使い (33)
-[2025-08-18 16:16:08][INFO][notion_register] 登録成功: 傷だらけ聖女より報復をこめて (34)
-[2025-08-18 16:16:08][INFO][notion_register] 登録成功: ばっどがーる (35)
-[2025-08-18 16:16:09][INFO][notion_register] 登録成功: ずたぼろ令嬢は姉の元婚約者に溺愛される (36)
-[2025-08-18 16:16:10][INFO][notion_register] 登録成功: ふたりソロキャンプ (37)
-[2025-08-18 16:16:11][INFO][notion_register] 登録成功: 薫る花は凛と咲く (38)
-[2025-08-18 16:16:12][INFO][notion_register] 登録成功: 出禁のモグラ (39)
-[2025-08-18 16:16:12][INFO][notion_register] 登録成功: ゲーセン少女と異文化交流 (40)
-[2025-08-18 16:16:17][INFO][notion_register] 登録成功: 地縛少年花子くん2 後編 (41)
-[2025-08-18 16:16:18][INFO][notion_register] 登録成功: カラオケ行こ！ (42)
-[2025-08-18 16:16:19][INFO][notion_register] 登録成功: 9-nine- Ruler's Crown (43)
-[2025-08-18 16:16:21][INFO][notion_register] 登録成功: 異世界黙示録マイノグーラ ～破滅の文明で始める世界征服～ (44)
-[2025-08-18 16:16:21][INFO][notion_register] 登録成功: カッコウの許嫁 Season2 (45)
-[2025-08-18 16:16:22][INFO][notion_register] 登録成功: フェルマーの料理 (46)
-[2025-08-18 16:16:23][INFO][notion_register] 登録成功: ぐらんぶる Season 2 (47)
-[2025-08-18 16:16:23][INFO][notion_register] 登録成功: 盾の勇者の成り上がり Season4 (48)
-[2025-08-18 16:16:24][INFO][notion_register] 登録成功: 光が死んだ夏 (49)
-[2025-08-18 16:16:24][INFO][notion_register] 登録成功: ニャイト・オブ・ザ・リビングキャット (50)
-[2025-08-18 16:16:25][INFO][notion_register] 登録成功: ダンダダン 第2期 (51)
-[2025-08-18 16:16:25][INFO][notion_register] 登録成功: ブサメンガチファイター (52)
-[2025-08-18 16:16:26][INFO][notion_register] 登録成功: わたしが恋人になれるわけないじゃん、ムリムリ!（※ムリじゃなかった!?） (53)
-[2025-08-18 16:16:27][INFO][notion_register] 登録成功: 渡くんの××が崩壊寸前 (54)
-[2025-08-18 16:16:27][INFO][notion_register] 登録成功: 転生したら第七王子だったので、気ままに魔術を極めます 第2期 (55)
-[2025-08-18 16:16:29][INFO][notion_register] 登録成功: ホテル・インヒューマンズ (56)
-[2025-08-18 16:16:30][INFO][notion_register] 登録成功: 自動販売機に生まれ変わった俺は迷宮を彷徨う 2nd season (57)
-[2025-08-18 16:16:30][INFO][notion_register] 登録成功: 転生宗主の覇道譚 ～すべてを呑み込むサカナと這い上がる～ (58)
-[2025-08-18 16:16:31][INFO][notion_register] 登録成功: デキちゃうまで婚 (59)
-[2025-08-18 16:16:31][INFO][notion_register] 登録処理完了: 成功 59 件 / 失敗 0 件
-[2025-08-18 16:20:45][INFO][notion_register] Archived DB：2025夏anime_schedule_db database_id: 2529fee9-008f-810e-8b76-c3ed1df392db
-[2025-08-18 16:20:45][INFO][notion_register] 新規データベース作成完了: データベースID：2539fee9-008f-81f9-b16b-d60037e57311 データベース名：2025秋anime_schedule_db
-[2025-08-18 16:22:35][INFO][notion_register] 登録成功: 青春ブタ野郎はサンタクロースの夢を見ない (1)
-[2025-08-18 16:22:44][INFO][notion_register] 登録成功: 追放白魔導師 ミニアニメ (2)
-[2025-08-18 16:22:45][INFO][notion_register] 登録成功: ガチアクタ (3)
-[2025-08-18 16:22:46][INFO][notion_register] 登録成功: 追放者食堂へようこそ！ (4)
-[2025-08-18 16:22:50][INFO][notion_register] 登録成功: 人妻の唇は缶チューハイの味がして (5)
-[2025-08-18 16:22:51][INFO][notion_register] 登録成功: CITY THE ANIMATION (6)
-[2025-08-18 16:22:52][INFO][notion_register] 登録成功: 瑠璃の宝石 (7)
-[2025-08-18 16:22:53][INFO][notion_register] 登録成功: クレバテス-魔獣の王と赤子と屍の勇者- (8)
-[2025-08-18 16:22:53][INFO][notion_register] 登録成功: 彼女、お借りします 第4期 (9)
-[2025-08-18 16:22:54][INFO][notion_register] 登録成功: よふかしのうた Season2 (10)
-[2025-08-18 16:22:54][INFO][notion_register] 登録成功: 強くてニューサーガ (11)
-[2025-08-18 16:22:55][INFO][notion_register] 登録成功: 夢中さ、きみに。 (12)
-[2025-08-18 16:22:55][INFO][notion_register] 登録成功: 公女殿下の家庭教師 (13)
-[2025-08-18 16:22:56][INFO][notion_register] 登録成功: うたごえはミルフィーユ (14)
-[2025-08-18 16:22:57][INFO][notion_register] 登録成功: Turkey! (15)
-[2025-08-18 16:22:58][INFO][notion_register] 登録成功: その着せ替え人形は恋をする Season 2 (16)
-[2025-08-18 16:22:58][INFO][notion_register] 登録成功: ブスに花束を。 (17)
-[2025-08-18 16:22:59][INFO][notion_register] 登録成功: タコピーの原罪 (18)
-[2025-08-18 16:23:04][INFO][notion_register] 登録成功: 学校では教えてくれない大切なこと (19)
-[2025-08-18 16:23:05][INFO][notion_register] 登録成功: 気絶勇者と暗殺姫 (20)
-[2025-08-18 16:23:05][INFO][notion_register] 登録成功: ぬきたし THE ANIMATION (21)
-[2025-08-18 16:23:08][INFO][notion_register] 登録成功: フードコートで、また明日。 (22)
-[2025-08-18 16:23:09][INFO][notion_register] 登録成功: まったく最近の探偵ときたら (23)
-[2025-08-18 16:23:14][INFO][notion_register] 登録成功: 帝乃三姉妹は案外、チョロい。 (24)
-[2025-08-18 16:23:14][INFO][notion_register] 登録成功: 勇者パーティーを追放された白魔導師、Sランク冒険者に拾われる ～この白魔導師が規格外すぎる～ (25)
-[2025-08-18 16:23:16][INFO][notion_register] 登録成功: 地獄先生ぬ〜べ〜 (2025) (26)
-[2025-08-18 16:23:18][INFO][notion_register] 登録成功: 桃源暗鬼 (27)
-[2025-08-18 16:23:19][INFO][notion_register] 登録成功: サイレント・ウィッチ 沈黙の魔女の隠しごと (28)
-[2025-08-18 16:23:20][INFO][notion_register] 登録成功: 白豚貴族ですが前世の記憶が生えたのでひよこな弟育てます (29)
-[2025-08-18 16:23:20][INFO][notion_register] 登録成功: 雨と君と (30)
-[2025-08-18 16:23:22][INFO][notion_register] 登録成功: 美男高校地球防衛部ハイカラ！ (31)
-[2025-08-18 16:23:22][INFO][notion_register] 登録成功: New PANTY & STOCKING with GARTERBELT (32)
-[2025-08-18 16:23:23][INFO][notion_register] 登録成功: 水属性の魔法使い (33)
-[2025-08-18 16:23:27][INFO][notion_register] 登録成功: 傷だらけ聖女より報復をこめて (34)
-[2025-08-18 16:23:27][INFO][notion_register] 登録成功: ばっどがーる (35)
-[2025-08-18 16:23:28][INFO][notion_register] 登録成功: ずたぼろ令嬢は姉の元婚約者に溺愛される (36)
-[2025-08-18 16:23:28][INFO][notion_register] 登録成功: ふたりソロキャンプ (37)
-[2025-08-18 16:23:29][INFO][notion_register] 登録成功: 薫る花は凛と咲く (38)
-[2025-08-18 16:23:32][INFO][notion_register] 登録成功: 出禁のモグラ (39)
-[2025-08-18 16:23:32][INFO][notion_register] 登録成功: ゲーセン少女と異文化交流 (40)
-[2025-08-18 16:23:33][INFO][notion_register] 登録成功: 地縛少年花子くん2 後編 (41)
-[2025-08-18 16:23:33][INFO][notion_register] 登録成功: カラオケ行こ！ (42)
-[2025-08-18 16:23:34][INFO][notion_register] 登録成功: 9-nine- Ruler's Crown (43)
-[2025-08-18 16:23:37][INFO][notion_register] 登録成功: 異世界黙示録マイノグーラ ～破滅の文明で始める世界征服～ (44)
-[2025-08-18 16:23:37][INFO][notion_register] 登録成功: カッコウの許嫁 Season2 (45)
-[2025-08-18 16:23:38][INFO][notion_register] 登録成功: フェルマーの料理 (46)
-[2025-08-18 16:23:39][INFO][notion_register] 登録成功: ぐらんぶる Season 2 (47)
-[2025-08-18 16:23:42][INFO][notion_register] 登録成功: 盾の勇者の成り上がり Season4 (48)
-[2025-08-18 16:23:43][INFO][notion_register] 登録成功: 光が死んだ夏 (49)
-[2025-08-18 16:23:43][INFO][notion_register] 登録成功: ニャイト・オブ・ザ・リビングキャット (50)
-[2025-08-18 16:23:44][INFO][notion_register] 登録成功: ダンダダン 第2期 (51)
-[2025-08-18 16:23:44][INFO][notion_register] 登録成功: ブサメンガチファイター (52)
-[2025-08-18 16:23:45][INFO][notion_register] 登録成功: わたしが恋人になれるわけないじゃん、ムリムリ!（※ムリじゃなかった!?） (53)
-[2025-08-18 16:23:48][INFO][notion_register] 登録成功: 渡くんの××が崩壊寸前 (54)
-[2025-08-18 16:23:49][INFO][notion_register] 登録成功: 転生したら第七王子だったので、気ままに魔術を極めます 第2期 (55)
-[2025-08-18 16:23:50][INFO][notion_register] 登録成功: ホテル・インヒューマンズ (56)
-[2025-08-18 16:23:54][INFO][notion_register] 登録成功: 自動販売機に生まれ変わった俺は迷宮を彷徨う 2nd season (57)
-[2025-08-18 16:23:55][INFO][notion_register] 登録成功: 転生宗主の覇道譚 ～すべてを呑み込むサカナと這い上がる～ (58)
-[2025-08-18 16:23:56][INFO][notion_register] 登録成功: デキちゃうまで婚 (59)
-[2025-08-18 16:23:56][INFO][notion_register] 登録処理完了: 成功 59 件 / 失敗 0 件
-[2025-08-18 17:06:17][INFO][notion_register] Archived DB：2025夏anime_schedule_db database_id: 2529fee9-008f-810e-8b76-c3ed1df392db
-[2025-08-18 17:06:33][INFO][notion_register] 新規データベース作成完了: データベースID：2539fee9-008f-812e-8df6-d53e1d3371de データベース名：2025秋anime_schedule_db
-[2025-08-18 17:06:37][INFO][notion_register] 登録成功: 青春ブタ野郎はサンタクロースの夢を見ない (1)
-[2025-08-18 17:06:37][INFO][notion_register] 登録成功: 追放白魔導師 ミニアニメ (2)
-[2025-08-18 17:06:42][INFO][notion_register] 登録成功: ガチアクタ (3)
-[2025-08-18 17:06:46][INFO][notion_register] 登録成功: 追放者食堂へようこそ！ (4)
-[2025-08-18 17:06:48][INFO][notion_register] 登録成功: 人妻の唇は缶チューハイの味がして (5)
-[2025-08-18 17:06:49][INFO][notion_register] 登録成功: CITY THE ANIMATION (6)
-[2025-08-18 17:06:51][INFO][notion_register] 登録成功: 瑠璃の宝石 (7)
-[2025-08-18 17:06:56][INFO][notion_register] 登録成功: クレバテス-魔獣の王と赤子と屍の勇者- (8)
-[2025-08-18 17:06:57][INFO][notion_register] 登録成功: 彼女、お借りします 第4期 (9)
-[2025-08-18 17:07:00][INFO][notion_register] 登録成功: よふかしのうた Season2 (10)
-[2025-08-18 17:07:06][INFO][notion_register] 登録成功: 強くてニューサーガ (11)
-[2025-08-18 17:07:06][INFO][notion_register] 登録成功: 夢中さ、きみに。 (12)
-[2025-08-18 17:07:07][INFO][notion_register] 登録成功: 公女殿下の家庭教師 (13)
-[2025-08-18 17:07:08][INFO][notion_register] 登録成功: うたごえはミルフィーユ (14)
-[2025-08-18 17:07:13][INFO][notion_register] 登録成功: Turkey! (15)
-[2025-08-18 17:07:14][INFO][notion_register] 登録成功: その着せ替え人形は恋をする Season 2 (16)
-[2025-08-18 17:07:14][INFO][notion_register] 登録成功: ブスに花束を。 (17)
-[2025-08-18 17:07:16][INFO][notion_register] 登録成功: タコピーの原罪 (18)
-[2025-08-18 17:07:19][INFO][notion_register] 登録成功: 学校では教えてくれない大切なこと (19)
-[2025-08-18 17:07:20][INFO][notion_register] 登録成功: 気絶勇者と暗殺姫 (20)
-[2025-08-18 17:07:31][INFO][notion_register] 登録成功: ぬきたし THE ANIMATION (21)
-[2025-08-18 17:07:31][INFO][notion_register] 登録成功: フードコートで、また明日。 (22)
-[2025-08-18 17:07:32][INFO][notion_register] 登録成功: まったく最近の探偵ときたら (23)
-[2025-08-18 17:07:33][INFO][notion_register] 登録成功: 帝乃三姉妹は案外、チョロい。 (24)
-[2025-08-18 17:07:34][INFO][notion_register] 登録成功: 勇者パーティーを追放された白魔導師、Sランク冒険者に拾われる ～この白魔導師が規格外すぎる～ (25)
-[2025-08-18 17:07:36][INFO][notion_register] 登録成功: 地獄先生ぬ〜べ〜 (2025) (26)
-[2025-08-18 17:07:37][INFO][notion_register] 登録成功: 桃源暗鬼 (27)
-[2025-08-18 17:07:37][INFO][notion_register] 登録成功: サイレント・ウィッチ 沈黙の魔女の隠しごと (28)
-[2025-08-18 17:07:41][INFO][notion_register] 登録成功: 白豚貴族ですが前世の記憶が生えたのでひよこな弟育てます (29)
-[2025-08-18 17:07:41][INFO][notion_register] 登録成功: 雨と君と (30)
-[2025-08-18 17:07:42][INFO][notion_register] 登録成功: 美男高校地球防衛部ハイカラ！ (31)
-[2025-08-18 17:07:44][INFO][notion_register] 登録成功: New PANTY & STOCKING with GARTERBELT (32)
-[2025-08-18 17:07:45][INFO][notion_register] 登録成功: 水属性の魔法使い (33)
-[2025-08-18 17:07:46][INFO][notion_register] 登録成功: 傷だらけ聖女より報復をこめて (34)
-[2025-08-18 17:07:46][INFO][notion_register] 登録成功: ばっどがーる (35)
-[2025-08-18 17:07:50][INFO][notion_register] 登録成功: ずたぼろ令嬢は姉の元婚約者に溺愛される (36)
-[2025-08-18 17:07:52][INFO][notion_register] 登録成功: ふたりソロキャンプ (37)
-[2025-08-18 17:07:52][INFO][notion_register] 登録成功: 薫る花は凛と咲く (38)
-[2025-08-18 17:07:53][INFO][notion_register] 登録成功: 出禁のモグラ (39)
-[2025-08-18 17:07:55][INFO][notion_register] 登録成功: ゲーセン少女と異文化交流 (40)
-[2025-08-18 17:07:55][INFO][notion_register] 登録成功: 地縛少年花子くん2 後編 (41)
-[2025-08-18 17:07:58][INFO][notion_register] 登録成功: カラオケ行こ！ (42)
-[2025-08-18 17:08:01][INFO][notion_register] 登録成功: 9-nine- Ruler's Crown (43)
-[2025-08-18 17:08:09][INFO][notion_register] 登録成功: 異世界黙示録マイノグーラ ～破滅の文明で始める世界征服～ (44)
-[2025-08-18 17:08:17][INFO][notion_register] 登録成功: カッコウの許嫁 Season2 (45)
-[2025-08-18 17:08:18][INFO][notion_register] 登録成功: フェルマーの料理 (46)
-[2025-08-18 17:08:35][INFO][notion_register] 登録成功: ぐらんぶる Season 2 (47)
-[2025-08-18 17:08:36][INFO][notion_register] 登録成功: 盾の勇者の成り上がり Season4 (48)
-[2025-08-18 17:08:37][INFO][notion_register] 登録成功: 光が死んだ夏 (49)
-[2025-08-18 17:08:37][INFO][notion_register] 登録成功: ニャイト・オブ・ザ・リビングキャット (50)
-[2025-08-18 17:08:43][INFO][notion_register] 登録成功: ダンダダン 第2期 (51)
-[2025-08-18 17:08:44][INFO][notion_register] 登録成功: ブサメンガチファイター (52)
-[2025-08-18 17:08:46][INFO][notion_register] 登録成功: わたしが恋人になれるわけないじゃん、ムリムリ!（※ムリじゃなかった!?） (53)
-[2025-08-18 17:08:47][INFO][notion_register] 登録成功: 渡くんの××が崩壊寸前 (54)
-[2025-08-18 17:08:47][INFO][notion_register] 登録成功: 転生したら第七王子だったので、気ままに魔術を極めます 第2期 (55)
-[2025-08-18 17:08:48][INFO][notion_register] 登録成功: ホテル・インヒューマンズ (56)
-[2025-08-18 17:08:48][INFO][notion_register] 登録成功: 自動販売機に生まれ変わった俺は迷宮を彷徨う 2nd season (57)
-[2025-08-18 17:08:49][INFO][notion_register] 登録成功: 転生宗主の覇道譚 ～すべてを呑み込むサカナと這い上がる～ (58)
-[2025-08-18 17:08:50][INFO][notion_register] 登録成功: デキちゃうまで婚 (59)
-[2025-08-18 17:08:50][INFO][notion_register] 登録処理完了: 成功 59 件 / 失敗 0 件
+[2025-08-25 16:03:30][INFO][notion_register] 新規データベース作成完了: データベースID：25a9fee9-008f-810c-a0e6-f6dab24a3d46 データベース名：2025秋anime_schedule_db
+[2025-08-25 16:03:35][INFO][notion_register] Archived DB：2025夏anime_schedule_db database_id: 2529fee9-008f-810e-8b76-c3ed1df392db
+[2025-08-25 16:03:42][INFO][notion_register] 登録成功: ホテル・インヒューマンズ (1)
+[2025-08-25 16:03:42][INFO][notion_register] 登録成功: 9-nine- Ruler's Crown (2)
+[2025-08-25 16:03:43][INFO][notion_register] 登録成功: 追放白魔導師 ミニアニメ (3)
+[2025-08-25 16:03:44][INFO][notion_register] 登録成功: 雨と君と (4)
+[2025-08-25 16:03:45][INFO][notion_register] 登録成功: 人妻の唇は缶チューハイの味がして (5)
+[2025-08-25 16:03:45][INFO][notion_register] 登録成功: 瑠璃の宝石 (6)
+[2025-08-25 16:03:46][INFO][notion_register] 登録成功: ゲーセン少女と異文化交流 (7)
+[2025-08-25 16:03:46][INFO][notion_register] 登録成功: おそ松さん (第4期) (8)
+[2025-08-25 16:03:49][INFO][notion_register] 登録成功: ブスに花束を。 (9)
+[2025-08-25 16:03:53][INFO][notion_register] 登録成功: 学校では教えてくれない大切なこと (10)
+[2025-08-25 16:03:53][INFO][notion_register] 登録成功: CITY THE ANIMATION (11)
+[2025-08-25 16:03:57][INFO][notion_register] 登録成功: New PANTY & STOCKING with GARTERBELT (12)
+[2025-08-25 16:03:58][INFO][notion_register] 登録成功: 追放者食堂へようこそ！ (13)
+[2025-08-25 16:04:01][INFO][notion_register] 登録成功: まったく最近の探偵ときたら (14)
+[2025-08-25 16:04:10][INFO][notion_register] 登録成功: うたごえはミルフィーユ (15)
+[2025-08-25 16:04:11][INFO][notion_register] 登録成功: 出禁のモグラ (16)
+[2025-08-25 16:04:12][INFO][notion_register] 登録成功: 異世界黙示録マイノグーラ ～破滅の文明で始める世界征服～ (17)
+[2025-08-25 16:04:24][INFO][notion_register] 登録成功: 気絶勇者と暗殺姫 (18)
+[2025-08-25 16:04:27][INFO][notion_register] 登録成功: 公女殿下の家庭教師 (19)
+[2025-08-25 16:04:38][INFO][notion_register] 登録成功: 光が死んだ夏 (20)
+[2025-08-25 16:04:38][INFO][notion_register] 登録成功: 青春ブタ野郎はサンタクロースの夢を見ない (21)
+[2025-08-25 16:04:39][INFO][notion_register] 登録成功: 水属性の魔法使い (22)
+[2025-08-25 16:04:40][INFO][notion_register] 登録成功: 傷だらけ聖女より報復をこめて (23)
+[2025-08-25 16:04:41][INFO][notion_register] 登録成功: 白豚貴族ですが前世の記憶が生えたのでひよこな弟育てます (24)
+[2025-08-25 16:04:42][INFO][notion_register] 登録成功: 渡くんの××が崩壊寸前 (25)
+[2025-08-25 16:04:42][INFO][notion_register] 登録成功: ずたぼろ令嬢は姉の元婚約者に溺愛される (26)
+[2025-08-25 16:04:44][INFO][notion_register] 登録成功: 盾の勇者の成り上がり Season4 (27)
+[2025-08-25 16:04:44][INFO][notion_register] 登録成功: クレバテス-魔獣の王と赤子と屍の勇者- (28)
+[2025-08-25 16:04:45][INFO][notion_register] 登録成功: 地縛少年花子くん2 後編 (29)
+[2025-08-25 16:04:52][INFO][notion_register] 登録成功: 美男高校地球防衛部ハイカラ！ (30)
+[2025-08-25 16:04:53][INFO][notion_register] 登録成功: 桃源暗鬼 (31)
+[2025-08-25 16:04:53][INFO][notion_register] 登録成功: 彼女、お借りします 第4期 (32)
+[2025-08-25 16:04:55][INFO][notion_register] 登録成功: 自動販売機に生まれ変わった俺は迷宮を彷徨う 2nd season (33)
+[2025-08-25 16:04:58][INFO][notion_register] 登録成功: わたしが恋人になれるわけないじゃん、ムリムリ!（※ムリじゃなかった!?） (34)
+[2025-08-25 16:04:59][INFO][notion_register] 登録成功: よふかしのうた Season2 (35)
+[2025-08-25 16:05:01][INFO][notion_register] 登録成功: 地獄先生ぬ〜べ〜 (2025) (36)
+[2025-08-25 16:05:02][INFO][notion_register] 登録成功: 薫る花は凛と咲く (37)
+[2025-08-25 16:05:02][INFO][notion_register] 登録成功: ブサメンガチファイター (38)
+[2025-08-25 16:05:06][INFO][notion_register] 登録成功: サイレント・ウィッチ 沈黙の魔女の隠しごと (39)
+[2025-08-25 16:05:08][INFO][notion_register] 登録成功: 勇者パーティーを追放された白魔導師、Sランク冒険者に拾われる ～この白魔導師が規格外すぎる～ (40)
+[2025-08-25 16:05:08][INFO][notion_register] 登録成功: Turkey! (41)
+[2025-08-25 16:05:09][INFO][notion_register] 登録成功: ふたりソロキャンプ (42)
+[2025-08-25 16:05:13][INFO][notion_register] 登録成功: ぐらんぶる Season 2 (43)
+[2025-08-25 16:05:14][INFO][notion_register] 登録成功: 転生したら第七王子だったので、気ままに魔術を極めます 第2期 (44)
+[2025-08-25 16:05:15][INFO][notion_register] 登録成功: ニャイト・オブ・ザ・リビングキャット (45)
+[2025-08-25 16:05:16][INFO][notion_register] 登録成功: ダンダダン 第2期 (46)
+[2025-08-25 16:05:19][INFO][notion_register] 登録成功: 夢中さ、きみに。 (47)
+[2025-08-25 16:05:19][INFO][notion_register] 登録成功: ガチアクタ (48)
+[2025-08-25 16:05:20][INFO][notion_register] 登録成功: 強くてニューサーガ (49)
+[2025-08-25 16:05:21][INFO][notion_register] 登録成功: ばっどがーる (50)
+[2025-08-25 16:05:26][INFO][notion_register] 登録成功: ぷにるんず ぷに3 (51)
+[2025-08-25 16:05:26][INFO][notion_register] 登録成功: 帝乃三姉妹は案外、チョロい。 (52)
+[2025-08-25 16:05:30][INFO][notion_register] 登録成功: カードファイト!! ヴァンガード Divinez デラックス決勝編 (53)
+[2025-08-25 16:05:30][INFO][notion_register] 登録成功: カラオケ行こ！ (54)
+[2025-08-25 16:05:31][INFO][notion_register] 登録成功: カッコウの許嫁 Season2 (55)
+[2025-08-25 16:05:31][INFO][notion_register] 登録成功: タコピーの原罪 (56)
+[2025-08-25 16:05:32][INFO][notion_register] 登録成功: フードコートで、また明日。 (57)
+[2025-08-25 16:05:38][INFO][notion_register] 登録成功: フェルマーの料理 (58)
+[2025-08-25 16:05:38][INFO][notion_register] 登録成功: ぬきたし THE ANIMATION (59)
+[2025-08-25 16:05:39][INFO][notion_register] 登録成功: 転生宗主の覇道譚 ～すべてを呑み込むサカナと這い上がる～ (60)
+[2025-08-25 16:05:40][INFO][notion_register] 登録成功: デキちゃうまで婚 (61)
+[2025-08-25 16:05:40][INFO][notion_register] 登録処理完了: 成功 61 件 / 失敗 0 件
