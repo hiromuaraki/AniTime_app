@@ -12,8 +12,8 @@ from app.notion_register import (
 
 # 現在の年月日を取得
 year, month = utils.get_sysdate()[0:2]
-# season = utils.get_season(month+1)
-season = utils.get_season(month+2) # 検証用
+season = utils.get_season(month+1)
+# season = utils.get_season(month+2) # 検証用
 
 WORKS_CSV_FILE = f"{year}_{season}.csv"
 SCHEDULE_CSV_FILE = f"{year}_{season}_scrap.csv"

@@ -167,8 +167,8 @@ def create_database(parent_page_id: str, database_name: str, ym: list) -> str:
         db_id: データベースID
     """
     year, month = ym[0], ym[1]
-    # season = get_season(month+1)
-    season = get_season(month+2) # 検証用
+    season = get_season(month+1)
+    # season = get_season(month+2) # 検証用
     url = f"{config.NOTION_URL}/v1/databases"
     
     database_title = f"{year}{config.convert_season[season]}{database_name}"
